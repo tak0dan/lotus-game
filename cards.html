@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>THE TOWER GAME — cards</title>
+<link rel="icon" href="data:,">
+<style>
+  body{margin:0;background:#17191f;color:#d9d3c3;font:14px system-ui}
+  header{position:sticky;top:0;z-index:5;background:#10121a;border-bottom:1px solid #2b3040;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  header h1{font:22px Georgia,serif;margin:0;color:#e8c477;letter-spacing:.12em}
+  button{background:#1d2230;color:#fff;border:1px solid #38425a;border-radius:5px;padding:6px 12px;cursor:pointer}button:hover{border-color:#e8c477}
+  main{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:22px;padding:22px;justify-items:center}
+  h2{grid-column:1/-1;font:20px Georgia,serif;color:#e8c477;margin:10px 0 0;justify-self:start;border-bottom:1px solid #333;width:100%}
+  @media print{header{display:none}body{background:#fff}main{display:flex;flex-wrap:wrap;gap:2mm;padding:6mm}h2{display:none}}
+</style>
+<header><h1>THE TOWER GAME · CARDS</h1><button id="own">Palette: Slate</button><button onclick="print()">Print (63×88 mm)</button>
+<span style="color:#8b8f96">Art is rendered live from the 3D models in <code>assets/models/</code>; numbers come from <code>src/balance.js</code>. Cards are reference/presentation only — the rulebook uses no cards.</span></header>
+<main id="m"></main>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module">
+import { loadLibrary } from './src/modelLib.js';
+import { injectCardCSS, unitCardHTML, towerCardHTML, actionCardHTML, UNIT_ORDER, ACTION_ORDER } from './src/cards.js';
+injectCardCSS(); await loadLibrary();
+let owner = 0; const m = document.getElementById('m');
+const draw = () => { m.innerHTML = '<h2>Units</h2>' + UNIT_ORDER.map((t) => unitCardHTML(t, owner)).join('') + '<h2>Structure</h2>' + towerCardHTML(owner) + '<h2>Orders</h2>' + ACTION_ORDER.map(actionCardHTML).join(''); };
+document.getElementById('own').onclick = (e) => { owner = 1 - owner; e.target.textContent = 'Palette: ' + (owner ? 'Rust' : 'Slate'); draw(); };
+draw(); window.__cardsReady = true;
+</script></html>

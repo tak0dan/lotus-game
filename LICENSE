@@ -1,0 +1,151 @@
+THE TOWER GAME — OPEN-PLAY, NON-COMMERCIAL LICENSE
+Version 2.0 — 2026-11-10   (replaces version 1.0 for every copy of the Work)
+
+Copyright (c) 2026 tak0dan (the "Author"). All rights reserved, except as expressly granted below.
+
+THIS IS NOT AN OPEN-SOURCE LICENSE. It is a source-available license: everyone may play, print, share and build on the Work for free;
+only the Author may make money from it.
+
+---------------------------------------------------------------------------
+0. SUMMARY  (a convenience only; if it differs from sections 1-10, those govern)
+---------------------------------------------------------------------------
+  YES   Play the game at will, for free, in a web browser from the pages provided here.
+  YES   Read everything, clone it, keep copies, and share unmodified copies free of charge (with this license).
+  YES   PRINT the rules, the cards and the 3D models (for example on a 3D printer) and play the game on a real table.
+  YES   Make changes, house rules, and new content (including DLCs / expansions) and publish them free of charge — under THIS license.
+  YES   Help: ideas, bug reports, balance feedback, pull requests. Contributions are welcome.
+  NO    Sell it, or make money from it, in any form: not the game, not printed copies, not printed models or cards, not DLCs, not
+        a service built on it. Selling or otherwise commercially distributing ANYTHING covered by this license is not allowed.
+  NO    Running the game outside a browser or outside the provided pages: no Windows, macOS, mobile or console builds, installers,
+        wrappers, launchers or store listings (the Author plans official versions).
+  THE AUTHOR alone holds the right to publish the game, and anything built on it, commercially — in print, on tabletop, and
+        digitally on any platform. DLCs and contributions stay free and under this license, but the Author owns the commercial
+        publishing rights to them (section 5).
+
+---------------------------------------------------------------------------
+1. DEFINITIONS
+---------------------------------------------------------------------------
+"Work"            All files in this repository authored by the Author, in any form: source code, game rules and rulebooks, balance
+                  data, lore, text, 3D models, card designs and art, documentation, tools, data, logs and design history. Contributions
+                  (section 5) become part of the Work. Third-Party Components are not part of the Work.
+"Game"            The Tower Game, and the earlier or related versions in this repository (including the archived "Lotus" version).
+"Rules"           The written rules of the Game as stated in the Work (rulebook, manifesto, rules documents, balance tables), as distinct
+                  from the code, models, art, names and wording that express them.
+"Printable Materials"  The rules, the cards (including those the Provided Pages generate), and the 3D model files in the Work.
+"Browser"         A general-purpose web browser (for example Firefox, Chrome, Safari or Edge) running on your own device.
+"Provided Pages"  The HTML pages in this repository, and pages the Author hosts, loaded in a Browser; and pages that belong to a DLC
+                  published under this license, loaded in a Browser.
+"Provided Scripts" The scripts in this repository that serve the Provided Pages or exercise the Game (run.sh, tools/serve.py,
+                  tools/server.mjs, tools/tg.mjs, test/sim.mjs and the like).
+"DLC"             Any expansion, add-on, scenario, unit, rule set, card set, model set, map or other content made to extend, modify or
+                  be used with the Game, in any medium.
+"Derivative"      A modification of, or work based on, the Work, including every DLC.
+"Commercial Use"  Any use aimed at, or resulting in, commercial advantage or money: selling, renting, licensing for a fee, charging for
+                  access, subscriptions, advertising, sponsorship, donations or tips tied to the Work, crowd-funding, merchandising,
+                  bundling with anything sold, use in a paid event, product or service, or hosting behind a paywall.
+"Third-Party Components"  Material that belongs to others and carries its own license, listed in THIRD_PARTY_NOTICES.md.
+"You"             Any person who obtains a copy of the Work.
+
+---------------------------------------------------------------------------
+2. WHAT YOU MAY DO  (free of charge, non-commercial)
+---------------------------------------------------------------------------
+2.1  Inspect.   View, read and study every file in the Work.
+2.2  Play.      Play the Game at will, for free, by loading the Provided Pages in a Browser, including served from your own machine with
+     the Provided Scripts, alone or with other people. You may run the Provided Scripts to serve or examine the Game.
+2.3  Print.     Print the Printable Materials and make a physical (tabletop) version of the Game: print the rules and cards, and
+     fabricate the 3D models (for example with a 3D printer) — for your own use and to give away free of charge. You may have a
+     third-party printing or fabrication service make items for You, provided the service uses the items only to deliver them
+     to You and does not sell or distribute them.
+2.4  Share.     Copy and redistribute the Work, unmodified, free of charge, provided this license and all notices stay with it.
+     Cloning or forking the repository on the platform that hosts it is included.
+2.5  Build.     Modify the Work and create Derivatives, including DLCs, and publish them free of charge, provided that (a) they are
+     released under this same license, exactly, with no added restrictions, (b) You mark your changes and keep the credit to the
+     Author and to the original, (c) You make clear that unofficial content is unofficial, and (d) section 5 applies to them.
+2.6  Show.      Review, discuss, teach, stream or record the Game and write about it, including on platforms that carry advertising
+     or sponsorship, so long as the Work itself is not sold or put behind a paywall and the Game is not presented as yours.
+
+---------------------------------------------------------------------------
+3. WHAT YOU MAY NOT DO
+---------------------------------------------------------------------------
+3.1  No commercial use.  You may not make Commercial Use of the Work, of anything printed or made from it (printed rules or cards,
+     fabricated models, physical recreations of the Game), or of any Derivative or DLC. Printed or fabricated items may be given
+     away; they may not be sold, rented, auctioned, traded for value, crowd-funded, or placed in any commercial setting.
+3.2  Browser only; no native builds.  The Game may be run only in a Browser, from the Provided Pages. You may not package, wrap,
+     compile, convert, port, emulate or re-implement the Game or any part of the Work as, or to run inside, a native, desktop,
+     mobile or console application or executable, and You may not launch the Game through any such application, launcher or wrapper.
+     This applies in particular to Microsoft Windows and Apple macOS and includes installers, app bundles, executables,
+     embedded-browser or webview shells (for example Electron, NW.js, Tauri, Cordova or Capacitor), game launchers and store
+     listings. A Browser opening a Provided Page is permitted; a program whose purpose is to run the Game is not. (The Author may grant
+     separate, written permission for specific cases.)
+3.3  No added restrictions; no relicensing.  You may not apply any other license to the Work or a Derivative, nor add restrictions to this
+     one, nor use technical measures to prevent others from using the Work as this license allows.
+3.4  Credit and names.  You may not present the Work as your own, and You may not use the Author's name or the names "The Tower Game"
+     or "Lotus" in a way that suggests endorsement of, or affiliation with, anything You make or do, or in the name of anything sold.
+
+---------------------------------------------------------------------------
+4. THE AUTHOR'S RIGHTS
+---------------------------------------------------------------------------
+All rights not expressly granted are reserved. The Author alone may publish, license and sell the Game and the Work in any form,
+including an official tabletop edition, official DLCs, and official digital versions (browser, desktop, Windows, macOS, mobile,
+console or otherwise), commercially and under any terms. Nothing in this license limits what the Author may do with the Work.
+
+---------------------------------------------------------------------------
+5. CONTRIBUTIONS, IDEAS AND DLCs
+---------------------------------------------------------------------------
+5.1  What this covers.  "Contribution" means anything You submit to the Author or publish in connection with the Game — a pull request,
+     an issue, a suggestion, a rule, a balance change, a text, a model, a card, an image, code, or a DLC or other Derivative.
+5.2  Everyone gets it free, under this license.  Every Contribution is made available to everyone under this license (version 2.0 or the
+     version then current).
+5.3  Publishing rights go to the Author.  In return for the Author's permission to build on the Work and for the Author's work and
+     investment in it, You grant the Author a perpetual, irrevocable, worldwide, royalty-free, EXCLUSIVE right and license — exclusive
+     for all Commercial Use, even as against You — to publish, reproduce, distribute, sell, sublicense and otherwise commercially exploit
+     each of your Contributions, in whole or in part, in any medium and on any platform, including in official tabletop editions, official
+     DLCs and official digital versions, and to modify, adapt, translate and combine it with the Work and with other Contributions.
+     You keep your copyright. You also keep the right to be credited, and to use and share your own Contribution free of charge under
+     this license. The Author is under no obligation to publish, include, credit-beyond-5.5, or pay for any Contribution, and may reject
+     it at any time. You will not sell or commercially exploit your Contribution yourself, or license it to anyone else for that.
+5.4  Your promises.  You promise that the Contribution is yours (or that You have the right to grant this), that it contains no third-party
+     material You cannot license on these terms, and that granting 5.3 does not breach anyone else's rights.
+5.5  Credit.  The Author will make reasonable efforts to credit contributors whose Contributions are published in official editions, by
+     the name or handle You supply, unless You ask not to be named.
+5.6  Ideas and feedback.  The Author may freely use any idea, suggestion, rule concept, balance observation or other feedback You give, in
+     any way and without obligation, payment or credit beyond 5.5.
+5.7  DLCs.  You may create and publish DLCs free of charge under 2.5. A DLC may not be sold by anyone but the Author. If the Author publishes
+     a DLC officially or commercially, the Author owns the right to do so under 5.3, and the DLC's creator is credited under 5.5.
+
+---------------------------------------------------------------------------
+6. THIRD-PARTY COMPONENTS AND REFERENCES
+---------------------------------------------------------------------------
+Third-Party Components remain under their own licenses; this license grants nothing in them and does not restrict You beyond their terms.
+This repository also refers to, summarises, or was inspired by third-party games and works (for example Warhammer 40,000, War Chest,
+the World of Warcraft novel "Vol'jin: Shadows of the Horde" and its game "jihui", and the film "Justin and the Knights of Valour").
+Those works, names and trademarks belong to their owners; this repository is not affiliated with or endorsed by them; the notes here are
+for reference only and grant no rights in them.
+
+---------------------------------------------------------------------------
+7. TERMINATION
+---------------------------------------------------------------------------
+Your rights under this license end automatically if You breach it. On termination You must stop all use, stop publishing anything made
+under it, and delete the copies You hold; a Contribution You made remains subject to 5.2-5.3. Rights come back if You cure the breach
+within 30 days after being told of it, unless the breach was Commercial Use or a native build in breach of 3.2. Sections 3, 4, 5, 7, 8,
+9 and 10 survive termination.
+
+---------------------------------------------------------------------------
+8. NO WARRANTY
+---------------------------------------------------------------------------
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+
+---------------------------------------------------------------------------
+9. LIMITATION OF LIABILITY
+---------------------------------------------------------------------------
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE AUTHOR IS NOT LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM OR IN CONNECTION
+WITH THE WORK OR ITS USE. YOU PRINT, FABRICATE AND OPERATE ANY PHYSICAL ITEM AT YOUR OWN RISK.
+
+---------------------------------------------------------------------------
+10. GENERAL
+---------------------------------------------------------------------------
+If any provision is held unenforceable, the rest remains in effect. The Author may publish new versions of this license for the Work going
+forward; Contributions are licensed under the version then current (see 5.2). Version 2.0 applies to all copies of the Work, including
+those received under version 1.0. Governing law and venue: [to be specified by the Author].
+Questions or requests for other permissions: open an issue at https://github.com/tak0dan/lotus-game.

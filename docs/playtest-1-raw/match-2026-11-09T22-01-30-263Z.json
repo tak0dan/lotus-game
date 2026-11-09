@@ -1,0 +1,2014 @@
+{
+ "startedAt": "2026-11-09T22:01:30.263Z",
+ "seed": 3,
+ "size": 30,
+ "winner": -1,
+ "reason": "Year cap (10) reached: draw.",
+ "years": 10,
+ "history": [
+  {
+   "round": 1,
+   "orders": [
+    {
+     "moves": {
+      "6": {
+       "path": [
+        {
+         "x": 5,
+         "y": 15
+        },
+        {
+         "x": 6,
+         "y": 15
+        },
+        {
+         "x": 7,
+         "y": 15
+        },
+        {
+         "x": 8,
+         "y": 15
+        },
+        {
+         "x": 9,
+         "y": 15
+        },
+        {
+         "x": 10,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "7": {
+       "path": [
+        {
+         "x": 5,
+         "y": 12
+        },
+        {
+         "x": 6,
+         "y": 12
+        },
+        {
+         "x": 7,
+         "y": 12
+        },
+        {
+         "x": 8,
+         "y": 12
+        },
+        {
+         "x": 9,
+         "y": 12
+        },
+        {
+         "x": 10,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "9": {
+       "path": [
+        {
+         "x": 6,
+         "y": 13
+        },
+        {
+         "x": 7,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [
+      {
+       "towerId": 1,
+       "type": "archer"
+      },
+      {
+       "towerId": 1,
+       "type": "archer"
+      }
+     ],
+     "research": [
+      {
+       "tech": "dragonlore"
+      }
+     ]
+    },
+    {
+     "moves": {
+      "14": {
+       "path": [
+        {
+         "x": 24,
+         "y": 16
+        },
+        {
+         "x": 23,
+         "y": 16
+        },
+        {
+         "x": 22,
+         "y": 16
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "15": {
+       "path": [
+        {
+         "x": 27,
+         "y": 15
+        },
+        {
+         "x": 27,
+         "y": 14
+        },
+        {
+         "x": 27,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "16": {
+       "path": [
+        {
+         "x": 24,
+         "y": 16
+        },
+        {
+         "x": 23,
+         "y": 16
+        },
+        {
+         "x": 22,
+         "y": 16
+        },
+        {
+         "x": 21,
+         "y": 16
+        },
+        {
+         "x": 20,
+         "y": 16
+        },
+        {
+         "x": 19,
+         "y": 16
+        },
+        {
+         "x": 18,
+         "y": 16
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "17": {
+       "path": [
+        {
+         "x": 24,
+         "y": 13
+        },
+        {
+         "x": 23,
+         "y": 13
+        },
+        {
+         "x": 22,
+         "y": 13
+        },
+        {
+         "x": 22,
+         "y": 12
+        },
+        {
+         "x": 22,
+         "y": 11
+        },
+        {
+         "x": 22,
+         "y": 10
+        },
+        {
+         "x": 22,
+         "y": 9
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "18": {
+       "path": [
+        {
+         "x": 24,
+         "y": 13
+        },
+        {
+         "x": 24,
+         "y": 12
+        },
+        {
+         "x": 24,
+         "y": 11
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "19": {
+       "path": [
+        {
+         "x": 26,
+         "y": 13
+        },
+        {
+         "x": 26,
+         "y": 12
+        },
+        {
+         "x": 26,
+         "y": 11
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [
+      {
+       "towerId": 11,
+       "type": "infantry"
+      },
+      {
+       "towerId": 11,
+       "type": "infantry"
+      }
+     ],
+     "research": []
+    }
+   ],
+   "log": [
+    "P1 completes Dragonlore.",
+    "P1 orders Archers at (4,14).",
+    "P1 orders Archers at (4,14).",
+    "P2 orders Infantry at (25,15).",
+    "P2 orders Infantry at (25,15)."
+   ],
+   "res": [
+    {
+     "gold": 490,
+     "iron": 500,
+     "mana": 494
+    },
+    {
+     "gold": 494,
+     "iron": 500,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@4,13",
+    "0:infantry@3,14",
+    "0:infantry@5,14",
+    "0:cavalry@10,15",
+    "0:cavalry@10,12",
+    "0:archer@3,13",
+    "0:archer@7,13",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@25,14",
+    "1:infantry@22,16",
+    "1:infantry@27,13",
+    "1:cavalry@25,16",
+    "1:cavalry@22,9",
+    "1:archer@24,14",
+    "1:archer@26,11",
+    "1:siege@23,15"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2"
+   ]
+  },
+  {
+   "round": 2,
+   "orders": [
+    {
+     "moves": {
+      "6": {
+       "path": [
+        {
+         "x": 11,
+         "y": 15
+        },
+        {
+         "x": 12,
+         "y": 15
+        },
+        {
+         "x": 13,
+         "y": 15
+        },
+        {
+         "x": 14,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "7": {
+       "path": [
+        {
+         "x": 11,
+         "y": 12
+        },
+        {
+         "x": 12,
+         "y": 12
+        },
+        {
+         "x": 13,
+         "y": 12
+        },
+        {
+         "x": 14,
+         "y": 12
+        },
+        {
+         "x": 14,
+         "y": 13
+        },
+        {
+         "x": 14,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "9": {
+       "path": [
+        {
+         "x": 8,
+         "y": 13
+        },
+        {
+         "x": 9,
+         "y": 13
+        },
+        {
+         "x": 10,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [],
+     "siege": [],
+     "builds": [
+      {
+       "kind": "foundation",
+       "builderId": 5,
+       "x": 6,
+       "y": 14,
+       "spec": "lair"
+      }
+     ],
+     "recruits": [],
+     "research": []
+    },
+    {
+     "moves": {
+      "13": {
+       "path": [
+        {
+         "x": 25,
+         "y": 13
+        },
+        {
+         "x": 24,
+         "y": 13
+        },
+        {
+         "x": 23,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "14": {
+       "path": [
+        {
+         "x": 21,
+         "y": 16
+        },
+        {
+         "x": 20,
+         "y": 16
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "15": {
+       "path": [
+        {
+         "x": 26,
+         "y": 13
+        },
+        {
+         "x": 25,
+         "y": 13
+        },
+        {
+         "x": 25,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "16": {
+       "path": [
+        {
+         "x": 24,
+         "y": 16
+        },
+        {
+         "x": 23,
+         "y": 16
+        },
+        {
+         "x": 23,
+         "y": 17
+        },
+        {
+         "x": 22,
+         "y": 17
+        },
+        {
+         "x": 21,
+         "y": 17
+        },
+        {
+         "x": 21,
+         "y": 16
+        },
+        {
+         "x": 21,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "17": {
+       "path": [
+        {
+         "x": 21,
+         "y": 9
+        },
+        {
+         "x": 21,
+         "y": 10
+        },
+        {
+         "x": 21,
+         "y": 11
+        },
+        {
+         "x": 21,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "18": {
+       "path": [
+        {
+         "x": 23,
+         "y": 14
+        },
+        {
+         "x": 22,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "20": {
+       "path": [
+        {
+         "x": 22,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    }
+   ],
+   "log": [
+    "P2 Infantry musters at (26,15).",
+    "P2 Infantry musters at (24,15).",
+    "P1 Archers musters at (4,15).",
+    "P1 lays a lair foundation at (6,14)."
+   ],
+   "res": [
+    {
+     "gold": 484,
+     "iron": 498,
+     "mana": 490
+    },
+    {
+     "gold": 490,
+     "iron": 500,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@4,13",
+    "0:infantry@3,14",
+    "0:infantry@5,14",
+    "0:cavalry@14,15",
+    "0:cavalry@14,14",
+    "0:archer@3,13",
+    "0:archer@10,13",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@23,13",
+    "1:infantry@20,16",
+    "1:infantry@25,12",
+    "1:cavalry@21,15",
+    "1:cavalry@21,12",
+    "1:archer@22,14",
+    "1:archer@26,11",
+    "1:siege@22,15",
+    "1:infantry@26,15",
+    "1:infantry@24,15",
+    "0:archer@4,15"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L0"
+   ]
+  },
+  {
+   "round": 3,
+   "orders": [
+    {
+     "moves": {
+      "3": {
+       "path": [
+        {
+         "x": 5,
+         "y": 13
+        },
+        {
+         "x": 6,
+         "y": 13
+        },
+        {
+         "x": 6,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "4": {
+       "path": [
+        {
+         "x": 3,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "6": {
+       "path": [
+        {
+         "x": 15,
+         "y": 15
+        },
+        {
+         "x": 16,
+         "y": 15
+        },
+        {
+         "x": 17,
+         "y": 15
+        },
+        {
+         "x": 18,
+         "y": 15
+        },
+        {
+         "x": 19,
+         "y": 15
+        },
+        {
+         "x": 20,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "7": {
+       "path": [
+        {
+         "x": 15,
+         "y": 14
+        },
+        {
+         "x": 16,
+         "y": 14
+        },
+        {
+         "x": 17,
+         "y": 14
+        },
+        {
+         "x": 18,
+         "y": 14
+        },
+        {
+         "x": 19,
+         "y": 14
+        },
+        {
+         "x": 20,
+         "y": 14
+        },
+        {
+         "x": 21,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "8": {
+       "path": [
+        {
+         "x": 3,
+         "y": 12
+        },
+        {
+         "x": 4,
+         "y": 12
+        },
+        {
+         "x": 5,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "9": {
+       "path": [
+        {
+         "x": 11,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "23": {
+       "path": [
+        {
+         "x": 5,
+         "y": 15
+        },
+        {
+         "x": 6,
+         "y": 15
+        },
+        {
+         "x": 7,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [
+      {
+       "unitId": 6,
+       "targetId": 16
+      },
+      {
+       "unitId": 7,
+       "targetId": 16
+      }
+     ],
+     "siege": [],
+     "builds": [
+      {
+       "kind": "level",
+       "towerId": 24,
+       "reinforced": false
+      }
+     ],
+     "recruits": [
+      {
+       "towerId": 1,
+       "type": "archer"
+      }
+     ],
+     "research": []
+    },
+    {
+     "moves": {
+      "13": {
+       "path": [
+        {
+         "x": 22,
+         "y": 13
+        },
+        {
+         "x": 22,
+         "y": 12
+        },
+        {
+         "x": 22,
+         "y": 11
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "14": {
+       "path": [
+        {
+         "x": 19,
+         "y": 16
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "15": {
+       "path": [
+        {
+         "x": 24,
+         "y": 12
+        },
+        {
+         "x": 24,
+         "y": 11
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "16": {
+       "path": [
+        {
+         "x": 20,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "17": {
+       "path": [
+        {
+         "x": 20,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "18": {
+       "path": [
+        {
+         "x": 21,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "19": {
+       "path": [
+        {
+         "x": 25,
+         "y": 11
+        },
+        {
+         "x": 24,
+         "y": 11
+        },
+        {
+         "x": 23,
+         "y": 11
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "21": {
+       "path": [
+        {
+         "x": 26,
+         "y": 16
+        },
+        {
+         "x": 26,
+         "y": 17
+        },
+        {
+         "x": 26,
+         "y": 18
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "22": {
+       "path": [
+        {
+         "x": 24,
+         "y": 16
+        },
+        {
+         "x": 24,
+         "y": 17
+        },
+        {
+         "x": 24,
+         "y": 18
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [],
+     "siege": [],
+     "builds": [
+      {
+       "kind": "foundation",
+       "builderId": 14,
+       "x": 19,
+       "y": 15,
+       "spec": "outpost"
+      }
+     ],
+     "recruits": [
+      {
+       "towerId": 11,
+       "type": "infantry"
+      },
+      {
+       "towerId": 11,
+       "type": "archer"
+      }
+     ],
+     "research": []
+    }
+   ],
+   "log": [
+    "P1 orders Archers at (4,14).",
+    "P2 orders Infantry at (25,15).",
+    "P2 orders Archers at (25,15).",
+    "P2 Cavalry is destroyed at (20,15).",
+    "P1 raises a level at (6,14) — now 1."
+   ],
+   "res": [
+    {
+     "gold": 479,
+     "iron": 496,
+     "mana": 490
+    },
+    {
+     "gold": 484,
+     "iron": 500,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@6,12",
+    "0:infantry@3,15",
+    "0:infantry@5,14",
+    "0:cavalry@19,15",
+    "0:cavalry@20,14",
+    "0:archer@5,12",
+    "0:archer@11,13",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@22,11",
+    "1:infantry@19,16",
+    "1:infantry@24,11",
+    "1:cavalry@20,12",
+    "1:archer@21,14",
+    "1:archer@25,11",
+    "1:siege@22,15",
+    "1:infantry@26,18",
+    "1:infantry@24,18",
+    "0:archer@7,15"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L1"
+   ]
+  },
+  {
+   "round": 4,
+   "orders": [
+    {
+     "moves": {
+      "3": {
+       "path": [
+        {
+         "x": 7,
+         "y": 12
+        },
+        {
+         "x": 8,
+         "y": 12
+        },
+        {
+         "x": 9,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "4": {
+       "path": [
+        {
+         "x": 3,
+         "y": 16
+        },
+        {
+         "x": 3,
+         "y": 17
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "9": {
+       "path": [
+        {
+         "x": 12,
+         "y": 13
+        },
+        {
+         "x": 13,
+         "y": 13
+        },
+        {
+         "x": 14,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "23": {
+       "path": [
+        {
+         "x": 8,
+         "y": 15
+        },
+        {
+         "x": 9,
+         "y": 15
+        },
+        {
+         "x": 10,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [
+      {
+       "unitId": 6,
+       "targetId": 14
+      },
+      {
+       "unitId": 7,
+       "targetId": 18
+      }
+     ],
+     "siege": [],
+     "builds": [
+      {
+       "kind": "level",
+       "towerId": 24,
+       "reinforced": false
+      }
+     ],
+     "recruits": [],
+     "research": []
+    },
+    {
+     "moves": {
+      "13": {
+       "path": [
+        {
+         "x": 21,
+         "y": 11
+        },
+        {
+         "x": 21,
+         "y": 10
+        },
+        {
+         "x": 21,
+         "y": 9
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "17": {
+       "path": [
+        {
+         "x": 20,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "21": {
+       "path": [
+        {
+         "x": 25,
+         "y": 18
+        },
+        {
+         "x": 25,
+         "y": 19
+        },
+        {
+         "x": 24,
+         "y": 19
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [
+      {
+       "unitId": 20,
+       "targetId": 6
+      },
+      {
+       "unitId": 14,
+       "targetId": 6
+      },
+      {
+       "unitId": 18,
+       "targetId": 7
+      },
+      {
+       "unitId": 17,
+       "targetId": 7
+      }
+     ],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    }
+   ],
+   "log": [
+    "P2 Infantry musters at (26,15).",
+    "P2 Archers musters at (24,15).",
+    "P1 Archers musters at (3,14).",
+    "P1 Archers musters at (4,15).",
+    "P1 Cavalry is destroyed at (19,15).",
+    "P1 Cavalry is destroyed at (20,14).",
+    "P2 Infantry is destroyed at (19,16).",
+    "P2 Archers is destroyed at (21,14).",
+    "P1 raises a level at (6,14) — now 2."
+   ],
+   "res": [
+    {
+     "gold": 479,
+     "iron": 494,
+     "mana": 490
+    },
+    {
+     "gold": 482,
+     "iron": 500,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@9,12",
+    "0:infantry@3,17",
+    "0:infantry@5,14",
+    "0:archer@5,12",
+    "0:archer@14,13",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@21,9",
+    "1:infantry@24,11",
+    "1:cavalry@20,13",
+    "1:archer@25,11",
+    "1:siege@22,15",
+    "1:infantry@24,19",
+    "1:infantry@24,18",
+    "0:archer@10,15",
+    "1:infantry@26,15",
+    "1:archer@24,15",
+    "0:archer@3,14",
+    "0:archer@4,15"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L2"
+   ]
+  },
+  {
+   "round": 5,
+   "orders": [
+    {
+     "moves": {
+      "3": {
+       "path": [
+        {
+         "x": 8,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "23": {
+       "path": [
+        {
+         "x": 9,
+         "y": 15
+        },
+        {
+         "x": 8,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [
+      {
+       "towerId": 24,
+       "type": "dragon"
+      }
+     ],
+     "research": []
+    },
+    {
+     "moves": {
+      "13": {
+       "path": [
+        {
+         "x": 20,
+         "y": 9
+        },
+        {
+         "x": 20,
+         "y": 8
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "17": {
+       "path": [
+        {
+         "x": 19,
+         "y": 13
+        },
+        {
+         "x": 18,
+         "y": 13
+        },
+        {
+         "x": 17,
+         "y": 13
+        },
+        {
+         "x": 16,
+         "y": 13
+        },
+        {
+         "x": 15,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "26": {
+       "path": [
+        {
+         "x": 23,
+         "y": 15
+        },
+        {
+         "x": 23,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [
+      {
+       "unitId": 17,
+       "targetId": 9
+      }
+     ],
+     "siege": [],
+     "builds": [
+      {
+       "kind": "foundation",
+       "builderId": 13,
+       "x": 20,
+       "y": 7,
+       "spec": "outpost"
+      }
+     ],
+     "recruits": [
+      {
+       "towerId": 11,
+       "type": "infantry"
+      },
+      {
+       "towerId": 11,
+       "type": "infantry"
+      }
+     ],
+     "research": []
+    }
+   ],
+   "log": [
+    "P1 orders Dragon at (6,14).",
+    "P2 orders Infantry at (25,15).",
+    "P2 orders Infantry at (25,15).",
+    "P1 Archers is destroyed at (14,13).",
+    "P2 lays a outpost foundation at (20,7)."
+   ],
+   "res": [
+    {
+     "gold": 471,
+     "iron": 494,
+     "mana": 482
+    },
+    {
+     "gold": 475,
+     "iron": 498,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@8,12",
+    "0:infantry@3,17",
+    "0:infantry@5,14",
+    "0:archer@5,12",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@20,8",
+    "1:infantry@24,11",
+    "1:cavalry@15,13",
+    "1:archer@25,11",
+    "1:siege@22,15",
+    "1:infantry@24,19",
+    "1:infantry@24,18",
+    "0:archer@8,15",
+    "1:infantry@26,15",
+    "1:archer@23,14",
+    "0:archer@3,14",
+    "0:archer@4,15"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L2",
+    "1:outpost@20,7L0"
+   ]
+  },
+  {
+   "round": 6,
+   "orders": [
+    {
+     "moves": {
+      "4": {
+       "path": [
+        {
+         "x": 3,
+         "y": 16
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [
+      {
+       "towerId": 1,
+       "type": "archer"
+      },
+      {
+       "towerId": 1,
+       "type": "archer"
+      }
+     ],
+     "research": []
+    },
+    {
+     "moves": {
+      "15": {
+       "path": [
+        {
+         "x": 23,
+         "y": 11
+        },
+        {
+         "x": 22,
+         "y": 11
+        },
+        {
+         "x": 21,
+         "y": 11
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "17": {
+       "path": [
+        {
+         "x": 14,
+         "y": 13
+        },
+        {
+         "x": 13,
+         "y": 13
+        },
+        {
+         "x": 12,
+         "y": 13
+        },
+        {
+         "x": 11,
+         "y": 13
+        },
+        {
+         "x": 10,
+         "y": 13
+        },
+        {
+         "x": 9,
+         "y": 13
+        },
+        {
+         "x": 8,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "19": {
+       "path": [
+        {
+         "x": 25,
+         "y": 12
+        },
+        {
+         "x": 24,
+         "y": 12
+        },
+        {
+         "x": 23,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "21": {
+       "path": [
+        {
+         "x": 23,
+         "y": 19
+        },
+        {
+         "x": 22,
+         "y": 19
+        },
+        {
+         "x": 21,
+         "y": 19
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "22": {
+       "path": [
+        {
+         "x": 23,
+         "y": 18
+        },
+        {
+         "x": 22,
+         "y": 18
+        },
+        {
+         "x": 21,
+         "y": 18
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "25": {
+       "path": [
+        {
+         "x": 26,
+         "y": 14
+        },
+        {
+         "x": 25,
+         "y": 14
+        },
+        {
+         "x": 24,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "26": {
+       "path": [
+        {
+         "x": 22,
+         "y": 14
+        },
+        {
+         "x": 21,
+         "y": 14
+        },
+        {
+         "x": 20,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [
+      {
+       "unitId": 17,
+       "targetId": 3
+      }
+     ],
+     "siege": [],
+     "builds": [
+      {
+       "kind": "level",
+       "towerId": 29,
+       "reinforced": false
+      }
+     ],
+     "recruits": [],
+     "research": []
+    }
+   ],
+   "log": [
+    "P2 Infantry musters at (24,15).",
+    "P2 Infantry musters at (25,16).",
+    "P1 orders Archers at (4,14).",
+    "P1 orders Archers at (4,14).",
+    "P1 Infantry is destroyed at (8,12).",
+    "P2 raises a level at (20,7) — now 1."
+   ],
+   "res": [
+    {
+     "gold": 468,
+     "iron": 494,
+     "mana": 482
+    },
+    {
+     "gold": 471,
+     "iron": 496,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@3,16",
+    "0:infantry@5,14",
+    "0:archer@5,12",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@20,8",
+    "1:infantry@21,11",
+    "1:cavalry@8,13",
+    "1:archer@23,12",
+    "1:siege@22,15",
+    "1:infantry@21,19",
+    "1:infantry@21,18",
+    "0:archer@8,15",
+    "1:infantry@24,14",
+    "1:archer@20,14",
+    "0:archer@3,14",
+    "0:archer@4,15",
+    "1:infantry@24,15",
+    "1:infantry@25,16"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L2",
+    "1:outpost@20,7L1"
+   ]
+  },
+  {
+   "round": 7,
+   "orders": [
+    {
+     "moves": {
+      "8": {
+       "path": [
+        {
+         "x": 6,
+         "y": 12
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "27": {
+       "path": [
+        {
+         "x": 3,
+         "y": 13
+        },
+        {
+         "x": 4,
+         "y": 13
+        },
+        {
+         "x": 5,
+         "y": 13
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "28": {
+       "path": [
+        {
+         "x": 5,
+         "y": 15
+        },
+        {
+         "x": 6,
+         "y": 15
+        },
+        {
+         "x": 7,
+         "y": 15
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [
+      {
+       "unitId": 23,
+       "targetId": 17
+      },
+      {
+       "unitId": 8,
+       "targetId": 17
+      },
+      {
+       "unitId": 28,
+       "targetId": 17
+      },
+      {
+       "unitId": 27,
+       "targetId": 17
+      }
+     ],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    },
+    {
+     "moves": {
+      "13": {
+       "path": [
+        {
+         "x": 20,
+         "y": 7
+        }
+       ],
+       "climb": true,
+       "fly": false
+      },
+      "15": {
+       "path": [
+        {
+         "x": 20,
+         "y": 11
+        },
+        {
+         "x": 19,
+         "y": 11
+        },
+        {
+         "x": 18,
+         "y": 11
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "17": {
+       "path": [
+        {
+         "x": 8,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "21": {
+       "path": [
+        {
+         "x": 20,
+         "y": 19
+        },
+        {
+         "x": 19,
+         "y": 19
+        },
+        {
+         "x": 18,
+         "y": 19
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "22": {
+       "path": [
+        {
+         "x": 20,
+         "y": 18
+        },
+        {
+         "x": 19,
+         "y": 18
+        },
+        {
+         "x": 18,
+         "y": 18
+        }
+       ],
+       "climb": false,
+       "fly": false
+      },
+      "26": {
+       "path": [
+        {
+         "x": 19,
+         "y": 14
+        },
+        {
+         "x": 18,
+         "y": 14
+        },
+        {
+         "x": 17,
+         "y": 14
+        }
+       ],
+       "climb": false,
+       "fly": false
+      }
+     },
+     "attacks": [
+      {
+       "unitId": 17,
+       "targetId": 23
+      }
+     ],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    }
+   ],
+   "log": [
+    "P1 Archers musters at (4,13).",
+    "P2 Cavalry is destroyed at (8,14).",
+    "P1 Archers is destroyed at (8,15)."
+   ],
+   "res": [
+    {
+     "gold": 469,
+     "iron": 494,
+     "mana": 482
+    },
+    {
+     "gold": 469,
+     "iron": 496,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@3,16",
+    "0:infantry@5,14",
+    "0:archer@6,12",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@20,7^",
+    "1:infantry@18,11",
+    "1:archer@23,12",
+    "1:siege@22,15",
+    "1:infantry@18,19",
+    "1:infantry@18,18",
+    "1:infantry@24,14",
+    "1:archer@17,14",
+    "0:archer@3,13",
+    "0:archer@7,15",
+    "1:infantry@24,15",
+    "1:infantry@25,16",
+    "0:archer@4,13"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L2",
+    "1:outpost@20,7L1"
+   ]
+  },
+  {
+   "round": 8,
+   "orders": [
+    {
+     "moves": {},
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    },
+    {
+     "moves": {},
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    }
+   ],
+   "log": [
+    "P1 Archers musters at (3,14)."
+   ],
+   "res": [
+    {
+     "gold": 469,
+     "iron": 494,
+     "mana": 482
+    },
+    {
+     "gold": 467,
+     "iron": 496,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@3,16",
+    "0:infantry@5,14",
+    "0:archer@6,12",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@20,7^",
+    "1:infantry@18,11",
+    "1:archer@23,12",
+    "1:siege@22,15",
+    "1:infantry@18,19",
+    "1:infantry@18,18",
+    "1:infantry@24,14",
+    "1:archer@17,14",
+    "0:archer@3,13",
+    "0:archer@7,15",
+    "1:infantry@24,15",
+    "1:infantry@25,16",
+    "0:archer@4,13",
+    "0:archer@3,14"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L2",
+    "1:outpost@20,7L1"
+   ]
+  },
+  {
+   "round": 9,
+   "orders": [
+    {
+     "moves": {},
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    },
+    {
+     "moves": {},
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    }
+   ],
+   "log": [
+    "P1 Dragon musters at (7,14)."
+   ],
+   "res": [
+    {
+     "gold": 464,
+     "iron": 494,
+     "mana": 482
+    },
+    {
+     "gold": 465,
+     "iron": 496,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@3,16",
+    "0:infantry@5,14",
+    "0:archer@6,12",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@20,7^",
+    "1:infantry@18,11",
+    "1:archer@23,12",
+    "1:siege@22,15",
+    "1:infantry@18,19",
+    "1:infantry@18,18",
+    "1:infantry@24,14",
+    "1:archer@17,14",
+    "0:archer@3,13",
+    "0:archer@7,15",
+    "1:infantry@24,15",
+    "1:infantry@25,16",
+    "0:archer@4,13",
+    "0:archer@3,14",
+    "0:dragon@7,14"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L2",
+    "1:outpost@20,7L1"
+   ]
+  },
+  {
+   "round": 10,
+   "orders": [
+    {
+     "moves": {},
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    },
+    {
+     "moves": {},
+     "attacks": [],
+     "siege": [],
+     "builds": [],
+     "recruits": [],
+     "research": []
+    }
+   ],
+   "log": [],
+   "res": [
+    {
+     "gold": 459,
+     "iron": 494,
+     "mana": 482
+    },
+    {
+     "gold": 463,
+     "iron": 496,
+     "mana": 500
+    }
+   ],
+   "units": [
+    "0:infantry@4,14^",
+    "0:infantry@3,16",
+    "0:infantry@5,14",
+    "0:archer@6,12",
+    "0:siege@2,14",
+    "1:infantry@25,15^",
+    "1:infantry@20,7^",
+    "1:infantry@18,11",
+    "1:archer@23,12",
+    "1:siege@22,15",
+    "1:infantry@18,19",
+    "1:infantry@18,18",
+    "1:infantry@24,14",
+    "1:archer@17,14",
+    "0:archer@3,13",
+    "0:archer@7,15",
+    "1:infantry@24,15",
+    "1:infantry@25,16",
+    "0:archer@4,13",
+    "0:archer@3,14",
+    "0:dragon@7,14"
+   ],
+   "towers": [
+    "0:F@4,14L2",
+    "1:F@25,15L2",
+    "0:lair@6,14L2",
+    "1:outpost@20,7L1"
+   ]
+  }
+ ]
+}

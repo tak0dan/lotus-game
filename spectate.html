@@ -1,0 +1,16 @@
+<!doctype html><meta charset="utf-8"><title>THE TOWER GAME — spectate</title><link rel="icon" href="data:,">
+<style>body{margin:0;background:#15171d;color:#d9d3c3;font:13px system-ui;display:flex;gap:14px;padding:14px}canvas{background:#23262d;border:1px solid #333}
+#side{width:420px}h1{font:20px Georgia;color:#e8c477;margin:0 0 6px}pre{white-space:pre-wrap;background:#0e1015;padding:8px;border-radius:4px;max-height:48vh;overflow:auto;margin:6px 0}
+.s{color:#7f95c9}.r{color:#d9794e}</style>
+<canvas id="c" width="720" height="720"></canvas><div id="side"><h1>THE TOWER GAME</h1><div id="hud"></div><pre id="log"></pre></div>
+<script>
+const C=document.getElementById('c'),g=C.getContext('2d'),col=['#46587a','#b0552f'],SYM={infantry:'i',heavy_infantry:'H',cavalry:'c',heavy_cavalry:'C',archer:'a',siege:'S',mage:'m',dragon:'D'};
+async function tick(){try{const d=await (await fetch('/api/spectate')).json(),N=d.N,z=C.width/N;g.clearRect(0,0,C.width,C.height);g.strokeStyle='#2d3038';
+for(let i=0;i<=N;i++){g.beginPath();g.moveTo(i*z,0);g.lineTo(i*z,C.height);g.moveTo(0,i*z);g.lineTo(C.width,i*z);g.stroke()}
+const rc=['','#e0b94f','#a2abb6','#7ea9ff'];d.res.forEach((v,k)=>{if(v){g.fillStyle=rc[v];g.globalAlpha=.55;g.fillRect((k%N)*z+z*.2,Math.floor(k/N)*z+z*.2,z*.6,z*.6);g.globalAlpha=1}});
+g.strokeStyle='#e8c477';g.lineWidth=2;d.points.forEach(p=>{g.beginPath();g.arc(p.x*z+z/2,p.y*z+z/2,z*.45,0,7);g.stroke()});g.lineWidth=1;
+d.towers.forEach(t=>{g.fillStyle=col[t.owner];g.fillRect(t.x*z+2,t.y*z+2,z-4,z-4);g.fillStyle='#111';g.font=(z*.5)+'px sans-serif';g.textAlign='center';g.fillText(t.fortress?'F':t.levels.length,t.x*z+z/2,t.y*z+z*.7)});
+d.units.forEach(u=>{g.fillStyle=col[u.owner];g.beginPath();g.arc(u.x*z+z/2,u.y*z+z/2,z*(u.z?.22:.36),0,7);g.fill();g.fillStyle='#fff';g.font=(z*.45)+'px sans-serif';g.textAlign='center';g.fillText(SYM[u.type],u.x*z+z/2,u.y*z+z*.65)});
+const p=d.pl;document.getElementById('hud').innerHTML=`<b>Year ${d.round}</b> ${d.winner!==null?'— <b>OVER</b>: '+d.reason:''}<br><span class=s>P1 slate</span> g${p[0].gold} i${p[0].iron} m${p[0].mana} · ${d.units.filter(u=>!u.owner).length} units${d.ready[0]?' ✔ready':''}<br><span class=r>P2 rust</span> g${p[1].gold} i${p[1].iron} m${p[1].mana} · ${d.units.filter(u=>u.owner).length} units${d.ready[1]?' ✔ready':''}`;
+document.getElementById('log').textContent=d.log.map(l=>`[Y${l.round}] ${l.msg}`).join('\n')}catch(e){}setTimeout(tick,1000)}tick();
+</script>

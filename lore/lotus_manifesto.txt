@@ -1,0 +1,986 @@
+# LOTUS
+## A tabletop strategy game of sacrifice, faith, and territorial dominion
+
+*Project Manifesto · Revised Rules Draft · World & Unit Lore*
+
+---
+
+# PART I — THE MANIFESTO
+
+## 1. What is Lotus?
+
+Lotus is a turn-based tabletop strategy game built around territorial control, calculated movement, unit development, and sacrifice.
+
+Players command armies on a world divided by hostile terrain, isolated territories, and strategically valuable structures. They expand their influence through towers, organize their forces into formations, and fight for control over locations that can change the balance of an entire war.
+
+But Lotus is not simply a game about building an army.
+
+It is a game about deciding what an army is worth.
+
+Every unit is a resource. Every tower is an investment. Every sacrifice is an opportunity. A weak soldier may become the foundation of a powerful formation. A powerful soldier may become the price of creating something far more dangerous.
+
+And somewhere beneath the surface of this struggle lies something older than the kingdoms fighting over it.
+
+The Lotuses.
+
+They are not ordinary warriors. They cannot simply be recruited, purchased, or summoned. They must be brought back through rituals that demand sacrifice. Their presence changes the nature of a battlefield, and their power comes with conditions that ordinary armies cannot afford to ignore.
+
+## 2. The philosophy of the game
+
+Lotus is built upon five principles.
+
+### I. Every action has an opportunity cost
+
+A player's turn begins with a single D6 roll. That roll determines the opportunities available, but the player decides how to exploit them.
+
+Movement and summoning compete for the same turn. A player may expand their army, reposition existing forces, or exploit a special result to perform a ritual.
+
+There is no guarantee that the number rolled will be the number needed.
+
+### II. Territory is power
+
+Units are important, but territory determines what those units can accomplish.
+
+Towers provide strategic positions, support structures, and the foundation for expansion. Connected towers can extend the influence of powerful structures across the battlefield.
+
+Water, elevation, and special locations can transform an otherwise ordinary unit into a serious threat.
+
+### III. Sacrifice is not failure
+
+The destruction or voluntary sacrifice of an allied unit can create opportunities unavailable through ordinary recruitment.
+
+The sacrifice mechanic is not an emergency measure. It is part of the game's intended strategic economy.
+
+A commander must understand when preserving a unit is more valuable than what can be created by giving it up.
+
+### IV. Power attracts dependence
+
+The strongest units are not necessarily the most independent.
+
+The Dragon depends on towers. The Leviathan depends on water. The Inquisitor depends on nearby allies.
+
+Power is conditional. A player who understands those conditions can exploit them. A player who ignores them will discover that a powerful unit can become a liability.
+
+### V. The battlefield remembers
+
+The board is not an empty chessboard. Its geography matters. Towers, rivers, lakes, and temples influence movement, combat, and the availability of powerful units.
+
+Control over the battlefield is not merely about occupying squares. It is about shaping the conditions under which the next battle will happen.
+
+## 3. What kind of game should Lotus become?
+
+Lotus should reward:
+
+- Long-term planning over impulsive expansion.
+- Tactical positioning over raw numerical superiority.
+- Formations and coordinated attacks over isolated aggression.
+- Strategic sacrifices over sentimental unit preservation.
+- Territorial control over indiscriminate destruction.
+- Understanding unit interactions over memorizing a single dominant strategy.
+
+The game should avoid making any one unit, structure, or strategy universally superior.
+
+A player should be able to win through several different approaches: military pressure, territorial expansion, defensive fortification, control of strategic structures, or the careful creation and deployment of Lotuses.
+
+The ideal battlefield is one where every decision creates another problem for the opponent.
+
+---
+
+# PART II — THE WORLD
+
+## 4. Aurelia: A world that forgot how to live
+
+Aurelia was once a prosperous realm.
+
+Its cities were built around great temples, its oceans carried fleets between distant territories, and its people believed that civilization was a sacred achievement.
+
+At the heart of the realm stood the Great Cathedral.
+
+It was more than a religious monument. It was the center of political authority, the keeper of ancient knowledge, and the supposed connection between mortal existence and something greater.
+
+Then the Cathedral sank.
+
+It was not destroyed by an invading army. It was not brought down by a natural disaster.
+
+The people themselves caused its downfall.
+
+The exact circumstances have disappeared into fragmented records, contradictory scriptures, and the testimonies of generations that inherited the consequences without understanding the crime.
+
+The Cathedral's remains now lie beneath the waters.
+
+The Sunken Shrine is all that remains of its former glory: a place of pilgrimage, obsession, and increasingly desperate expeditions.
+
+### The present age
+
+Aurelia is no longer a unified realm.
+
+Its territories are divided between isolated settlements, fortified enclaves, starving populations, and military authorities that justify their existence through permanent emergency.
+
+The land is exhausted.
+
+Rivers carry industrial waste. Entire settlements survive by dismantling the remains of older civilizations. Crops grow in contaminated soil. The wealthy occupy fortified towers while the population outside their walls is expected to provide labor, soldiers, and sacrifices.
+
+Faith has not disappeared.
+
+It has become more dangerous.
+
+Religious institutions promise salvation in exchange for obedience. Military commanders promise security in exchange for lives. Scholars promise knowledge in exchange for bodies.
+
+Nobody promises a better world.
+
+They promise that the suffering has a purpose.
+
+And in Aurelia, that is often enough.
+
+## 5. The Lotuses
+
+The Lotuses are rare entities associated with powers that ordinary civilization cannot reproduce.
+
+Their origin is uncertain. Some believe they are remnants of an ancient divine order. Others consider them weapons created before the fall of the Great Cathedral.
+
+Their names are preserved in religious texts, military records, and forbidden ritual manuals.
+
+They cannot be summoned through ordinary means.
+
+To create one, a player must perform a ritual involving the sacrifice of an allied unit and the rerolling of eligible units. The conditions required for each Lotus differ.
+
+The three known manifestations are:
+
+- **Water Lotus — Leviathan:** A creature of the oceans, bound to water and capable of strengthening other units through sacrifice.
+- **Earth Lotus — Inquisitor:** A manifestation of religious authority and divine judgment, capable of elevating nearby allies.
+- **Air Lotus — Dragon:** A fallen celestial creature that can no longer freely inhabit the world and must travel between towers.
+
+They are not interchangeable.
+
+Each represents a different relationship between power and dependence.
+
+---
+
+# PART III — THE RULES
+
+## 6. Game overview
+
+Lotus is played on a square grid.
+
+The current board specification is:
+
+- Overall battlefield: 75 × 75 squares.
+- Central Island: 20 × 20 squares.
+- The Central Island is surrounded by water.
+- The river surrounding the island has a stated width of 5 squares.
+- A central lake occupies part of the island.
+- The outer battlefield is divided symmetrically into four outer zones.
+- The design is intended to accommodate up to nine players under equal starting conditions.
+
+The exact geometry of the battlefield remains subject to finalization. See the unresolved design decisions at the end of this document.
+
+## 7. Starting conditions
+
+Each player begins with a single Tower.
+
+The starting Tower is described as maximum level, with a power value of 8.
+
+A player may place their starting Tower on any valid square.
+
+If an enemy Tower already occupies the chosen square, the player may place their Tower on that same square.
+
+If the enemy Tower is subsequently destroyed, the player's Tower placed on it is also destroyed.
+
+No additional starting units are specified in the original rules.
+
+## 8. Turn sequence
+
+At the beginning of each turn, the active player rolls one six-sided die (D6).
+
+The result determines the available actions.
+
+The player chooses between the available options associated with that result.
+
+### 8.1. Movement
+
+The player may move units according to the movement rules and the result of the die.
+
+The number rolled determines the movement allowance or the number of units that may be moved, depending on the unit and the applicable rule.
+
+The original design gives the following example:
+
+A roll of 4 allows the player to move up to four units.
+
+Each unit calculates its movement distance using its own movement formula.
+
+Some units can move together or gain additional movement through special abilities.
+
+### 8.2. Summoning
+
+On a roll of 1, 2, 3, 4, or 6, the player may choose summoning instead of movement.
+
+A new unit may be summoned adjacent to an allied Tower.
+
+The result of the die determines the available summoning option. For example, a roll of 4 allows the player to summon a Level 1 Ship.
+
+The complete summoning table, including the exact unit available for each result, must be finalized.
+
+### 8.3. Special result: 5 — The Ritual
+
+A roll of 5 is different from all other results.
+
+It does not allow ordinary summoning.
+
+Instead, it gives the player access to a special ritual involving sacrifice and rerolls.
+
+The player may:
+
+1. Sacrifice one allied unit.
+2. Determine the number of rerolls available from the sacrificed unit's ID.
+3. Reroll eligible units.
+4. Attempt to create or rebuild a Lotus if its requirements are satisfied.
+
+The sacrificed unit determines the maximum number of units that may be rerolled.
+
+Examples:
+
+| Sacrificed unit | ID | Maximum rerolls |
+|---|---:|---:|
+| Archer | 1 | 1 |
+| Infantry | 2 | 2 |
+| Cavalry | 3 | 3 |
+| Ship | 4 | 4 |
+| Lotus | 5 | 5 |
+| Tower | 6 | 6 |
+
+The ritual is an alternative to ordinary summoning, not a replacement for the movement mechanic.
+
+**Important:** The exact timing of movement relative to the ritual should be specified in the final turn sequence. The intended distinction is that a roll of 5 unlocks the ritual instead of regular summoning.
+
+## 9. Combat and unit destruction
+
+When a unit moves onto a square occupied by a weaker enemy unit, it may replace that unit, following the general principle of chess-like capture.
+
+Upon a successful kill, the attacking unit gains one level.
+
+The new level is represented by changing the die or level marker associated with the unit.
+
+When a unit reaches its maximum level, the player may choose to:
+
+- Keep the unit at its current maximum level.
+- Reroll it, subject to the applicable reroll rules.
+
+The original rules also describe a way to attack stronger enemy units through coordinated attacks.
+
+Multiple allied units may attack a stronger enemy unit together, following a principle compared to Magic: The Gathering.
+
+Damage dealt through this combined attack is healed at the end of the round.
+
+The exact damage calculation and the definition of a successful combined attack require further specification.
+
+---
+
+# PART IV — UNIT CLASSIFICATION
+
+## 10. Unit levels and attributes
+
+Each ordinary unit has an ID corresponding to a D6 value.
+
+Each ID has four levels.
+
+Level 1 is the base level and does not add an extra level bonus to the basic power formula.
+
+For formulas using the level as a multiplier, Level 1 is treated as 1 rather than 0.
+
+The general power formula used by several units is:
+
+**Power = ID + Level − 1**
+
+For example, an ID 5 unit at Level 3 has:
+
+5 + 3 − 1 = 7 Power.
+
+When a formula uses Level as a multiplier, it is applied directly.
+
+For example:
+
+Level 2 × Dice Roll 3 = 6 Movement.
+
+The following descriptions preserve the original unit attributes.
+
+## 11. Archer — ID 1
+
+**Role:** Ranged combatant.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | Dice Roll |
+| Attack Power | ID + Level − 1 + Height |
+| HP | ID + Level − 1 |
+| Attack Range | Level + Height |
+
+The Archer is capable of attacking from a distance.
+
+### Lore — The Children of the Last Watch
+
+In the outer settlements of Aurelia, the first warning of an approaching army is usually the sound of a bell.
+
+The second is the sound of someone being shot.
+
+Archers are recruited from the populations that live beyond the protection of fortified settlements. They are trained to observe movement, identify targets, and kill before an enemy reaches the walls.
+
+Their training begins in childhood.
+
+A young recruit is given a bow, a position on the watchtower, and a list of people who must never be allowed to pass.
+
+They are taught that hesitation costs lives.
+
+They are not taught whose lives matter.
+
+An Archer's life is measured in ammunition, accuracy, and the number of enemies prevented from reaching the settlement. When their eyesight fails or their hands begin to shake, they are replaced.
+
+The watch never ends.
+
+Neither does the recruitment.
+
+---
+
+## 12. Infantry — ID 2
+
+**Role:** Formation-based combatant.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | Group Counter × Dice Roll |
+| Attack Power | ID + Level − 1 + Allies |
+| HP | Power + Allies |
+| Attack Range | Power |
+
+Special abilities:
+
+- Gains +1 Power for each adjacent Infantry unit.
+- Adjusted Infantry units can move together as long as they remain adjacent.
+
+### Lore — The Counted
+
+Infantry are not citizens.
+
+They are numbers.
+
+In the industrial settlements of Aurelia, military authorities maintain enormous recruitment ledgers. Names are replaced with identification marks. Families receive no information about where their relatives are deployed.
+
+A soldier is valuable only while their presence improves the formation.
+
+The Counted are trained to stand shoulder to shoulder, move as one, and regard separation as a form of treason.
+
+Their armor is assembled from scrap metal, industrial plating, and whatever protection the settlement can afford.
+
+They are taught a single principle:
+
+**One soldier can die. A formation must survive.**
+
+Their officers do not ask whether a soldier is afraid. Fear is considered an individual weakness. A formation has no right to be afraid.
+
+The strongest Infantry formations are often made from the poorest populations.
+
+They are easier to replace.
+
+---
+
+## 13. Cavalry — ID 3
+
+**Role:** Mobile assault unit.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | Power × Dice Roll |
+| Attack Power | ID + Level − 1 |
+| HP | ID + Level − 1 |
+| Attack Range | Power |
+
+Special ability:
+
+- Moves again after a successful attack.
+
+### Lore — The Iron Pilgrims
+
+The Cavalry are the descendants of the mounted armies that once protected Aurelia's trade routes.
+
+Their horses are gone.
+
+Their traditions remain.
+
+They ride mechanical beasts, armored transports, and industrial machines modified for speed and impact. Some are little more than engines wrapped in armor, held together by repair rituals and the desperate labor of their crews.
+
+Cavalry units are deployed where a defensive line must be broken quickly.
+
+They are not expected to hold territory.
+
+They are expected to arrive, kill, and continue moving.
+
+Their commanders describe them as instruments of momentum. Their enemies describe them as a moving graveyard.
+
+The Iron Pilgrims believe that a soldier who stops moving has already surrendered.
+
+They are usually correct.
+
+---
+
+## 14. Ship — ID 4
+
+**Role:** Naval mobility and combat.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | Power × Dice Roll |
+| Attack Power | ID + Level − 1 |
+| HP | ID + Level − 1 |
+| Attack Range | Power |
+
+Special ability:
+
+- Can only move on water tiles.
+
+### Lore — The Drowned Fleets
+
+The oceans of Aurelia are not empty.
+
+They are full of the remains of old cities, sunken machinery, dead fleets, and things that were never recorded in the official histories.
+
+Ships are the only reliable means of moving military forces across the great bodies of water.
+
+Their crews are drawn from coastal settlements, where entire generations have lived aboard vessels because the land has become uninhabitable.
+
+Life aboard a warship is governed by ration schedules, maintenance cycles, and strict religious observances.
+
+The crew is told that the sea is sacred.
+
+They are not told what lives beneath it.
+
+Some ships return with fewer crew members than they departed with. Others return with additional cargo that nobody remembers loading.
+
+The Admiralty records these incidents as operational losses.
+
+The sailors call them offerings.
+
+---
+
+## 15. The Lotuses — ID 5
+
+**Role:** Legendary entities.
+
+Lotuses are not summoned through ordinary recruitment.
+
+They are created through the special ritual associated with a roll of 5.
+
+Each Lotus requires a particular set of conditions and possesses a unique ability.
+
+The three known manifestations are described below.
+
+### 15.1. Water Lotus — Leviathan
+
+**Role:** Water-bound legendary creature.
+
+**Requirements for creation:**
+
+- Three water-type squares around the reroll point.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | Power × Dice Roll |
+| Attack Power | ID + Level − 1 |
+| HP | ID + Level − 1 |
+| Attack Range | Radius = Level |
+
+Special abilities:
+
+- Cannot leave water.
+- Can be sacrificed to give any unit +1 Level.
+
+### Lore — The Hunger Beneath
+
+The Leviathan is older than the coastal kingdoms.
+
+It is said that the first sailors encountered it before Aurelia had a name. They mistook its movement beneath the ocean for the shifting of continents.
+
+Its body is rarely seen in full.
+
+Fishermen describe enormous shadows passing beneath their vessels. Entire fleets disappear without leaving wreckage. Coastal settlements sometimes wake to find the waterline several kilometers farther inland.
+
+The religious authorities insist that the Leviathan is a divine guardian.
+
+The fishermen disagree.
+
+They know that it does not protect them.
+
+It tolerates them.
+
+The Leviathan is bound to water. Its existence cannot be separated from the oceans, and its power cannot be carried onto dry land.
+
+Yet even the smallest fragment of its essence can alter another living being.
+
+Those who sacrifice it to strengthen an ally believe they are performing an act of sacred generosity.
+
+The truth may be considerably less comforting.
+
+Perhaps the Leviathan does not die when sacrificed.
+
+Perhaps it simply learns to exist inside something else.
+
+### 15.2. Earth Lotus — Inquisitor
+
+**Role:** Support and enhancement.
+
+**Requirements for creation:**
+
+- Three non-Tower allied units around the reroll point.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | Level × Dice Roll |
+| Attack Power | ID + Level − 1 |
+| HP | Power = ID + Level − 1 |
+| Buff Radius | Power = ID + Level − 1 |
+
+Special abilities:
+
+- Cannot attack.
+- Boosts allied units within its radius to maximum Level.
+- Allied units already at maximum Level gain additional Power equal to the Inquisitor's Level.
+- Can be sacrificed to give any unit +1 Level.
+
+### Lore — The Last Confession
+
+The Inquisitor is not a warrior.
+
+It is an institution given physical form.
+
+In the ruined religious districts of Aurelia, the Inquisition maintains authority through interrogation, public confession, and the systematic destruction of doubt.
+
+Its agents are taught that faith is not a feeling.
+
+Faith is obedience.
+
+The Inquisitor embodies that principle.
+
+It does not need to kill its enemies directly. Its presence is enough to transform an army into something more disciplined, more dangerous, and more willing to die.
+
+Under its influence, soldiers fight beyond their physical limits. Commanders become convinced that their orders are sacred. Entire formations begin to act as if failure is no longer possible.
+
+The Inquisitor does not inspire courage.
+
+It removes the permission to be afraid.
+
+Its followers call this salvation.
+
+Its victims call it something else.
+
+The Inquisitor cannot attack because it has no need to.
+
+It makes everyone around it into a weapon.
+
+### 15.3. Air Lotus — Dragon
+
+**Role:** Tower-dependent legendary attacker.
+
+**Requirements for creation:**
+
+- The reroll must take place on a Tower or on a tile attached to three other Towers.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | Power × Dice Roll |
+| Attack Power | ID + Level − 1 |
+| HP | ID + Level − 1 |
+| Distance | Power |
+| Radius | Level / Level (original notation; requires clarification) |
+
+Special abilities:
+
+- Can move to any empty Tower within range.
+- Can attack only from Towers.
+- Cannot remain on land or water.
+- Cannot damage Towers.
+- Can be sacrificed to give any unit +1 Level.
+
+### Lore — The Exiled Heaven
+
+Before Aurelia fell, the Dragon belonged to something beyond the world.
+
+Its origin is remembered in fragments: a distant Sacred Place, sometimes called Heaven, where beings like the Dragon existed without the limitations of mortal geography.
+
+The Dragon remembers that place.
+
+It remembers the distance.
+
+And it remembers that it cannot return.
+
+Its descent into Aurelia was not a victory or a conquest. It was an exile.
+
+The atmosphere is hostile to it. The ground is intolerable. The oceans offer no refuge.
+
+Only the ancient Towers provide something resembling a connection to its former existence.
+
+The Dragon travels between them, appearing and disappearing across the battlefield like a fragment of a dead star.
+
+Its followers interpret its presence as a sign of divine favor.
+
+They build Towers to invite it.
+
+They sacrifice entire settlements to maintain those Towers.
+
+The Dragon does not answer their prayers.
+
+It does not need to.
+
+It is simply trying to remember the way home.
+
+---
+
+## 16. Tower — ID 6
+
+**Role:** Defensive structure and territorial foundation.
+
+**Attributes**
+
+| Attribute | Formula |
+|---|---|
+| Movement | N/A |
+| Attack | N/A |
+| HP | ID + Level − 1 + Number of attached Towers |
+
+Special rules:
+
+- Requires three surrounding units for destruction.
+- Can only be summoned on squares attached to Infantry units.
+
+### Lore — The Last Walls
+
+Towers are the most visible symbols of power in Aurelia.
+
+They are built from the remains of older structures, reinforced with industrial materials, and maintained by populations that often live in their shadow.
+
+Every Tower is a promise.
+
+A promise of safety. A promise of authority. A promise that the people within its walls are worth protecting.
+
+Most of those promises are lies.
+
+The Tower protects those who control it. Everyone else is expected to provide the labor and resources required to maintain it.
+
+The higher the Tower, the farther its influence reaches.
+
+The more Towers a settlement controls, the more difficult it becomes to challenge its authority.
+
+Entire communities have been relocated to make room for new fortifications. Entire generations have been born, worked, and died without seeing the territory beyond their Tower.
+
+In Aurelia, a Tower is not merely a building.
+
+It is a declaration that someone owns the ground beneath it.
+
+---
+
+## 17. Mage Tower — ID 0
+
+**Role:** Strategic support structure.
+
+**Attributes**
+
+| Attribute | Value |
+|---|---|
+| Movement | N/A |
+| Attack | N/A |
+| HP | 25 |
+| Buff Radius | 10 squares |
+| Destruction requirement | Four units |
+
+Special rules:
+
+- Buffs allied units within its radius through connected Towers.
+- Any unit can enter it.
+- Requires four attached Towers to construct.
+- Other Mage Towers count as two Towers for the construction requirement.
+
+### Lore — The Architects of Silence
+
+Mage Towers were not designed for ordinary warfare.
+
+They were built by the last scholars of Aurelia, who believed that the world could be controlled through the manipulation of forces beyond conventional understanding.
+
+Their research began as an attempt to preserve civilization.
+
+It ended with the discovery that civilization was merely another variable.
+
+The Towers are enormous instruments, designed to extend influence across connected structures. Their interiors are filled with machinery, sealed chambers, and records that no living scholar can fully interpret.
+
+Their operators rarely leave.
+
+Some are said to have forgotten their own names.
+
+Others claim that the Towers communicate through dreams, electrical disturbances, and voices heard in empty rooms.
+
+The religious authorities consider Mage Towers dangerous.
+
+The military considers them indispensable.
+
+Nobody agrees on what they actually do.
+
+But everyone agrees on one thing:
+
+A Mage Tower must never fall into enemy hands.
+
+---
+
+# PART V — STRUCTURES AND TERRAIN
+
+## 18. Tower height and positioning
+
+Towers provide positional advantages.
+
+When an enemy unit is positioned lower than its target, Tower height affects the additional distance required to attack.
+
+An attack launched from a Tower does not incur additional distance requirements in the same way.
+
+The exact height calculation and which unit's elevation is used must be specified in the final combat rules.
+
+## 19. Principal Tower
+
+A Principal Tower is a special structure created by rolling a 6 on a square surrounded by four ordinary Towers.
+
+Its strategic effect extends through a connected Tower network.
+
+Special rules:
+
+- Each unit in a chain of Towers with a maximum separation of 10 tiles gains Power equal to the Level of the unit inside the Principal Tower.
+- If the Principal Tower contains an Earth Lotus (Inquisitor), it can project its buff around any allied Tower in the same chain.
+
+### Lore — The Throne of the Last Kingdom
+
+The Principal Tower is the center of a territorial network.
+
+It is a symbol of centralized authority, built to ensure that distant territories remain connected to the will of a single power.
+
+The population living within its influence is told that it is protected.
+
+In reality, the network is designed to ensure that nothing escapes the attention of the ruling authority.
+
+Messages, resources, soldiers, and orders travel through the connected Towers.
+
+So does fear.
+
+The Principal Tower is the throne of a kingdom that no longer needs a king.
+
+It only needs someone willing to sit inside it.
+
+## 20. Tower destruction
+
+To destroy an ordinary Tower:
+
+1. Surround it with three allied units.
+2. Their combined Power must exceed the Tower's Power.
+
+The Mage Tower has a separate destruction requirement of four units.
+
+The exact relationship between this special requirement and the ordinary combined-Power rule must be finalized.
+
+## 21. The Sunken Shrine and Water Temple
+
+The Sunken Shrine is the legendary remnant of the Great Cathedral.
+
+The Water Temple is a strategic structure occupying five squares in the middle of a lake.
+
+Its control provides several bonuses.
+
+### 21.1. Presence on the Water Temple
+
+Each allied unit standing on one of the five Water Temple squares gains +1 to its stats for every other allied unit also present on the temple.
+
+### 21.2. Proximity to the Water Temple
+
+Each allied unit standing within one tile of the Water Temple gains +2 to its stats.
+
+### 21.3. Presence on adjacent water
+
+Each allied unit standing on a water tile adjacent to the Water Temple gains +2 to its stats.
+
+### 21.4. Leviathan restriction
+
+A Leviathan cannot be summoned or placed inside the lake, including the Water Temple zone.
+
+### Lore — The Cathedral That Drowned Its God
+
+The Great Cathedral once stood at the center of Aurelia.
+
+It was the greatest achievement of the old civilization, a monument to its faith and its certainty that the world had been created for a purpose.
+
+Its collapse changed everything.
+
+The official scriptures describe the event as a divine judgment.
+
+The surviving records suggest something much worse: the Cathedral's own inhabitants were responsible.
+
+The Water Temple stands where the Cathedral's influence once reached its greatest concentration.
+
+It is a place of power, but also a reminder.
+
+Those who occupy it receive strength from the presence of their allies. The structure rewards unity, proximity, and control.
+
+Yet the lake surrounding it is forbidden to the Leviathan.
+
+Whether this restriction is a protection, a prison, or a warning remains unknown.
+
+The waters have not given up everything they swallowed.
+
+---
+
+# PART VI — DESIGN PRINCIPLES AND OPEN QUESTIONS
+
+## 22. Rules that are established
+
+The following mechanics are directly represented in the original rules and should be treated as the current design foundation:
+
+- A single D6 roll determines the turn's available action options.
+- Movement and summoning are the primary turn choices.
+- Summoning is available on 1, 2, 3, 4, and 6.
+- A roll of 5 replaces ordinary summoning with a sacrifice-and-reroll ritual.
+- The sacrificed unit's ID determines the maximum number of rerolls.
+- Units have IDs and four levels.
+- Units have individual movement, attack, HP, and range formulas.
+- Infantry gain strength from adjacent Infantry.
+- Cavalry move again after a successful attack.
+- Ships are restricted to water.
+- Lotuses require specific creation conditions.
+- Lotuses can be sacrificed to give another unit +1 Level.
+- Towers are the foundation of territorial expansion.
+- Mage Towers and Principal Towers have special network effects.
+- The Water Temple grants bonuses based on allied presence and proximity.
+- The board contains a central island, outer zones, water, and a lake.
+
+## 23. Decisions that still need to be made
+
+These are not cosmetic details. They affect whether the game can be implemented consistently and played without arguments.
+
+### A. Turn sequence
+
+- Does a player who chooses movement get to move every eligible unit up to the rolled number, or does the number strictly limit the count of units?
+- Can movement and the ritual both be performed on a roll of 5?
+- Does the ritual happen before or after movement?
+- Can a player perform more than one special action in the same turn?
+
+### B. Combat
+
+- What exactly determines whether a unit is stronger or weaker?
+- Does HP equal Power for all units except where explicitly stated?
+- How is damage calculated during a combined attack?
+- Does a unit gain a level immediately after a kill?
+- Can a unit gain multiple levels from multiple kills in one turn?
+- What happens when a unit reaches maximum level and cannot be upgraded further?
+
+### C. Levels and formulas
+
+- Does every unit have a maximum Level of 4, including Lotuses and Towers?
+- Does the starting Tower's Power of 8 override the ordinary Tower formula?
+- Are Height and Power separate attributes?
+- Does the Archer's Height bonus refer to the height of the Archer's position or the target's position?
+- Are Tower attachment bonuses calculated from the number of adjacent Towers or the number of Towers in a larger connected structure?
+
+### D. Lotus rituals
+
+- What does rerolling a unit actually do: change its unit type, level, or both?
+- Can a ritual produce any Lotus, or does each Lotus require a specific die result or additional condition?
+- Can the sacrificed unit itself be one of the rerolled units?
+- Are rerolls sequential or simultaneous?
+- Can a player create more than one Lotus through a single ritual?
+- Does the ritual consume the entire turn?
+
+### E. Structures
+
+- Does a Mage Tower require four ordinary Towers, or can other Mage Towers substitute for some or all of them?
+- Does the Mage Tower's buff affect all connected Towers within the radius, or does the radius determine the range of the network?
+- Does the Principal Tower's 10-tile separation mean Manhattan distance, diagonal distance, or another measurement?
+- Does the Principal Tower's bonus stack with Mage Tower and Water Temple bonuses?
+- Does a Tower's HP increase with every attached Tower, and can that bonus be lost when another Tower is destroyed?
+
+### F. Terrain and board geometry
+
+- How exactly are the 75 × 75 battlefield and four outer zones arranged?
+- Does the central 20 × 20 island include the surrounding river?
+- What does the stated 15 × 15 lake radius mean?
+- Where exactly is the Water Temple positioned?
+- Are water tiles impassable to all units except Ships and Leviathans?
+- Can ordinary units enter the lake or Water Temple squares?
+
+### G. Winning conditions
+
+The original document does not establish a definitive victory condition.
+
+Possible directions include:
+
+- Elimination of all enemy Towers.
+- Control of the Principal Tower.
+- Control of the Water Temple.
+- A combination of territorial dominance and military survival.
+- A specific objective tied to the Sunken Shrine.
+
+This should remain an open design decision rather than being silently added to the rules.
+
+---
+
+# PART VII — THE IDENTITY OF LOTUS
+
+## 24. What the game is really about
+
+Lotus is a game about the construction of power in a world where everything is already broken.
+
+Its soldiers are expendable. Its institutions are corrupt. Its religious authorities are dangerous. Its greatest creatures are bound to conditions they cannot escape.
+
+The world does not reward goodness.
+
+It rewards preparation.
+
+A player may command an army of disciplined Infantry, build an enormous network of Towers, and establish a military presence around the Water Temple. Another may sacrifice entire formations to bring a Dragon into the battlefield.
+
+Both are legitimate strategies.
+
+Neither is necessarily honorable.
+
+That is the point.
+
+The game should make players feel that they are not simply controlling an army.
+
+They are controlling a civilization's last attempt to survive, dominate, or become something worse.
+
+## 25. The central question
+
+The world of Aurelia once had a Cathedral that promised salvation.
+
+It sank.
+
+The people who built it are gone.
+
+The institutions that replaced it still promise salvation, but now they demand soldiers, blood, obedience, and sacrifice.
+
+The Lotuses remain.
+
+Nobody knows whether they are gods, weapons, survivors of another age, or something that should never have been brought into this world.
+
+And yet every faction wants them.
+
+**In a world where everything demands a sacrifice, what is the difference between faith and exploitation?**
+
+That is the question at the heart of Lotus.
+
+---
+
+*End of current draft.*
+
+*The mechanics above are based on the original rules document. The worldbuilding and unit narratives are creative expansions. Unresolved mechanical questions are deliberately preserved for later design decisions.*

@@ -1,0 +1,54 @@
+<!doctype html>
+<meta charset="utf-8"><title>LOTUS — model viewer</title>
+<style>html,body{margin:0;height:100%;background:#10161f;color:#d9d3c3;font:13px system-ui;overflow:hidden}
+#ui{position:fixed;left:12px;top:12px;background:#0e131bdd;border:1px solid #2b3644;border-radius:6px;padding:10px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,button{background:#1b2431;color:#fff;border:1px solid #38465a;border-radius:4px;padding:5px 9px;font:inherit;cursor:pointer}#st{color:#e8c477}
+#drop{position:fixed;inset:0;display:none;place-items:center;background:#000a;font-size:26px}</style>
+<div id="ui"><select id="sel"></select><button id="own">Owner: blue</button><button id="rot">Turntable: on</button><button id="grid">Tile grid</button><span id="st"></span>
+<span style="color:#8b8f94">drop a .glb here to preview a file · auto-reloads when the file changes</span></div><div id="drop">Drop .glb to preview</div>
+<script type="importmap">{"imports":{"three":"../vendor/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from '../vendor/OrbitControls.js';
+import { GLTFLoader } from '../vendor/loaders/GLTFLoader.js';
+import { loadLibrary, makeModel, prepare, lib, topOf, MODEL_DIR } from '../src/modelLib.js';
+import { TYPE_LIST, OWNER_COL, sprite } from '../src/models.js';
+const r = new THREE.WebGLRenderer({ antialias: true }); r.setSize(innerWidth, innerHeight); r.setPixelRatio(devicePixelRatio); r.shadowMap.enabled = true; r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.3; document.body.prepend(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x1a2230);
+const cam = new THREE.PerspectiveCamera(40, innerWidth / innerHeight, 0.05, 100); cam.position.set(2.2, 1.6, 2.6);
+const oc = new OrbitControls(cam, r.domElement); oc.target.set(0, 0.6, 0); oc.enableDamping = true;
+scene.add(new THREE.HemisphereLight(0xb4c8ea, 0x3a3024, 1.5));
+const sun = new THREE.DirectionalLight(0xffdcae, 2.2); sun.position.set(-3, 5, 3); sun.castShadow = true; sun.shadow.camera.left = sun.shadow.camera.bottom = -3; sun.shadow.camera.right = sun.shadow.camera.top = 3; scene.add(sun);
+const floor = new THREE.Mesh(new THREE.BoxGeometry(1, 0.1, 1), new THREE.MeshStandardMaterial({ color: 0x6f7e62 })); floor.position.y = -0.05; floor.receiveShadow = true; scene.add(floor);
+const grid = new THREE.GridHelper(5, 5, 0x888888, 0x444444); grid.visible = false; scene.add(grid);
+const ground = new THREE.Mesh(new THREE.CircleGeometry(6, 40).rotateX(-Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x20262f })); ground.position.y = -0.11; scene.add(ground);
+// reference: a 1-unit-tall bar so scale is obvious
+const ruler = new THREE.Mesh(new THREE.BoxGeometry(0.02, 1, 0.02), new THREE.MeshBasicMaterial({ color: 0xe8c477 })); ruler.position.set(0.75, 0.5, 0.75); scene.add(ruler);
+const q = new URLSearchParams(location.search); let type = q.get('model') || 'archer', owner = 0, spin = true, cur = null, custom = null;
+const sel = document.getElementById('sel'), st = document.getElementById('st');
+TYPE_LIST.forEach((t) => sel.add(new Option(t, t))); sel.value = type;
+function show() {
+  if (cur) scene.remove(cur);
+  cur = custom ? Object.assign(new THREE.Group(), {}) : makeModel(type, owner);
+  if (custom) { cur.add(prepare(custom.scene.clone(true), owner)); }
+  scene.add(cur);
+  const box = new THREE.Box3(); cur.updateMatrixWorld(true); cur.traverse((o) => { if (o.isMesh) box.expandByObject(o); }); const sz = box.getSize(new THREE.Vector3());   // meshes only: glow sprites don't count
+  st.textContent = `${custom ? 'dropped file' : lib.status[type] === 'glb' ? type + '.glb' : type + ' (procedural fallback)'} · ${sz.x.toFixed(2)}×${sz.y.toFixed(2)}×${sz.z.toFixed(2)} tiles` + (Math.max(sz.x, sz.z) > 0.95 ? ' ⚠ wider than a tile' : '');
+}
+async function reload() { await loadLibrary('?t=' + Date.now()); show(); }
+sel.onchange = () => { type = sel.value; custom = null; history.replaceState(0, '', '?model=' + type); show(); };
+document.getElementById('own').onclick = (e) => { owner = 1 - owner; e.target.textContent = 'Owner: ' + (owner ? 'red' : 'blue'); show(); };
+document.getElementById('rot').onclick = (e) => { spin = !spin; e.target.textContent = 'Turntable: ' + (spin ? 'on' : 'off'); };
+document.getElementById('grid').onclick = () => { grid.visible = !grid.visible; };
+// auto-reload on file change
+let last = ''; setInterval(async () => { try { const f = lib.meta.models?.[type]?.file || type + '.glb'; const h = await fetch(MODEL_DIR + f, { method: 'HEAD', cache: 'no-store' }); const k = h.headers.get('last-modified') + h.headers.get('content-length'); if (last && k !== last && !custom) reload(); last = k; } catch (e) {} }, 1200);
+sel.addEventListener('change', () => { last = ''; });
+// drag & drop
+addEventListener('dragover', (e) => { e.preventDefault(); document.getElementById('drop').style.display = 'grid'; });
+addEventListener('dragleave', () => { document.getElementById('drop').style.display = 'none'; });
+addEventListener('drop', async (e) => { e.preventDefault(); document.getElementById('drop').style.display = 'none'; const f = e.dataTransfer.files[0]; if (!f) return; custom = await new GLTFLoader().parseAsync(await f.arrayBuffer(), ''); show(); });
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+await loadLibrary(); show();
+window.__viewer = { show, get status() { return st.textContent; } };
+(function loop() { oc.update(); if (spin && cur) cur.rotation.y += 0.008; r.render(scene, cam); requestAnimationFrame(loop); })();
+</script>

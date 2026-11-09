@@ -1,0 +1,21 @@
+<!doctype html>
+<meta charset="utf-8"><title>LOTUS — export procedural models to .glb</title>
+<style>body{font:15px system-ui;background:#10161f;color:#d9d3c3;padding:28px;max-width:720px}button{margin:4px 6px 4px 0;padding:8px 14px;background:#1b2431;color:#fff;border:1px solid #38465a;border-radius:5px;cursor:pointer}code{color:#e8c477}</style>
+<h2>Export built-in models → <code>.glb</code></h2>
+<p>Downloads the code-built reference models. Put them in <code>assets/models/</code>, open them in Blender (or any glTF editor), and save over them — the game picks up whatever file is there. <b>Overwrites your edits if you re-export</b>, so use it once.</p>
+<p>Conventions: facing +Z · 1 unit = 1 tile · materials named <code>owner</code> are tinted per player · nodes <code>wing_L</code> <code>wing_R</code> <code>halo</code> <code>flag</code> are animated.</p>
+<div id="b"></div>
+<script type="importmap">{"imports":{"three":"../vendor/three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFExporter } from '../vendor/exporters/GLTFExporter.js';
+import { buildModel, TYPE_LIST } from '../src/models.js';
+const exp = (t) => new Promise((res, rej) => new GLTFExporter().parse(buildModel(t, 0), res, rej, { binary: true, onlyVisible: true }));
+const b64 = (ab) => { let s = ''; const u = new Uint8Array(ab); for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); };
+const save = (name, ab) => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([ab])); a.download = name; a.click(); };
+window.exportAll = async () => { const o = {}; for (const t of TYPE_LIST) o[t] = b64(await exp(t)); return o; };
+const box = document.getElementById('b');
+for (const t of TYPE_LIST) { const bt = document.createElement('button'); bt.textContent = t + '.glb'; bt.onclick = async () => save(t + '.glb', await exp(t)); box.append(bt); }
+const all = document.createElement('button'); all.textContent = 'Download all'; all.onclick = async () => { for (const t of TYPE_LIST) { save(t + '.glb', await exp(t)); await new Promise((r) => setTimeout(r, 250)); } }; box.prepend(all);
+window.exportReady = true;
+</script>
