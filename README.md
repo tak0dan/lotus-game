@@ -6,11 +6,14 @@ siege-only tower destruction. The **Lotus** manifesto survives as the lore/world
 ## Source documents (what this project is built from)
 | What | Where |
 |---|---|
-| **The Tower Game rulebook v1.0** (Ukrainian; the mechanical base) | `docs/rulebook/The_Tower_Game_Rulebook_v1.0.md` |
+| **The four reference games** (rules + sources for each): Tower Game, Warhammer 40K, Jihui, War Chest | `reference-games/` |
+| **The Tower Game rulebook v1.0** (Ukrainian; the mechanical base) | `reference-games/tower-game/The_Tower_Game_Rulebook_v1.0.md` |
+| Jihui (the cube game from the Vol'jin novel), reconstructed rules | `reference-games/jihui/RULES.md` |
 | **Lotus manifesto** (world, lore, original Lotus rules) | `lore/lotus_manifesto.txt` |
 | Visual reference notes (movie war-room table style) | `reference/style-notes.md` — the screenshot itself is not in the repo |
 | Design principle: deliberate rule gaps / "dirty play is a feature" | `docs/design-philosophy.md` |
 | Playtest findings + raw reports and match record | `docs/exploits.md`, `docs/playtest-1-raw/` |
+| The full design conversation (redacted) | `docs/design-history/conversation-2026-11-09.md` |
 | The previous Lotus game (D6 / ritual / Lotuses) | `archive/lotus-v2-d6/` |
 
 ## Status
