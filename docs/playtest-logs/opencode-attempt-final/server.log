@@ -1,0 +1,1 @@
+Tower Game server on http://localhost:8252  size 30 seed 3 cap 10 bots false,false start-res {"gold":500,"iron":500,"mana":500}  (spectate: http://localhost:8252/spectate.html)

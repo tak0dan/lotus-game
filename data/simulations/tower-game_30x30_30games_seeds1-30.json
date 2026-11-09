@@ -1,0 +1,30 @@
+{
+ "board": 30,
+ "games": 30,
+ "secs": "30.4",
+ "wins": {
+  "P1_first": "0%",
+  "P2": "0%",
+  "unfinished": "100%"
+ },
+ "endedBy": {
+  "fortress": 0,
+  "points": 0,
+  "elimination": 0
+ },
+ "years": {
+  "median": 151,
+  "p10": 151,
+  "p90": 151
+ },
+ "perGame": {
+  "kills": "18.0",
+  "siegeHits": "0.9",
+  "levelsLost": "0.3",
+  "foundations": "3.9",
+  "recruitOrders": "21.5"
+ },
+ "idleUnitYears": "9.2%",
+ "armySizeEvery20y": "18.4",
+ "avgGoldLeft": "2.4"
+}

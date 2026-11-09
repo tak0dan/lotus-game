@@ -13,7 +13,10 @@ siege-only tower destruction. The **Lotus** manifesto survives as the lore/world
 | Visual reference notes (movie war-room table style) | `reference/style-notes.md` — the screenshot itself is not in the repo |
 | Design principle: deliberate rule gaps / "dirty play is a feature" | `docs/design-philosophy.md` |
 | Playtest findings + raw reports and match record | `docs/exploits.md`, `docs/playtest-1-raw/` |
+| **Development log** (chronological process, numbers, mistakes) | `docs/DEVLOG.md` |
 | The full design conversation (redacted) | `docs/design-history/conversation-2026-11-09.md` |
+| Data: the designer's played Lotus game, AI-vs-AI simulation results | `data/` |
+| Playtest logs (incl. the failed opencode attempts) | `docs/playtest-logs/` |
 | The previous Lotus game (D6 / ritual / Lotuses) | `archive/lotus-v2-d6/` |
 
 ## Status

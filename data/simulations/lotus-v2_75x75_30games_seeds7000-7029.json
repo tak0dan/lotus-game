@@ -1,0 +1,37 @@
+{
+ "board": 75,
+ "games": 30,
+ "secs": "71.5",
+ "wins": {
+  "P1_firstMover": "50.0%",
+  "P2": "40.0%",
+  "unfinished": "10.0%"
+ },
+ "endedBy": {
+  "controlPoints": 26,
+  "elimination": 1
+ },
+ "rounds": {
+  "median": 123,
+  "p10": 101,
+  "p90": 400
+ },
+ "ritual": {
+  "tried": 499,
+  "lotusCreated": 196,
+  "successRate": "39.3%",
+  "blooms": {
+   "leviathan": 73,
+   "inquisitor": 63,
+   "dragon": 60
+  }
+ },
+ "perGame": {
+  "captures": "11.7",
+  "shots": "15.0",
+  "towersRazed": "0.2",
+  "controlTowersBuilt": "4.2"
+ },
+ "idleTurnRate": "1.4%",
+ "avgFormationSize": "3.66"
+}

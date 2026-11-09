@@ -1,0 +1,5 @@
+{ "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "bash": { "*": "deny", "node tg.mjs *": "allow", "node tg.mjs": "allow" },
+    "edit": { "*": "deny", "findings.md": "allow" }, "write": { "*": "deny", "findings.md": "allow" },
+    "webfetch": "deny", "external_directory": "deny" } }

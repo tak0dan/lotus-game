@@ -1,0 +1,1193 @@
+{
+ "seed": 254595623,
+ "turn": 57,
+ "winner": 0,
+ "log": [
+  {
+   "msg": "Aurelia forgot how to live. Raise a Tower and begin.",
+   "owner": -1,
+   "turn": 1
+  },
+  {
+   "msg": "Player 1 raises a maximum-level Tower (Power 8).",
+   "owner": 0,
+   "turn": 1
+  },
+  {
+   "msg": "Player 2 raises a maximum-level Tower (Power 8).",
+   "owner": 1,
+   "turn": 1
+  },
+  {
+   "msg": "The war for Aurelia begins.",
+   "owner": -1,
+   "turn": 1
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 1
+  },
+  {
+   "msg": "Player 1 summons an Ship.",
+   "owner": 0,
+   "turn": 1
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 1
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 2
+  },
+  {
+   "msg": "Player 1 summons an Ship.",
+   "owner": 0,
+   "turn": 2
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 2
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 3
+  },
+  {
+   "msg": "Player 1 summons an Cavalry.",
+   "owner": 0,
+   "turn": 3
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 3
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 3
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 4
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 4
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 4
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 4
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 5
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 5
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 5
+  },
+  {
+   "msg": "Player 2 summons an Archer.",
+   "owner": 1,
+   "turn": 5
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 6
+  },
+  {
+   "msg": "Player 1 summons an Ship.",
+   "owner": 0,
+   "turn": 6
+  },
+  {
+   "msg": "Player 2 rolls a 3.",
+   "owner": 1,
+   "turn": 6
+  },
+  {
+   "msg": "Player 2 summons an Cavalry.",
+   "owner": 1,
+   "turn": 6
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 7
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 7
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 8
+  },
+  {
+   "msg": "Player 1 summons an Cavalry.",
+   "owner": 0,
+   "turn": 8
+  },
+  {
+   "msg": "Player 2 rolls a 3.",
+   "owner": 1,
+   "turn": 8
+  },
+  {
+   "msg": "Player 2 summons an Cavalry.",
+   "owner": 1,
+   "turn": 8
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 9
+  },
+  {
+   "msg": "Player 1 sacrifices a Archer — 1 reroll.",
+   "owner": 0,
+   "turn": 9
+  },
+  {
+   "msg": "The ritual rolls 3 — nothing answers.",
+   "owner": 0,
+   "turn": 9
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 9
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 9
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 10
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 10
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 10
+  },
+  {
+   "msg": "Player 2 summons a Tower.",
+   "owner": 1,
+   "turn": 10
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 11
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 11
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 11
+  },
+  {
+   "msg": "Player 2 sacrifices a Infantry — 2 rerolls.",
+   "owner": 1,
+   "turn": 11
+  },
+  {
+   "msg": "The Water Lotus blooms: a Leviathan is reborn!",
+   "owner": 1,
+   "turn": 11
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 12
+  },
+  {
+   "msg": "Player 1 sacrifices a Cavalry — 3 rerolls.",
+   "owner": 0,
+   "turn": 12
+  },
+  {
+   "msg": "A 5 — but the ground refuses the Lotus here.",
+   "owner": 0,
+   "turn": 12
+  },
+  {
+   "msg": "A 5 — but the ground refuses the Lotus here.",
+   "owner": 0,
+   "turn": 12
+  },
+  {
+   "msg": "The ritual rolls 5, 6, 5 — nothing answers.",
+   "owner": 0,
+   "turn": 12
+  },
+  {
+   "msg": "Player 2 rolls a 3.",
+   "owner": 1,
+   "turn": 12
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 13
+  },
+  {
+   "msg": "Player 1 summons an Infantry.",
+   "owner": 0,
+   "turn": 13
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 13
+  },
+  {
+   "msg": "Player 1 rolls a 6.",
+   "owner": 0,
+   "turn": 14
+  },
+  {
+   "msg": "Player 1 summons a Tower.",
+   "owner": 0,
+   "turn": 14
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 14
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 15
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 15
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 15
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 16
+  },
+  {
+   "msg": "Player 1 summons an Ship.",
+   "owner": 0,
+   "turn": 16
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 16
+  },
+  {
+   "msg": "Player 2 summons a Tower.",
+   "owner": 1,
+   "turn": 16
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 17
+  },
+  {
+   "msg": "Player 1 summons an Infantry.",
+   "owner": 0,
+   "turn": 17
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 17
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 18
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 18
+  },
+  {
+   "msg": "Player 1 rolls a 6.",
+   "owner": 0,
+   "turn": 19
+  },
+  {
+   "msg": "Player 1 summons a Tower.",
+   "owner": 0,
+   "turn": 19
+  },
+  {
+   "msg": "Player 2 rolls a 3.",
+   "owner": 1,
+   "turn": 19
+  },
+  {
+   "msg": "Player 2 summons an Cavalry.",
+   "owner": 1,
+   "turn": 19
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 20
+  },
+  {
+   "msg": "Player 1 summons an Infantry.",
+   "owner": 0,
+   "turn": 20
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 20
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 21
+  },
+  {
+   "msg": "Player 1 summons an Infantry.",
+   "owner": 0,
+   "turn": 21
+  },
+  {
+   "msg": "Player 2 rolls a 4.",
+   "owner": 1,
+   "turn": 21
+  },
+  {
+   "msg": "Player 2 summons an Ship.",
+   "owner": 1,
+   "turn": 21
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 22
+  },
+  {
+   "msg": "Player 1 summons an Infantry.",
+   "owner": 0,
+   "turn": 22
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 22
+  },
+  {
+   "msg": "P2 Cavalry destroys P1 Cavalry.",
+   "owner": 1,
+   "turn": 22
+  },
+  {
+   "msg": "P2 Cavalry destroys P1 Archer.",
+   "owner": 1,
+   "turn": 22
+  },
+  {
+   "msg": "P2 Cavalry wounds P1 Infantry (3/4) — damage fades at round end.",
+   "owner": 1,
+   "turn": 22
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 23
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Cavalry.",
+   "owner": 0,
+   "turn": 23
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Cavalry.",
+   "owner": 0,
+   "turn": 23
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 23
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 23
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 24
+  },
+  {
+   "msg": "P1 Infantry wounds P2 Cavalry (2/4) — damage fades at round end.",
+   "owner": 0,
+   "turn": 24
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Cavalry.",
+   "owner": 0,
+   "turn": 24
+  },
+  {
+   "msg": "Player 2 rolls a 4.",
+   "owner": 1,
+   "turn": 24
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 25
+  },
+  {
+   "msg": "Player 1 sacrifices a Ship — 4 rerolls.",
+   "owner": 0,
+   "turn": 25
+  },
+  {
+   "msg": "The Water Lotus blooms: a Leviathan is reborn!",
+   "owner": 0,
+   "turn": 25
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 25
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 26
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 26
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 27
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 27
+  },
+  {
+   "msg": "Player 2 rolls a 3.",
+   "owner": 1,
+   "turn": 27
+  },
+  {
+   "msg": "Player 2 summons an Cavalry.",
+   "owner": 1,
+   "turn": 27
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 28
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 28
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 28
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 29
+  },
+  {
+   "msg": "Player 1 summons an Archer.",
+   "owner": 0,
+   "turn": 29
+  },
+  {
+   "msg": "Player 2 rolls a 3.",
+   "owner": 1,
+   "turn": 29
+  },
+  {
+   "msg": "Player 2 summons an Cavalry.",
+   "owner": 1,
+   "turn": 29
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 30
+  },
+  {
+   "msg": "Player 1 summons an Cavalry.",
+   "owner": 0,
+   "turn": 30
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 30
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 31
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 31
+  },
+  {
+   "msg": "P2 Cavalry destroys P1 Infantry.",
+   "owner": 1,
+   "turn": 31
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 32
+  },
+  {
+   "msg": "P1 Cavalry wounds P2 Cavalry (3/4) — damage fades at round end.",
+   "owner": 0,
+   "turn": 32
+  },
+  {
+   "msg": "P1 Archer destroys P2 Cavalry.",
+   "owner": 0,
+   "turn": 32
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 32
+  },
+  {
+   "msg": "Player 2 summons an Archer.",
+   "owner": 1,
+   "turn": 32
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 33
+  },
+  {
+   "msg": "P1 Archer wounds P2 Cavalry (1/3) — damage fades at round end.",
+   "owner": 0,
+   "turn": 33
+  },
+  {
+   "msg": "P1 Archer wounds P2 Cavalry (2/3) — damage fades at round end.",
+   "owner": 0,
+   "turn": 33
+  },
+  {
+   "msg": "P1 Archer destroys P2 Cavalry.",
+   "owner": 0,
+   "turn": 33
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 33
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 34
+  },
+  {
+   "msg": "Player 1 summons an Cavalry.",
+   "owner": 0,
+   "turn": 34
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 34
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 35
+  },
+  {
+   "msg": "Player 1 sacrifices a Archer — 1 reroll.",
+   "owner": 0,
+   "turn": 35
+  },
+  {
+   "msg": "The ritual rolls 2 — nothing answers.",
+   "owner": 0,
+   "turn": 35
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 35
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 36
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 36
+  },
+  {
+   "msg": "P2 Infantry destroys P1 Archer.",
+   "owner": 1,
+   "turn": 36
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 37
+  },
+  {
+   "msg": "Player 1 sacrifices the Leviathan: Infantry rises to Level 3.",
+   "owner": 0,
+   "turn": 37
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 37
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 37
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 38
+  },
+  {
+   "msg": "P1 Cavalry destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 38
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 38
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 38
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 39
+  },
+  {
+   "msg": "Player 1 sacrifices a Ship — 4 rerolls.",
+   "owner": 0,
+   "turn": 39
+  },
+  {
+   "msg": "The ritual rolls 3, 2, 6, 4 — nothing answers.",
+   "owner": 0,
+   "turn": 39
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 39
+  },
+  {
+   "msg": "Player 2 summons a Tower.",
+   "owner": 1,
+   "turn": 39
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 40
+  },
+  {
+   "msg": "P1 Archer destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 40
+  },
+  {
+   "msg": "P1 Archer and its allies RAZE an enemy Tower!",
+   "owner": 0,
+   "turn": 40
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 40
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 41
+  },
+  {
+   "msg": "P1 Cavalry destroys P2 Archer.",
+   "owner": 0,
+   "turn": 41
+  },
+  {
+   "msg": "P1 Archer destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 41
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 41
+  },
+  {
+   "msg": "P2 Archer wounds P1 Cavalry (1/5) — damage fades at round end.",
+   "owner": 1,
+   "turn": 41
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 42
+  },
+  {
+   "msg": "P1 Archer destroys P2 Archer.",
+   "owner": 0,
+   "turn": 42
+  },
+  {
+   "msg": "P1 Cavalry destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 42
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 42
+  },
+  {
+   "msg": "Player 2 summons an Archer.",
+   "owner": 1,
+   "turn": 42
+  },
+  {
+   "msg": "Player 1 rolls a 6.",
+   "owner": 0,
+   "turn": 43
+  },
+  {
+   "msg": "Player 1 summons a Tower.",
+   "owner": 0,
+   "turn": 43
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 43
+  },
+  {
+   "msg": "P2 Ship wounds P1 Cavalry (4/6) — damage fades at round end.",
+   "owner": 1,
+   "turn": 43
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 44
+  },
+  {
+   "msg": "Player 1 summons an Infantry.",
+   "owner": 0,
+   "turn": 44
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 44
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 44
+  },
+  {
+   "msg": "Player 1 rolls a 6.",
+   "owner": 0,
+   "turn": 45
+  },
+  {
+   "msg": "Player 1 summons a Tower.",
+   "owner": 0,
+   "turn": 45
+  },
+  {
+   "msg": "Player 2 rolls a 4.",
+   "owner": 1,
+   "turn": 45
+  },
+  {
+   "msg": "P2 Ship wounds P1 Cavalry (4/6) — damage fades at round end.",
+   "owner": 1,
+   "turn": 45
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 46
+  },
+  {
+   "msg": "Player 1 summons an Infantry.",
+   "owner": 0,
+   "turn": 46
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 46
+  },
+  {
+   "msg": "P2 Infantry destroys P1 Infantry.",
+   "owner": 1,
+   "turn": 46
+  },
+  {
+   "msg": "P2 Ship wounds P1 Cavalry (4/6) — damage fades at round end.",
+   "owner": 1,
+   "turn": 46
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 47
+  },
+  {
+   "msg": "P1 Infantry wounds P2 Infantry (2/3) — damage fades at round end.",
+   "owner": 0,
+   "turn": 47
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 47
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 47
+  },
+  {
+   "msg": "P2 Ship wounds P1 Cavalry (4/6) — damage fades at round end.",
+   "owner": 1,
+   "turn": 47
+  },
+  {
+   "msg": "P2 Archer wounds P1 Infantry (1/4) — damage fades at round end.",
+   "owner": 1,
+   "turn": 47
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 48
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 48
+  },
+  {
+   "msg": "Player 2 summons a Tower.",
+   "owner": 1,
+   "turn": 48
+  },
+  {
+   "msg": "Player 1 rolls a 1.",
+   "owner": 0,
+   "turn": 49
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Archer.",
+   "owner": 0,
+   "turn": 49
+  },
+  {
+   "msg": "Player 2 rolls a 4.",
+   "owner": 1,
+   "turn": 49
+  },
+  {
+   "msg": "Player 2 summons an Ship.",
+   "owner": 1,
+   "turn": 49
+  },
+  {
+   "msg": "Player 1 rolls a 4.",
+   "owner": 0,
+   "turn": 50
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 50
+  },
+  {
+   "msg": "Player 2 rolls a 4.",
+   "owner": 1,
+   "turn": 50
+  },
+  {
+   "msg": "Player 2 summons an Ship.",
+   "owner": 1,
+   "turn": 50
+  },
+  {
+   "msg": "Player 1 rolls a 6.",
+   "owner": 0,
+   "turn": 51
+  },
+  {
+   "msg": "P1 Infantry and its allies RAZE an enemy Tower!",
+   "owner": 0,
+   "turn": 51
+  },
+  {
+   "msg": "Player 2 rolls a 1.",
+   "owner": 1,
+   "turn": 51
+  },
+  {
+   "msg": "Player 2 summons an Archer.",
+   "owner": 1,
+   "turn": 51
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 52
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Archer.",
+   "owner": 0,
+   "turn": 52
+  },
+  {
+   "msg": "P1 Archer destroys P2 Ship.",
+   "owner": 0,
+   "turn": 52
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 52
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 52
+  },
+  {
+   "msg": "Player 1 rolls a 2.",
+   "owner": 0,
+   "turn": 53
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 53
+  },
+  {
+   "msg": "P1 Infantry and its allies RAZE an enemy Tower!",
+   "owner": 0,
+   "turn": 53
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 53
+  },
+  {
+   "msg": "P2 Ship destroys P1 Archer.",
+   "owner": 1,
+   "turn": 53
+  },
+  {
+   "msg": "P2 Ship wounds P1 Infantry (4/5) — damage fades at round end.",
+   "owner": 1,
+   "turn": 53
+  },
+  {
+   "msg": "Player 1 rolls a 3.",
+   "owner": 0,
+   "turn": 54
+  },
+  {
+   "msg": "P1 Infantry and its allies RAZE an enemy Tower!",
+   "owner": 0,
+   "turn": 54
+  },
+  {
+   "msg": "Player 2 rolls a 2.",
+   "owner": 1,
+   "turn": 54
+  },
+  {
+   "msg": "Player 2 summons an Infantry.",
+   "owner": 1,
+   "turn": 54
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 55
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Leviathan.",
+   "owner": 0,
+   "turn": 55
+  },
+  {
+   "msg": "Player 2 rolls a 6.",
+   "owner": 1,
+   "turn": 55
+  },
+  {
+   "msg": "Player 2 summons a Tower.",
+   "owner": 1,
+   "turn": 55
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 56
+  },
+  {
+   "msg": "P1 Infantry destroys P2 Infantry.",
+   "owner": 0,
+   "turn": 56
+  },
+  {
+   "msg": "P1 Infantry and its allies RAZE an enemy Tower!",
+   "owner": 0,
+   "turn": 56
+  },
+  {
+   "msg": "P1 Infantry wounds P2 Ship (2/5) — damage fades at round end.",
+   "owner": 0,
+   "turn": 56
+  },
+  {
+   "msg": "Player 2 rolls a 5.",
+   "owner": 1,
+   "turn": 56
+  },
+  {
+   "msg": "Player 2 sacrifices a Ship — 4 rerolls.",
+   "owner": 1,
+   "turn": 56
+  },
+  {
+   "msg": "The ritual rolls 3, 1, 6, 2 — nothing answers.",
+   "owner": 1,
+   "turn": 56
+  },
+  {
+   "msg": "Player 1 rolls a 5.",
+   "owner": 0,
+   "turn": 57
+  },
+  {
+   "msg": "P1 Infantry and its allies RAZE an enemy Tower!",
+   "owner": 0,
+   "turn": 57
+  },
+  {
+   "msg": "Player 1 has no Towers left. Player 1 rules Aurelia.",
+   "owner": -1,
+   "turn": 57
+  }
+ ],
+ "units": [
+  "0:tower@4,36L1",
+  "0:ship@7,32L1",
+  "0:archer@3,37L1",
+  "0:ship@5,32L1",
+  "0:archer@3,36L1",
+  "0:infantry@3,34L1",
+  "0:tower@5,38L1",
+  "0:infantry@29,20L1",
+  "0:tower@11,37L1",
+  "0:infantry@9,25L3",
+  "0:infantry@37,5L4",
+  "0:archer@17,32L1",
+  "0:cavalry@12,38L1",
+  "0:cavalry@37,3L4",
+  "0:tower@27,31L1",
+  "0:infantry@36,3L2",
+  "0:tower@29,31L1",
+  "1:ship@29,19L2"
+ ],
+ "_note": "Lotus v2 (D6/ritual/Lotuses), human (P1) vs AI (P2), 41x41 board. Pasted by the designer from the game console (__lotus.S): seed, final round, winner (0 = human), full log, final unit positions. This is game 2 of 2; game 1 was lost (not persisted). Winner is player index 0."
+}
