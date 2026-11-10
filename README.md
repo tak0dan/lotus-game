@@ -4,15 +4,16 @@ Current base: **The Tower Game** (rulebook v1.0, `The_Tower_Game_Rulebook_v1.0.m
 siege-only tower destruction. The **Lotus** manifesto survives as the lore/world layer (`lore/`, `src/balance.js` LORE) and as an archived build.
 
 ## License — please read
-**Source-available, personal use only. Not open source.** Full terms in [`LICENSE`](LICENSE); third-party material in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
-- ✅ Read and study everything · clone/download it · play the game **locally, in a web browser, from the pages provided here**.
-- ✅ Use the **written rules** to build a **physical** copy for yourself and give it away free.
-- ❌ Anything else: no reuse in other projects or products, no modifying or republishing, no AI-training use.
-- ❌ **No native builds**: the game may not be run outside a browser or outside the provided pages — in particular no Windows or macOS builds, wrappers, installers, launchers or store listings.
-- ❌ A physical recreation **may not be sold** or used commercially.
-- The author reserves all other rights, including the official tabletop edition and official digital versions on any platform.
+**Open to play, print and build on — free forever; only the author sells.** Full terms: [`LICENSE`](LICENSE) (v2.0). Third-party material: [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). Not an open-source license.
+- ✅ **Play** at will, free, in a browser from the pages provided here.
+- ✅ **Print** the rules, cards and 3D models (e.g. on a 3D printer) and play on a real table; give copies away free.
+- ✅ **Share** unmodified copies free · **build** on it: house rules, new content and **DLCs** may be published free under this same license.
+- ✅ **Help:** ideas, issues, playtests, pull requests — see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- ❌ **Nobody may sell it or make money from it** — not the game, not printed rules/cards/models, not DLCs, not a service built on it.
+- ❌ **No native builds:** the game runs only in a browser from the provided pages — no Windows, macOS, mobile or console builds, wrappers, installers or store listings.
+- ⚖️ **The author owns the commercial publishing rights** to the game *and* to every DLC and contribution (contributors keep their copyright and credit). The author plans an official tabletop edition and digital versions.
 
-**Direction:** the game is **tabletop-first**; a digital version is planned. This repository is the working prototype and the design record, published so it can be inspected.
+**Direction:** the game is **tabletop-first**; a digital version is planned. This repository is the working prototype and the design record, kept open so it can be played, printed, studied and improved.
 
 ## Source documents (what this project is built from)
 | What | Where |
