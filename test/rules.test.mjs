@@ -2,7 +2,7 @@
 import * as R from '../src/rules.js';
 import { RES_ALL } from '../src/balance.js';
 let ok = 0, bad = 0; const t = (n, c, x = '') => { (c ? ok++ : bad++); console.log((c ? '  ok   ' : '  FAIL ') + n + (x ? '  ' + x : '')); };
-const blank = (seed = 3) => { const g = R.newGame({ seed }); g.units.length = 0; g.towers.length = 0; g.ug.fill(null); g.tg.fill(null); g.res.fill(0); g.points.length = 0; g.fortress = [null, null]; g.winner = null; return g; };
+const blank = (seed = 3) => { const g = R.newGame({ seed }); g.units.length = 0; g.towers.length = 0; g.ug.fill(null); g.tg.fill(null); g.res.fill(0); g.points.length = 0; g.fortress = [null, null]; g.winner = null; R.addTower(g, 0, 2, 2, 'outpost', ['normal']); R.addTower(g, 1, 72, 72, 'outpost', ['normal']); return g; };   // a far outpost each, so nobody is eliminated by the empty board
 const tower = (g, o, x, y, spec, n, garrison) => { const w = R.addTower(g, o, x, y, spec, Array(n).fill('normal')); if (garrison) { const u = R.addUnit(g, garrison, o, x, y, 1); w.garrison = u; } return w; };
 const log = (g, re) => g.log.some((l) => re.test(l.msg));
 // ── map

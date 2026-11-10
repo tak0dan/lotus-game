@@ -16,11 +16,11 @@ const fd = (s, f, x, y) => { const v = f[R.ix(s, x, y)]; return v < 0 ? 999 : v;
 
 export function planYear(s, p) {
   R.clearOrders(s, p);
-  const E = 1 - p, pl = s.pl[p], busy = new Set();
+  const pl = s.pl[p], busy = new Set(), foeP = (o) => o >= 0 && s.alive[o] && R.isFoe(s, p, o);        // foes = every living player not on my side
   const mine = () => s.units.filter((u) => u.owner === p && !u.idle);
-  const foes = () => s.units.filter((u) => u.owner === E);
-  const myT = () => s.towers.filter((t) => t.owner === p), enT = () => s.towers.filter((t) => t.owner === E);
-  const myF = R.towerById(s, s.fortress[p]) || myT()[0], enF = R.towerById(s, s.fortress[E]);
+  const foes = () => s.units.filter((u) => foeP(u.owner));
+  const myT = () => s.towers.filter((t) => t.owner === p), enT = () => s.towers.filter((t) => foeP(t.owner));
+  const myF = R.towerById(s, s.fortress[p]) || myT()[0], enF = enT().filter((t) => t.fortress).sort((a, b) => R.manh(a, myF) - R.manh(b, myF))[0];
   const free = (u) => !busy.has(u.id) && !u.idle;
   const nearest = (list, from) => list.reduce((b, x) => (!b || R.manh(x, from) < R.manh(b, from) ? x : b), null);
 
@@ -114,7 +114,7 @@ export function planYear(s, p) {
   const army = mine().filter((u) => free(u) && !UNITS[u.type].builder || (free(u) && s.units.filter((z) => z.owner === p && z.type === 'infantry').length > 4 && !u.z));
   const armyPool = army.filter((u) => u.z === 0 && !(UNITS[u.type].siege && !enT().length));
   const aggressive = s.round >= 6 && str(armyPool) >= 0.5 * str(foes().filter((u) => UNITS[u.type].mov > 0));
-  const goals = aggressive ? (enT().length ? enT().sort((a, b) => (b.fortress ? 1 : 0) - (a.fortress ? 1 : 0) || R.manh(a, myF) - R.manh(b, myF)).slice(0, 3) : foes()) : [myF, ...s.points.filter((pt) => R.pointOwner(s, pt) !== E)].filter(Boolean);
+  const goals = aggressive ? (enT().length ? enT().sort((a, b) => (b.fortress ? 1 : 0) - (a.fortress ? 1 : 0) || R.manh(a, myF) - R.manh(b, myF)).slice(0, 3) : foes()) : [myF, ...s.points.filter((pt) => !foeP(R.pointOwner(s, pt)))].filter(Boolean);
   const f = field(s, goals.map((g) => ({ x: g.x, y: g.y })));
   const escort = (u) => !UNITS[u.type].siege || armyPool.filter((z) => z !== u && !UNITS[z.type].siege && R.manh(z, u) <= 3).length >= 1;   // siege only advances with an escort
   for (const u of armyPool) {

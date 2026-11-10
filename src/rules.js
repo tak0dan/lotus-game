@@ -9,6 +9,7 @@
 // Each year the nodes you control give you a fixed amount of gold/iron/mana to spend; it does NOT accumulate — unspent resources are lost.
 // Upkeep is paid first, out of the year's gold. The first year also gets a one-time opening budget (balance.js START_RESOURCES).
 
+import * as mapgen from './mapgen.js';
 import { UNITS, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, MAX_LEVELS, GARRISON_HITS, DRAGON, ATTACH_BONUS_MIN, ARCANE_CONVERT, ONLY_GATHERERS, COSTS, FORTRESS_SPECS, FORTRESS, QUEUE_SLOTS, YIELD, DOUBLERS, PRIMARY_YIELD, PRIEST_RADIUS,
   START_RESOURCES, TECHS, FORTRESS_HOLD_YEARS, POINTS_HOLD_YEARS, FAMILIES, FAMILY_LIST, SUBTYPES, FAMILY_OF, RES_ALL } from './balance.js';
 
@@ -18,21 +19,36 @@ export const RES_NAMES = [null, ...SUBTYPES]; export const RES_CODE = Object.fro
 export const PHASES = ['economy', 'recruitment', 'movement', 'combat', 'building', 'control', 'endyear'];
 export const inb = (s, x, y) => x >= 0 && y >= 0 && x < s.N && y < s.N;
 export const ix = (s, x, y) => y * s.N + x;
+export const TERRAIN = ['plain', 'rock', 'water', 'forest', 'highland'];               // 0 plain · 1 rock / 2 deep water: impassable (nothing walks, nothing is built) · 3 forest: no Cavalry or Siege · 4 highland: a tower here may be 1 level higher
+export const blocked = (s, x, y) => s.ter[y * s.N + x] === 1 || s.ter[y * s.N + x] === 2;
+export const forestFor = (s, u, x, y) => s.ter[y * s.N + x] === 3 && (UNITS[u.type].class === 'Mounted' || UNITS[u.type].siege);
 export const manh = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 export function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 
 // ───────────────────────── state & scenario ─────────────────────────
-export function newGame({ size = 75, seed = (Math.random() * 1e9) | 0, res = null, layout = null } = {}) {   // layout: a hand-made map (data/maps/*.json, one half; the other half is mirrored)   // res: optional per-year budget FLOOR, e.g. { gold: 500, iron: 500, mana: 500 } — every year each player has at least this much (fast/dirty playtests)
+export const sizeFor = (np) => (np <= 2 ? 75 : Math.round(75 + (np - 2) * 485 / 6));        // 75 squares for 2 players, 560 for 8 (designer's rule), linear between
+export function newGame({ size = null, seed = (Math.random() * 1e9) | 0, res = null, layout = null, players = 2, mode = 'ffa', teams = null, terrain = null } = {}) {
+  // players: 2..8 · mode: 'ffa' (every player alone) or 'teams' (teams[] gives each player's side; default alternating) · layout: a hand-made 2-player map (data/maps/*.json, one half, mirrored)
+  // res: optional per-year budget FLOOR, e.g. { gold: 500, iron: 500 } (fast/dirty playtests) · terrain: force the landscape on/off (default: on for 3+ players)
+  const np = Math.max(2, Math.min(8, players)); size = size || sizeFor(np);
+  const team = teams ? teams.slice(0, np) : mode === 'teams' ? Array.from({ length: np }, (_, i) => i % 2) : Array.from({ length: np }, (_, i) => i);
   const s = {
-    N: size, seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winReason: '',
-    res: new Uint8Array(size * size), points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
-    pl: [0, 1].map(() => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false, runic: false }, unpaid: 0 })), floor: res,
-    orders: [blankOrders(), blankOrders()], clashes: [], log: [], events: [], fortress: [null, null], held: [0, 0], pointsHeld: [0, 0], stats: { kills: [0, 0], lost: [0, 0], levelsLost: 0, sieges: 0, wasted: [0, 0] },
+    N: size, np, mode, team, alive: Array(np).fill(true), seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winTeam: null, winReason: '',
+    res: new Uint8Array(size * size), ter: new Uint8Array(size * size), nodes: [], points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
+    pl: Array.from({ length: np }, () => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false, runic: false }, unpaid: 0 })), floor: res,
+    orders: Array.from({ length: np }, blankOrders), clashes: [], log: [], events: [], fortress: Array(np).fill(null), held: Array(np).fill(0), capt: Array(np).fill(null), pointsHeld: Array(np).fill(0), teamPoints: {},
+    stats: { kills: Array(np).fill(0), lost: Array(np).fill(0), levelsLost: 0, sieges: 0, wasted: Array(np).fill(0) },
   };
-  scenario(s);
+  scenario(s, terrain);
+  s.nodes = []; for (let i = 0; i < s.res.length; i++) if (s.res[i]) s.nodes.push(i);                  // the node squares, so income does not scan the whole board
   refreshBudget(s, true);
   return s;
 }
+// helpers for N players
+export const playersOf = (s) => Array.from({ length: s.np }, (_, i) => i);
+export const isFoe = (s, a, b) => a !== b && s.team[a] !== s.team[b];
+export const foesOf = (s, p) => playersOf(s).filter((o) => s.alive[o] && isFoe(s, p, o));
+export const orderOf = (s) => Array.from({ length: s.np }, (_, i) => (s.first + i) % s.np).filter((o) => s.alive[o]);
 const blankOrders = () => ({ moves: {}, attacks: [], siege: [], builds: [], recruits: [], research: [], disband: [], flights: [], convert: [] });
 export const say = (s, msg, owner = -1) => { s.log.push({ msg, owner, round: s.round }); s.events.push({ t: 'log', msg, owner }); };
 
@@ -55,12 +71,15 @@ export const unitAt = (s, x, y) => s.ug[ix(s, x, y)];
 export const towerAt = (s, x, y) => s.tg[ix(s, x, y)];
 
 // Scenario "Two Fortresses": 180-degree symmetric. Rulebook: a 30x30 cut of the full map is recommended for first tests; bigger sizes scale the same layout.
-function scenario(s) {
+function scenario(s, terrainFlag) {
   const N = s.N, sc = N / 30, rot = (p) => ({ x: N - 1 - p.x, y: N - 1 - p.y });
-  const L = s.layout, F = [L ? { x: L.fortress[0], y: L.fortress[1] } : { x: Math.round(4 * sc), y: Math.round(14 * sc) }]; F.push(rot(F[0]));
+  const L = s.layout, big = s.np > 2 || terrainFlag === true;
+  const F = big ? mapgen.fortresses(s) : [L ? { x: L.fortress[0], y: L.fortress[1] } : { x: Math.round(4 * sc), y: Math.round(14 * sc) }]; if (!big) F.push(rot(F[0]));
+  if (big) mapgen.landscape(s, F);                                           // N players or a landscape asked for: terrain first, then symmetric nodes and points
   const taken = new Set(); const take = (p) => taken.add(ix(s, p.x, p.y));
   for (const f of F) for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) take({ x: f.x + dx, y: f.y + dy });
-  if (L) {                                                                  // a hand-made layout: nodes and points for one half, mirrored by (x,y) -> (N-1-x, N-1-y)
+  if (big) mapgen.populate(s, F, taken);
+  else if (L) {                                                             // a hand-made layout: nodes and points for one half, mirrored by (x,y) -> (N-1-x, N-1-y)
     for (const q of L.points) for (const [x, y, kind] of [[q.node[0], q.node[1], q.kind], [rot({ x: q.node[0], y: q.node[1] }).x, rot({ x: q.node[0], y: q.node[1] }).y, q.kind]]) if (inb(s, x, y) && RES_CODE[kind]) s.res[ix(s, x, y)] = RES_CODE[kind];
     for (const q of L.points) for (const pt of [{ x: q.point[0], y: q.point[1] }, rot({ x: q.point[0], y: q.point[1] })]) if (inb(s, pt.x, pt.y) && !s.res[ix(s, pt.x, pt.y)] && !s.points.some((r) => r.x === pt.x && r.y === pt.y)) s.points.push(pt);
   } else {
@@ -93,13 +112,13 @@ function scenario(s) {
   for (const p of chosen) { s.points.push(rot(p)); }
   }
   // fortresses + armies
-  for (let o = 0; o < 2; o++) {
+  for (let o = 0; o < s.np; o++) {
     const f = F[o], t = addTower(s, o, f.x, f.y, 'fortress', FORTRESS.levels, true); s.fortress[o] = t.id;
     const g = addUnit(s, 'infantry', o, f.x, f.y, 1); t.garrison = g;
     const near = []; for (let r = 1; r <= 4; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (Math.max(Math.abs(dx), Math.abs(dy)) === r) near.push({ x: f.x + dx, y: f.y + dy });
     near.sort((a, b) => (Math.abs(a.x - f.x) + Math.abs(a.y - f.y)) - (Math.abs(b.x - f.x) + Math.abs(b.y - f.y)) || a.y - b.y);
     const army = ['infantry', 'infantry', 'infantry', 'cavalry', 'cavalry', 'archer', 'archer', 'siege'];     // rulebook: 4 infantry (1 is the garrison), 2 cavalry, 2 archers, 1 siege
-    for (const type of army) { const c = near.find((p) => inb(s, p.x, p.y) && !s.ug[ix(s, p.x, p.y)] && !s.tg[ix(s, p.x, p.y)] && !s.res[ix(s, p.x, p.y)]); addUnit(s, type, o, c.x, c.y); }
+    for (const type of army) { const c = near.find((p) => inb(s, p.x, p.y) && !s.ug[ix(s, p.x, p.y)] && !s.tg[ix(s, p.x, p.y)] && !s.res[ix(s, p.x, p.y)] && !blocked(s, p.x, p.y)); addUnit(s, type, o, c.x, c.y); }
   }
   s.events.length = 0;
 }
@@ -109,7 +128,7 @@ export const unitDef = (u) => UNITS[u.type];
 export const towerHeight = (t) => t.levels.length;
 export function attachedTowers(s, t) { return ORTH.map(([dx, dy]) => (inb(s, t.x + dx, t.y + dy) ? s.tg[ix(s, t.x + dx, t.y + dy)] : null)).filter((a) => a && a.owner === t.owner && a.levels.length); }
 export function maxLevels(s, t) {                                      // 5, or 5 + the shared levels when 3 towers are attached
-  const a = attachedTowers(s, t); return MAX_LEVELS + (a.length >= ATTACH_BONUS_MIN ? Math.min(...a.map((x) => x.levels.length)) : 0);
+  const a = attachedTowers(s, t); return MAX_LEVELS + (s.ter[ix(s, t.x, t.y)] === 4 ? 1 : 0) + (a.length >= ATTACH_BONUS_MIN ? Math.min(...a.map((x) => x.levels.length)) : 0);
 }
 export const dragonRadius = (t) => DRAGON.radius + Math.max(0, towerHeight(t) - DRAGON.minHeight);
 export const canPerch = (t) => towerHeight(t) >= DRAGON.minHeight && t.spec !== 'arcane';
@@ -219,6 +238,7 @@ export function reach(s, u) {
     for (const [dx, dy] of ORTH) {
       const x = cx + dx, y = cy + dy; if (!inb(s, x, y)) continue; const k = ix(s, x, y);
       if (cost.has(k)) continue;
+      if (s.ter[k] === 1 || s.ter[k] === 2 || forestFor(s, u, x, y)) continue;        // rock and deep water stop everyone; forest stops Cavalry and Siege
       const t = s.tg[k];
       if (t) {                                                    // a tower base: can only be climbed, as the last step
         if (!d.climb || towerHeight(t) < 1 || t.garrison || cc + 2 > d.mov) continue;
@@ -275,7 +295,7 @@ export function setRecruit(s, p, towerId, type) {
 }
 export function setBuildFoundation(s, p, builderId, x, y, spec) {
   const u = unitById(s, builderId); if (!u || u.owner !== p || !UNITS[u.type].builder || u.idle) return false;
-  const pos = plannedPos(s, u); if (Math.abs(pos.x - x) + Math.abs(pos.y - y) !== 1 || !inb(s, x, y) || s.ug[ix(s, x, y)] || s.tg[ix(s, x, y)]) return false;
+  const pos = plannedPos(s, u); if (Math.abs(pos.x - x) + Math.abs(pos.y - y) !== 1 || !inb(s, x, y) || s.ug[ix(s, x, y)] || s.tg[ix(s, x, y)] || blocked(s, x, y)) return false;
   if (spec === 'lair' && !s.pl[p].tech.dragonlore) return false;
   if (!SPECS_OK.includes(spec)) return false;                                  // Arcane Towers are made by pouring resources into a finished tower, never founded
   if (s.orders[p].builds.some((b) => b.kind === 'foundation' && b.x === x && b.y === y)) return false;
@@ -315,7 +335,7 @@ function phase(s, name) { s.phase = name; s.events.push({ t: 'phase', name, roun
 export function resolveYear(s) {
   if (s.winner !== null) return s.events;
   s.events = [];
-  const order = s.first === 0 ? [0, 1] : [1, 0];
+  const order = orderOf(s);
   phase(s, 'economy'); economy(s, order);
   phase(s, 'recruitment'); recruitment(s, order);
   phase(s, 'movement'); movement(s, order);
@@ -332,11 +352,12 @@ function economy(s, order) {
   for (const o of order) {
     for (const r of s.orders[o].research) { const T = TECHS[r.tech], pl = s.pl[o]; if (!pl.tech[r.tech] && canAfford(pl, T.cost)) { spend(pl, T.cost); pl.tech[r.tech] = true; say(s, `P${o + 1} completes ${T.name}.`, o); s.events.push({ t: 'tech', owner: o, tech: r.tech }); } }
   }
-  for (const o of [0, 1]) s.events.push({ t: 'income', owner: o, now: Object.fromEntries(RES_ALL.map((k) => [k, s.pl[o][k]])) });
+  for (const o of playersOf(s)) s.events.push({ t: 'income', owner: o, now: Object.fromEntries(RES_ALL.map((k) => [k, s.pl[o][k]])) });
 }
 // A new year's budget: what the controlled nodes yield (+ the capital), minus the army's upkeep paid out of the gold. Nothing is carried over.
 export function refreshBudget(s, first = false) {
-  for (const o of [0, 1]) {
+  for (const o of playersOf(s)) {
+    if (!s.alive[o]) continue;
     const pl = s.pl[o], inc = incomeOf(s, o), up = upkeepOf(s, o);
     pl.unpaid = 0; for (const u of s.units) if (u.owner === o) u.idle = false;
     for (const k of RES_ALL) pl[k] = inc[k] + (first ? (START_RESOURCES[k] || 0) : 0);
@@ -352,7 +373,7 @@ export function refreshBudget(s, first = false) {
   }
 }
 
-function freeNeighbour(s, x, y) { for (const [dx, dy] of ORTH) { const nx = x + dx, ny = y + dy; if (inb(s, nx, ny) && !s.ug[ix(s, nx, ny)] && !s.tg[ix(s, nx, ny)]) return { x: nx, y: ny }; } return null; }
+function freeNeighbour(s, x, y) { for (const [dx, dy] of ORTH) { const nx = x + dx, ny = y + dy; if (inb(s, nx, ny) && !s.ug[ix(s, nx, ny)] && !s.tg[ix(s, nx, ny)] && !blocked(s, nx, ny)) return { x: nx, y: ny }; } return null; }
 function recruitment(s, order) {
   for (const o of order) {
     for (const t of s.towers.filter((z) => z.owner === o)) {            // finish what is in the queue
@@ -381,7 +402,7 @@ function movement(s, order) {
   for (const u of s.units) { u.moved = false; u.origin = { x: u.x, y: u.y }; }
   for (const o of order) for (const f of s.orders[o].flights || []) {       // Dragons fly tower to tower before anything walks
     const u = unitById(s, f.unitId), t = towerById(s, f.towerId); if (!u || !t || u.owner !== o || !canLand(s, u, t)) continue;
-    if (s.orders[1 - o].flights.some((g) => g.towerId === f.towerId && g.unitId !== f.unitId)) { say(s, `Two Dragons race for the tower at (${t.x},${t.y}); neither lands.`); continue; }
+    if (playersOf(s).some((q) => q !== o && s.orders[q].flights.some((g) => g.towerId === f.towerId && g.unitId !== f.unitId))) { say(s, `Two Dragons race for the tower at (${t.x},${t.y}); neither lands.`); continue; }
     landDragon(s, u, t);
   }
   const movers = [];
@@ -395,7 +416,7 @@ function movement(s, order) {
       const owners = new Set(list.map((m) => m.u.owner));
       if (owners.size > 1) {                                                   // rulebook 6.1: enemies contesting a square collide — and the collision is fought out in the combat phase
         for (const m of list) m.stop = true;
-        for (const a of list) for (const b of list) if (a.u.owner !== b.u.owner && a.u.owner === 0) s.clashes.push([a.u.id, b.u.id]);
+        for (const a of list) for (const b of list) if (a.u.owner !== b.u.owner && a.u.id < b.u.id) s.clashes.push([a.u.id, b.u.id]);
         say(s, `Clash at (${list[0].next.x},${list[0].next.y}): the vanguards collide.`); s.events.push({ t: 'clash', x: list[0].next.x, y: list[0].next.y }); }
       else for (const m of list.slice(1)) m.stop = true;                       // same owner: only the first gets the square
     }
@@ -427,7 +448,7 @@ function tryEnter(s, m) {
     s.events.push({ t: 'move', id: u.id, from, to: { x: u.x, y: u.y, z: 1 } }); s.events.push({ t: 'towerGarrison', id: t.id, unit: u.id });
     m.i++; return true;
   }
-  else if (s.ug[k]) return false;
+  else if (s.ug[k] || blocked(s, c.x, c.y) || forestFor(s, u, c.x, c.y)) return false;
   if (u.z === 1) { const ot = s.tg[ix(s, u.x, u.y)]; if (ot) { ot.garrison = null; s.events.push({ t: 'towerGarrison', id: ot.id, unit: null }); } }
   else s.ug[ix(s, u.x, u.y)] = null;
   u.x = c.x; u.y = c.y; u.z = 0; s.ug[k] = u; u.moved = true; m.i++;
@@ -446,7 +467,7 @@ function combat(s, order) {
     strikes.push({ u: a, t: b }, { u: b, t: a });
   }
   const byTarget = new Map(); for (const st of strikes) (byTarget.get(st.t.id) || byTarget.set(st.t.id, []).get(st.t.id)).push(st);
-  const dead = new Set();
+  const dead = new Set(), killer = new Map();
   for (const [tid, list] of byTarget) {
     const t = unitById(s, tid), td = UNITS[t.type], wins = [...list];         // every strike is one hit — no ATK, no DEF
     let left = wins.length; const notes = [];
@@ -458,10 +479,10 @@ function combat(s, order) {
     const need = needHits(t, list[0].u); t.dmg = (t.dmg || 0) + left;
     const killed = t.dmg >= need;
     for (const st of list) s.events.push({ t: 'attack', a: st.u.id, target: t.id, killed });
-    if (killed) dead.add(t.id);
+    if (killed) { dead.add(t.id); killer.set(t.id, list[0].u.owner); }
     else { s.events.push({ t: 'hurt', id: t.id, dmg: t.dmg, need }); if (notes.length) { s.events.push({ t: 'void', id: t.id }); say(s, `P${t.owner + 1} ${td.name} #${t.id} voids a blow (${notes.join(' and ')}).`, t.owner); } if (td.hits > 1 && t.dmg) say(s, `P${t.owner + 1} ${td.name} #${t.id} is hit (${t.dmg}/${need}) — it will recover by the new year.`, t.owner); }
   }
-  for (const id of dead) { const t = unitById(s, id); if (t) killUnit(s, t, 'slain'); }
+  for (const id of dead) { const t = unitById(s, id); if (t) killUnit(s, t, 'slain', killer.get(id)); }
   for (const o of order) {                                                    // siege on towers (sequential: structural damage accumulates)
     for (const a of s.orders[o].siege) {
       const u = unitById(s, a.unitId), tw = towerById(s, a.targetId); if (!u || !tw || u.idle || u.owner !== o || !canSiege(s, u, tw)) continue;
@@ -481,19 +502,19 @@ function combat(s, order) {
   }
 }
 const priestNear = (s, t) => s.units.some((p) => p.owner === t.owner && UNITS[p.type].priest && p !== t && !p.idle && Math.max(Math.abs(p.x - t.x), Math.abs(p.y - t.y)) <= PRIEST_RADIUS);
-function killUnit(s, u, why) {
+function killUnit(s, u, why, by = -1) {
   if (u.z === 1) { const t = s.tg[ix(s, u.x, u.y)]; if (t) { t.garrison = null; s.events.push({ t: 'towerGarrison', id: t.id, unit: null }); } } else s.ug[ix(s, u.x, u.y)] = null;
   s.units.splice(s.units.indexOf(u), 1); s.events.push({ t: 'remove', id: u.id, why });
   if (why === 'disbanded') return;                                            // dismissed, not killed: no loss, no message here
-  s.stats.lost[u.owner]++; s.stats.kills[1 - u.owner]++;
-  say(s, `P${u.owner + 1} ${UNITS[u.type].name} is destroyed at (${u.x},${u.y}).`, 1 - u.owner);
+  s.stats.lost[u.owner]++; if (by >= 0) s.stats.kills[by]++;
+  say(s, `P${u.owner + 1} ${UNITS[u.type].name} is destroyed at (${u.x},${u.y}).`, by);
 }
 function damageTower(s, t, dmg) {
   while (dmg > 0 && s.towers.includes(t)) {
     if (t.levels.length) {
       const top = t.levels[t.levels.length - 1], take = Math.min(dmg, top.hp); top.hp -= take; dmg -= take;
       if (top.hp <= 0) {
-        t.levels.pop(); s.stats.levelsLost++; say(s, `A level of the tower at (${t.x},${t.y}) falls (${t.levels.length} left).`, 1 - t.owner);
+        t.levels.pop(); s.stats.levelsLost++; say(s, `A level of the tower at (${t.x},${t.y}) falls (${t.levels.length} left).`, -1);
         if (t.garrison && UNITS[t.garrison.type].flying && !canPerch(t)) { say(s, `The Dragon on the tower at (${t.x},${t.y}) falls with it.`, t.owner); killUnit(s, t.garrison, 'fell'); }
         else if (!t.levels.length && t.garrison) evict(s, t);
       }
@@ -509,7 +530,7 @@ function evict(s, t) {
 function destroyTower(s, t) {
   if (t.garrison) evict(s, t);
   s.towers.splice(s.towers.indexOf(t), 1); s.tg[ix(s, t.x, t.y)] = null; s.events.push({ t: 'towerGone', id: t.id });
-  say(s, `The tower at (${t.x},${t.y}) collapses${t.fortress ? ' — A FORTRESS FALLS' : ''}.`, 1 - t.owner);
+  say(s, `The tower at (${t.x},${t.y}) collapses${t.fortress ? ' — A FORTRESS FALLS' : ''}.`, -1);
 }
 
 function building(s, order) {
@@ -523,7 +544,7 @@ function building(s, order) {
       const pl = s.pl[o], cost = buildCost(b); if (!canAfford(pl, cost)) continue;
       if (b.kind === 'foundation') {
         const u = unitById(s, b.builderId); if (!u || u.owner !== o || u.z !== 0 || !UNITS[u.type].builder || Math.abs(u.x - b.x) + Math.abs(u.y - b.y) !== 1) continue;
-        if (s.ug[ix(s, b.x, b.y)] || s.tg[ix(s, b.x, b.y)] || (b.spec === 'lair' && !pl.tech.dragonlore)) continue;
+        if (s.ug[ix(s, b.x, b.y)] || s.tg[ix(s, b.x, b.y)] || blocked(s, b.x, b.y) || (b.spec === 'lair' && !pl.tech.dragonlore)) continue;
         spend(pl, cost);
         const t = addTower(s, o, b.x, b.y, b.spec, []); t.builtRound = s.round; say(s, `P${o + 1} lays a ${b.spec} foundation at (${b.x},${b.y}).`, o);
       } else {
@@ -543,23 +564,34 @@ export const pointsHeld = (s, o) => s.points.filter((p) => pointOwner(s, p) === 
 function control(s) { s.events.push({ t: 'control', points: s.points.map((p) => pointOwner(s, p)) }); }
 
 export const eliminated = (s, o) => !s.towers.some((t) => t.owner === o) && !s.units.some((u) => u.owner === o && UNITS[u.type].builder);
+function dropPlayer(s, p, why) {                                                // a defeated player leaves the game: their units and towers are removed from the board
+  s.alive[p] = false;
+  for (const u of [...s.units.filter((z) => z.owner === p)]) killUnit(s, u, 'disbanded');
+  for (const t of [...s.towers.filter((z) => z.owner === p)]) { t.garrison = null; s.towers.splice(s.towers.indexOf(t), 1); s.tg[ix(s, t.x, t.y)] = null; s.events.push({ t: 'towerGone', id: t.id }); }
+  s.orders[p] = blankOrders(); say(s, `Player ${p + 1} is out: ${why}`); s.events.push({ t: 'out', player: p, why });
+}
+const teamName = (s, p) => (s.mode === 'teams' ? `Team ${s.team[p] + 1}` : `Player ${p + 1}`);
 function endYear(s) {
-  for (const o of [0, 1]) { const pl = s.pl[o]; s.stats.wasted[o] += RES_ALL.reduce((a, k) => a + (pl[k] || 0), 0); }   // unspent budget is LOST
-  // victory: (1) hold the enemy fortress through the next year  (2) strategic majority for POINTS_HOLD_YEARS years  (3) elimination
-  for (const o of [0, 1]) {
-    const F = towerById(s, s.fortress[1 - o]);
-    s.held[o] = F && F.owner === o ? s.held[o] + 1 : 0;
-    const maj = Math.floor(s.points.length / 2) + 1, hold = pointsHeld(s, o);
-    s.pointsHeld[o] = hold >= maj ? s.pointsHeld[o] + 1 : 0;
+  for (const o of playersOf(s)) { const pl = s.pl[o]; s.stats.wasted[o] += RES_ALL.reduce((a, k) => a + (pl[k] || 0), 0); }   // unspent budget is LOST
+  // victory: (1) hold an enemy fortress through the next year -> its owner is out  (2) a side holds the strategic majority for POINTS_HOLD_YEARS years  (3) every other side is out
+  const win = (w, why) => { if (s.winner === null) { s.winner = w; s.winTeam = s.team[w]; s.winReason = why; say(s, why); s.events.push({ t: 'win', winner: w, why }); } };
+  for (const v of playersOf(s)) {
+    if (!s.alive[v]) { s.capt[v] = null; continue; }
+    const F = towerById(s, s.fortress[v]), by = F ? F.owner : -1;
+    if (F && by !== v && isFoe(s, v, by) && s.alive[by]) s.capt[v] = s.capt[v] && s.capt[v].by === by ? { by, yrs: s.capt[v].yrs + 1 } : { by, yrs: 1 }; else s.capt[v] = null;
   }
-  const win = (w, why) => { if (s.winner === null) { s.winner = w; s.winReason = why; say(s, why); s.events.push({ t: 'win', winner: w, why }); } };
-  for (const o of [0, 1]) {
-    if (s.held[o] >= 1 + FORTRESS_HOLD_YEARS) win(o, `Player ${o + 1} has held the enemy fortress through a full year and wins.`);
-    else if (s.pointsHeld[o] >= POINTS_HOLD_YEARS) win(o, `Player ${o + 1} has held the strategic majority for ${POINTS_HOLD_YEARS} years and wins.`);
-  }
-  for (const o of [0, 1]) if (eliminated(s, o)) win(1 - o, `Player ${o + 1} has no towers and no builders left. Player ${2 - o} wins.`);
+  for (const v of playersOf(s)) if (s.capt[v] && s.capt[v].yrs >= 1 + FORTRESS_HOLD_YEARS && s.alive[v]) dropPlayer(s, v, `its fortress was held by ${teamName(s, s.capt[v].by)} through a full year.`);
+  for (const o of playersOf(s)) if (s.alive[o] && eliminated(s, o)) dropPlayer(s, o, 'no towers and no builders left.');
+  s.held = playersOf(s).map((o) => Math.max(0, ...playersOf(s).map((v) => (s.capt[v] && s.capt[v].by === o ? s.capt[v].yrs : 0))));       // years player o has held an enemy fortress (for the UI)
+  const sides = [...new Set(playersOf(s).filter((o) => s.alive[o]).map((o) => s.team[o]))];
+  const maj = Math.floor(s.points.length / 2) + 1;
+  for (const T of sides) { const hold = playersOf(s).filter((o) => s.alive[o] && s.team[o] === T).reduce((a, o) => a + pointsHeld(s, o), 0); s.teamPoints[T] = hold >= maj ? (s.teamPoints[T] || 0) + 1 : 0; }
+  for (const o of playersOf(s)) s.pointsHeld[o] = s.teamPoints[s.team[o]] || 0;
+  if (sides.length === 1) { const w = playersOf(s).find((o) => s.alive[o]); win(w, `${teamName(s, w)} is the last side standing and wins.`); }
+  else if (sides.length === 0) win(0, 'Nobody is left.');
+  else for (const T of sides) if ((s.teamPoints[T] || 0) >= POINTS_HOLD_YEARS) { const w = playersOf(s).find((o) => s.alive[o] && s.team[o] === T); win(w, `${teamName(s, w)} has held the strategic majority for ${POINTS_HOLD_YEARS} years and wins.`); break; }
   for (const u of s.units) { u.moved = false; u.vH = false; u.vP = false; u.dmg = 0; }                  // everything that survived is whole again
-  s.orders = [blankOrders(), blankOrders()]; s.round++; s.first = 1 - s.first; s.phase = 'plan';
+  s.orders = playersOf(s).map(() => blankOrders()); s.round++; s.first = (s.first + 1) % s.np; s.phase = 'plan';
   s.events.push({ t: 'year', round: s.round });
   if (s.winner === null) refreshBudget(s, false);                              // next year's budget, planned against right away
 }
