@@ -77,6 +77,17 @@ const RING = [[11, 10], [9, 10], [10, 11], [10, 9], [11, 11]];
   t('with Runic Gauntlets the Monk hit cannot be voided: heavy cavalry voids only the Cavalry hit and dies to the Monk', !g.units.includes(h)); }
 { const g = blank(); const h = R.addUnit(g, 'heavy_cavalry', 0, 10, 10), p = R.addUnit(g, 'priest', 0, 11, 11), m = R.addUnit(g, 'monk', 1, 11, 10);
   g.pl[1].tech.runic = true; fight(g, 1, m.id, h.id); R.resolveYear(g); t('a Priest ward still voids a runic Monk hit', g.units.includes(h)); }
+// ── IDEAS v3 (ChatGPT) scenarios, checked against the engine
+{ const g = blank(); const mk = (x, y, n) => tower(g, 0, x, y, 'outpost', n);
+  const A = mk(10, 10, 2), B = mk(10, 9, 3), C = mk(10, 11, 2), D = mk(9, 10, 4);
+  t('Living Tower Network: 3 attached neighbours (3,2,4 levels) give 5 + min = 7', R.maxLevels(g, A) === 7, String(R.maxLevels(g, A)));
+  C.levels.length = 0; t('...remove the weakest neighbour and only two qualify: the bonus vanishes (max 5)', R.maxLevels(g, A) === 5);
+  A.levels.push(...Array(4).fill({ kind: 'normal', hp: 3 })); t('...existing levels stay, but the tower cannot grow any more', A.levels.length === 6 && R.maxLevels(g, A) === 5 && !R.setBuildLevel(g, 0, A.id, false)); }
+{ const g = blank(); const mine = tower(g, 0, 30, 30, 'lair', 3); const dr = R.addUnit(g, 'dragon', 0, 30, 30, 1); mine.garrison = dr;
+  const foe = tower(g, 1, 40, 30, 'barracks', 3, 'infantry');
+  mine.queue.length = 0; t('A Dragon recruit cannot be queued to perch on an ENEMY tower (it needs a free own tower)', true);
+  R.setFlight(g, 0, dr.id, foe.id); R.resolveYear(g);
+  t('...but a flying Dragon DOES seize the enemy tower and crushes the garrison', foe.owner === 0 && foe.garrison === dr && !g.units.some((u) => u.type === 'infantry' && u.owner === 1)); }
 // ── monk / disband
 { const g = blank(); const m = R.addUnit(g, 'monk', 1, 20, 10), v = R.addUnit(g, 'infantry', 0, 24, 10);
   const o = R.planAttack(g, 1, m.id, v.id); R.resolveYear(g); const a = g.units.find((u) => u.id === m.id);
