@@ -92,6 +92,7 @@ export const PRIEST_RADIUS = 2;                                                 
 export const START_RESOURCES = { gold: T.START_GOLD ?? 6, iron: T.START_IRON ?? 6, aether: 1, ember: 1, faith: 1, soul: 1 };
 export const TECHS = {
   dragonlore: { name: 'Dragonlore', cost: { mana: 3, gold: 4 }, text: 'Unlocks Dragon Lairs and Dragons.' },
+  runic:      { name: 'Runic Gauntlets', cost: { ember: 2, iron: 2 }, text: 'Your Monks wear fire-rune gauntlets: their blows burst inside armour. A Heavy unit can no longer void a hit from them — only a Priest\'s ward can.' },
   siegecraft: { name: 'Siegecraft', cost: { iron: 6 },          text: 'Siege Engines deal 2 structural damage per hit instead of 1.' },
 };
 

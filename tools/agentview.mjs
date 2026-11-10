@@ -90,7 +90,7 @@ MOVEMENT: orthogonal only, 1 MOV per square. Friendly and enemy units block. Tow
 UNITS:
 ${rows.join('\n')}
   Upkeep is gold per year per unit, paid first out of the year's budget.
-  HEAVY units (Heavy Infantry, Heavy Cavalry) void ONE lethal hit per year — but only a hit from their LIGHT version (Infantry / Cavalry) or a hit from a DISTANCE (any unit with RNG > 0). A second lethal hit the same year kills them.
+  HEAVY units (Heavy Infantry, Heavy Cavalry) void ONE lethal hit per year — but only a hit from their LIGHT version (Infantry / Cavalry) or a hit from a DISTANCE (any unit with RNG > 0). A second lethal hit the same year kills them. With the RUNIC tech, a Monk's hit can never be voided by heavy armour (only by a Priest's ward).
   PRIEST: once a year, each friendly unit within ${PRIEST_RADIUS} squares (Chebyshev) of a Priest voids ONE lethal hit (the Priest cannot ward itself; an idle Priest does not ward).
   MONK: order an "attack" and it moves up to half its MOV to the target, strikes, then moves back EXACTLY as many squares as it went out (not more, not less) — back to its start if the way is free.
 

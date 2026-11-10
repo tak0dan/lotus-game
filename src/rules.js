@@ -26,7 +26,7 @@ export function newGame({ size = 75, seed = (Math.random() * 1e9) | 0, res = nul
   const s = {
     N: size, seed, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winReason: '',
     res: new Uint8Array(size * size), points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
-    pl: [0, 1].map(() => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false }, unpaid: 0 })), floor: res,
+    pl: [0, 1].map(() => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false, runic: false }, unpaid: 0 })), floor: res,
     orders: [blankOrders(), blankOrders()], clashes: [], log: [], events: [], fortress: [null, null], held: [0, 0], pointsHeld: [0, 0], stats: { kills: [0, 0], lost: [0, 0], levelsLost: 0, sieges: 0, wasted: [0, 0] },
   };
   scenario(s);
@@ -446,7 +446,7 @@ function combat(s, order) {
     const t = unitById(s, tid), td = UNITS[t.type], wins = [...list];         // every strike is one hit — no ATK, no DEF
     let left = wins.length; const notes = [];
     if (left && td.heavy && !t.vH) {                                          // a HEAVY unit voids one hit a year — only from its light version, or from a distance
-      const i = wins.findIndex((st) => st.u.type === td.light || UNITS[st.u.type].rng > 0 || UNITS[st.u.type].flying);
+      const i = wins.findIndex((st) => !(st.u.type === 'monk' && s.pl[st.u.owner].tech.runic) && (st.u.type === td.light || UNITS[st.u.type].rng > 0 || UNITS[st.u.type].flying));   // runic-gauntlet Monks cannot be shrugged off by armour
       if (i >= 0) { wins.splice(i, 1); left--; t.vH = true; notes.push('its heavy armour'); }
     }
     if (left && !t.vP && priestNear(s, t)) { wins.shift(); left--; t.vP = true; notes.push('a Priest'); }   // a PRIEST's ward: one hit a year for each friend within its radius

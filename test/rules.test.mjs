@@ -69,6 +69,14 @@ const RING = [[11, 10], [9, 10], [10, 11], [10, 9], [11, 11]];
   t('convert order accepted with the resources', R.setConvert(g, 0, w.id)); R.resolveYear(g); t('the tower becomes Arcane', w.spec === 'arcane'); }
 { const g = blank(); const w = tower(g, 0, 20, 20, 'barracks', 2); t('no Soul/Aether/Ember: conversion refused', !R.setConvert(g, 0, w.id));
   const b = R.addUnit(g, 'infantry', 0, 20, 21); t('an Arcane Tower cannot be founded directly', !R.setBuildFoundation(g, 0, b.id, 22, 21, 'arcane')); }
+// ── runic gauntlets: Monk hits cannot be voided by heavy armour, only by a Priest
+{ const g = blank(); const h = R.addUnit(g, 'heavy_infantry', 0, 10, 10), m = R.addUnit(g, 'monk', 1, 10, 11);
+  fight(g, 1, m.id, h.id); R.resolveYear(g); t('without Runic Gauntlets a Monk hit on a Heavy unit kills it (monk is neither its light version nor ranged)', !g.units.includes(h)); }
+{ const g = blank(); const h = R.addUnit(g, 'heavy_cavalry', 0, 10, 10), c = R.addUnit(g, 'cavalry', 1, 10, 11), m = R.addUnit(g, 'monk', 1, 11, 10);
+  g.pl[1].tech.runic = true; fight(g, 1, c.id, h.id); fight(g, 1, m.id, h.id); R.resolveYear(g);
+  t('with Runic Gauntlets the Monk hit cannot be voided: heavy cavalry voids only the Cavalry hit and dies to the Monk', !g.units.includes(h)); }
+{ const g = blank(); const h = R.addUnit(g, 'heavy_cavalry', 0, 10, 10), p = R.addUnit(g, 'priest', 0, 11, 11), m = R.addUnit(g, 'monk', 1, 11, 10);
+  g.pl[1].tech.runic = true; fight(g, 1, m.id, h.id); R.resolveYear(g); t('a Priest ward still voids a runic Monk hit', g.units.includes(h)); }
 // ── monk / disband
 { const g = blank(); const m = R.addUnit(g, 'monk', 1, 20, 10), v = R.addUnit(g, 'infantry', 0, 24, 10);
   const o = R.planAttack(g, 1, m.id, v.id); R.resolveYear(g); const a = g.units.find((u) => u.id === m.id);
