@@ -1,0 +1,220 @@
+{
+ "id": "the-drowned-testament",
+ "name": "The Drowned Testament",
+ "tagline": "Water and restricted movement",
+ "identity": "The Drowned Testament was once Aurelia's largest coastal city. When the sea reclaimed the lowlands, its streets became canals, its plazas became shallow lakes, and its towers became isolated islands of stone. The old city is still recognisable from above: a network of flooded avenues, raised districts, bridges and drowned courtyards. The surviving dry ground is extremely valuable because it determines where armies can move and where towers can be constructed. This map is less about occupying open territory and more about controlling access between separated districts.",
+ "fortress": [
+  10,
+  37
+ ],
+ "points": [
+  {
+   "n": 1,
+   "point": [
+    16,
+    10
+   ],
+   "node": [
+    17,
+    10
+   ],
+   "kind": "gold",
+   "note": "Merchant palace; raised commercial district."
+  },
+  {
+   "n": 2,
+   "point": [
+    26,
+    9
+   ],
+   "node": [
+    27,
+    9
+   ],
+   "kind": "faith",
+   "note": "Salt Cathedral entrance."
+  },
+  {
+   "n": 3,
+   "point": [
+    11,
+    19
+   ],
+   "node": [
+    12,
+    19
+   ],
+   "kind": "gold",
+   "note": "Northern warehouse island."
+  },
+  {
+   "n": 4,
+   "point": [
+    21,
+    22
+   ],
+   "node": [
+    22,
+    22
+   ],
+   "kind": "aether",
+   "note": "Flooded laboratory access."
+  },
+  {
+   "n": 5,
+   "point": [
+    32,
+    17
+   ],
+   "node": [
+    33,
+    17
+   ],
+   "kind": "soul",
+   "note": "Drowned cemetery edge."
+  },
+  {
+   "n": 6,
+   "point": [
+    8,
+    30
+   ],
+   "node": [
+    9,
+    30
+   ],
+   "kind": "iron",
+   "note": "Western dockyard."
+  },
+  {
+   "n": 7,
+   "point": [
+    18,
+    32
+   ],
+   "node": [
+    19,
+    32
+   ],
+   "kind": "ember",
+   "note": "Burned shipyard."
+  },
+  {
+   "n": 8,
+   "point": [
+    29,
+    27
+   ],
+   "node": [
+    30,
+    27
+   ],
+   "kind": "gold",
+   "note": "Old exchange plaza."
+  },
+  {
+   "n": 9,
+   "point": [
+    35,
+    34
+   ],
+   "node": [
+    35,
+    35
+   ],
+   "kind": "iron",
+   "note": "Northern causeway."
+  },
+  {
+   "n": 10,
+   "point": [
+    15,
+    42
+   ],
+   "node": [
+    16,
+    42
+   ],
+   "kind": "faith",
+   "note": "Drowned chapel island."
+  },
+  {
+   "n": 11,
+   "point": [
+    27,
+    43
+   ],
+   "node": [
+    28,
+    43
+   ],
+   "kind": "soul",
+   "note": "Old burial district."
+  },
+  {
+   "n": 12,
+   "point": [
+    34,
+    46
+   ],
+   "node": [
+    34,
+    47
+   ],
+   "kind": "aether",
+   "note": "Central bridge foundation."
+  },
+  {
+   "n": 13,
+   "point": [
+    9,
+    55
+   ],
+   "node": [
+    10,
+    55
+   ],
+   "kind": "iron",
+   "note": "Southern dry dock."
+  },
+  {
+   "n": 14,
+   "point": [
+    19,
+    59
+   ],
+   "node": [
+    20,
+    59
+   ],
+   "kind": "ember",
+   "note": "Burned naval arsenal."
+  },
+  {
+   "n": 15,
+   "point": [
+    29,
+    62
+   ],
+   "node": [
+    30,
+    62
+   ],
+   "kind": "gold",
+   "note": "Southern merchant island."
+  },
+  {
+   "n": 16,
+   "point": [
+    21,
+    68
+   ],
+   "node": [
+    22,
+    68
+   ],
+   "kind": "soul",
+   "note": "Sunken cemetery perimeter."
+  }
+ ]
+}

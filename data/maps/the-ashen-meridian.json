@@ -1,0 +1,220 @@
+{
+ "id": "the-ashen-meridian",
+ "name": "The Ashen Meridian",
+ "tagline": "Open warfare and high ground",
+ "identity": "The Ashen Meridian is the scar left by a magical catastrophe that burned an entire province. The land is mostly open, covered in black ash and volcanic glass, with occasional obsidian ridges, dead forests and abandoned fortresses. The region has very few natural obstacles, but its elevated volcanic formations provide exceptional defensive and dragon-perching positions. Resource deposits are scattered across the old industrial settlements and the remains of magical extraction facilities. The map rewards mobility and forward expansion, but a careless player can expose an entire army to ranged attacks.",
+ "fortress": [
+  10,
+  37
+ ],
+ "points": [
+  {
+   "n": 1,
+   "point": [
+    17,
+    9
+   ],
+   "node": [
+    18,
+    9
+   ],
+   "kind": "aether",
+   "note": "Northern obsidian ridge."
+  },
+  {
+   "n": 2,
+   "point": [
+    26,
+    12
+   ],
+   "node": [
+    27,
+    12
+   ],
+   "kind": "ember",
+   "note": "Volcanic formation."
+  },
+  {
+   "n": 3,
+   "point": [
+    11,
+    19
+   ],
+   "node": [
+    12,
+    19
+   ],
+   "kind": "gold",
+   "note": "Buried settlement."
+  },
+  {
+   "n": 4,
+   "point": [
+    23,
+    23
+   ],
+   "node": [
+    24,
+    23
+   ],
+   "kind": "faith",
+   "note": "Martyr monument."
+  },
+  {
+   "n": 5,
+   "point": [
+    33,
+    15
+   ],
+   "node": [
+    34,
+    15
+   ],
+   "kind": "iron",
+   "note": "Abandoned furnace."
+  },
+  {
+   "n": 6,
+   "point": [
+    8,
+    29
+   ],
+   "node": [
+    9,
+    29
+   ],
+   "kind": "gold",
+   "note": "Western trading ruins."
+  },
+  {
+   "n": 7,
+   "point": [
+    19,
+    30
+   ],
+   "node": [
+    20,
+    30
+   ],
+   "kind": "soul",
+   "note": "Mass cremation ground."
+  },
+  {
+   "n": 8,
+   "point": [
+    30,
+    28
+   ],
+   "node": [
+    31,
+    28
+   ],
+   "kind": "aether",
+   "note": "Magical fissure."
+  },
+  {
+   "n": 9,
+   "point": [
+    35,
+    35
+   ],
+   "node": [
+    35,
+    36
+   ],
+   "kind": "ember",
+   "note": "Central volcanic ridge."
+  },
+  {
+   "n": 10,
+   "point": [
+    12,
+    44
+   ],
+   "node": [
+    13,
+    44
+   ],
+   "kind": "iron",
+   "note": "Southern foundry."
+  },
+  {
+   "n": 11,
+   "point": [
+    23,
+    45
+   ],
+   "node": [
+    24,
+    45
+   ],
+   "kind": "soul",
+   "note": "Battlefield monument."
+  },
+  {
+   "n": 12,
+   "point": [
+    34,
+    46
+   ],
+   "node": [
+    34,
+    47
+   ],
+   "kind": "gold",
+   "note": "Central plain overlook."
+  },
+  {
+   "n": 13,
+   "point": [
+    9,
+    55
+   ],
+   "node": [
+    10,
+    55
+   ],
+   "kind": "faith",
+   "note": "Burned pilgrimage site."
+  },
+  {
+   "n": 14,
+   "point": [
+    19,
+    59
+   ],
+   "node": [
+    20,
+    59
+   ],
+   "kind": "ember",
+   "note": "Furnace crater."
+  },
+  {
+   "n": 15,
+   "point": [
+    30,
+    62
+   ],
+   "node": [
+    31,
+    62
+   ],
+   "kind": "iron",
+   "note": "Southern industrial complex."
+  },
+  {
+   "n": 16,
+   "point": [
+    20,
+    68
+   ],
+   "node": [
+    21,
+    68
+   ],
+   "kind": "aether",
+   "note": "Deep volcanic fissure."
+  }
+ ]
+}

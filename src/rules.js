@@ -22,9 +22,9 @@ export const manh = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 export function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 
 // ───────────────────────── state & scenario ─────────────────────────
-export function newGame({ size = 75, seed = (Math.random() * 1e9) | 0, res = null } = {}) {   // res: optional per-year budget FLOOR, e.g. { gold: 500, iron: 500, mana: 500 } — every year each player has at least this much (fast/dirty playtests)
+export function newGame({ size = 75, seed = (Math.random() * 1e9) | 0, res = null, layout = null } = {}) {   // layout: a hand-made map (data/maps/*.json, one half; the other half is mirrored)   // res: optional per-year budget FLOOR, e.g. { gold: 500, iron: 500, mana: 500 } — every year each player has at least this much (fast/dirty playtests)
   const s = {
-    N: size, seed, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winReason: '',
+    N: size, seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winReason: '',
     res: new Uint8Array(size * size), points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
     pl: [0, 1].map(() => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false, runic: false }, unpaid: 0 })), floor: res,
     orders: [blankOrders(), blankOrders()], clashes: [], log: [], events: [], fortress: [null, null], held: [0, 0], pointsHeld: [0, 0], stats: { kills: [0, 0], lost: [0, 0], levelsLost: 0, sieges: 0, wasted: [0, 0] },
@@ -57,9 +57,13 @@ export const towerAt = (s, x, y) => s.tg[ix(s, x, y)];
 // Scenario "Two Fortresses": 180-degree symmetric. Rulebook: a 30x30 cut of the full map is recommended for first tests; bigger sizes scale the same layout.
 function scenario(s) {
   const N = s.N, sc = N / 30, rot = (p) => ({ x: N - 1 - p.x, y: N - 1 - p.y });
-  const F = [{ x: Math.round(4 * sc), y: Math.round(14 * sc) }]; F.push(rot(F[0]));
+  const L = s.layout, F = [L ? { x: L.fortress[0], y: L.fortress[1] } : { x: Math.round(4 * sc), y: Math.round(14 * sc) }]; F.push(rot(F[0]));
   const taken = new Set(); const take = (p) => taken.add(ix(s, p.x, p.y));
   for (const f of F) for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) take({ x: f.x + dx, y: f.y + dy });
+  if (L) {                                                                  // a hand-made layout: nodes and points for one half, mirrored by (x,y) -> (N-1-x, N-1-y)
+    for (const q of L.points) for (const [x, y, kind] of [[q.node[0], q.node[1], q.kind], [rot({ x: q.node[0], y: q.node[1] }).x, rot({ x: q.node[0], y: q.node[1] }).y, q.kind]]) if (inb(s, x, y) && RES_CODE[kind]) s.res[ix(s, x, y)] = RES_CODE[kind];
+    for (const q of L.points) for (const pt of [{ x: q.point[0], y: q.point[1] }, rot({ x: q.point[0], y: q.point[1] })]) if (inb(s, pt.x, pt.y) && !s.res[ix(s, pt.x, pt.y)] && !s.points.some((r) => r.x === pt.x && r.y === pt.y)) s.points.push(pt);
+  } else {
   // resource cells, mirrored
   const k = Math.max(1, Math.round(sc * sc / 2.2)), want = [['gold', 3 * k], ['iron', 3 * k], ['aether', k], ['ember', k], ['faith', k], ['soul', k]];
   for (const [kind, n] of want) {
@@ -87,6 +91,7 @@ function scenario(s) {
   for (const p of cand) { if (chosen.length >= want_pts) break; if (chosen.every((r) => Math.abs(r.x - p.x) + Math.abs(r.y - p.y) >= spacing) && F.every((f) => Math.abs(f.x - p.x) + Math.abs(f.y - p.y) >= spacing)) chosen.push(p); }
   for (const p of chosen) { s.points.push(p); }
   for (const p of chosen) { s.points.push(rot(p)); }
+  }
   // fortresses + armies
   for (let o = 0; o < 2; o++) {
     const f = F[o], t = addTower(s, o, f.x, f.y, 'fortress', FORTRESS.levels, true); s.fortress[o] = t.id;

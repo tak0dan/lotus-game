@@ -1,0 +1,220 @@
+{
+ "id": "the-blackwood-reliquary",
+ "name": "The Blackwood Reliquary",
+ "tagline": "Restricted construction and movement",
+ "identity": "The Blackwood Reliquary is a dead forest surrounding the remains of an ancient civilisation. Its trees have not grown leaves for centuries, and their roots have consumed roads, walls and entire settlements. Beneath the forest lies a network of buried temples and forgotten burial chambers. The forest is not uniformly impassable: narrow clearings, old roads and ruined stone courtyards form natural corridors. Building a tower requires finding a suitable clearing, making expansion more deliberate. Meanwhile, Spirit resources are unusually abundant, and the region is an excellent environment for armies built around Monks, Priests and defensive towers.",
+ "fortress": [
+  10,
+  37
+ ],
+ "points": [
+  {
+   "n": 1,
+   "point": [
+    16,
+    10
+   ],
+   "node": [
+    17,
+    10
+   ],
+   "kind": "faith",
+   "note": "Northern shrine clearing."
+  },
+  {
+   "n": 2,
+   "point": [
+    27,
+    12
+   ],
+   "node": [
+    28,
+    12
+   ],
+   "kind": "soul",
+   "note": "Buried reliquary."
+  },
+  {
+   "n": 3,
+   "point": [
+    9,
+    20
+   ],
+   "node": [
+    10,
+    20
+   ],
+   "kind": "gold",
+   "note": "Noble estate ruins."
+  },
+  {
+   "n": 4,
+   "point": [
+    21,
+    22
+   ],
+   "node": [
+    22,
+    22
+   ],
+   "kind": "aether",
+   "note": "Rooted sanctuary."
+  },
+  {
+   "n": 5,
+   "point": [
+    33,
+    18
+   ],
+   "node": [
+    34,
+    18
+   ],
+   "kind": "iron",
+   "note": "Abandoned smithy."
+  },
+  {
+   "n": 6,
+   "point": [
+    8,
+    30
+   ],
+   "node": [
+    9,
+    30
+   ],
+   "kind": "ember",
+   "note": "Burned forest clearing."
+  },
+  {
+   "n": 7,
+   "point": [
+    18,
+    31
+   ],
+   "node": [
+    19,
+    31
+   ],
+   "kind": "faith",
+   "note": "Old pilgrimage road."
+  },
+  {
+   "n": 8,
+   "point": [
+    29,
+    28
+   ],
+   "node": [
+    30,
+    28
+   ],
+   "kind": "soul",
+   "note": "Forgotten burial chamber."
+  },
+  {
+   "n": 9,
+   "point": [
+    35,
+    35
+   ],
+   "node": [
+    35,
+    36
+   ],
+   "kind": "iron",
+   "note": "Northern stone road crossing."
+  },
+  {
+   "n": 10,
+   "point": [
+    12,
+    44
+   ],
+   "node": [
+    13,
+    44
+   ],
+   "kind": "aether",
+   "note": "Ancient magical roots."
+  },
+  {
+   "n": 11,
+   "point": [
+    23,
+    46
+   ],
+   "node": [
+    24,
+    46
+   ],
+   "kind": "soul",
+   "note": "Temple crypt."
+  },
+  {
+   "n": 12,
+   "point": [
+    34,
+    47
+   ],
+   "node": [
+    34,
+    48
+   ],
+   "kind": "faith",
+   "note": "Southern cathedral courtyard."
+  },
+  {
+   "n": 13,
+   "point": [
+    9,
+    55
+   ],
+   "node": [
+    10,
+    55
+   ],
+   "kind": "gold",
+   "note": "Buried estate."
+  },
+  {
+   "n": 14,
+   "point": [
+    20,
+    59
+   ],
+   "node": [
+    21,
+    59
+   ],
+   "kind": "ember",
+   "note": "Forest fire scar."
+  },
+  {
+   "n": 15,
+   "point": [
+    30,
+    63
+   ],
+   "node": [
+    31,
+    63
+   ],
+   "kind": "iron",
+   "note": "Southern smithy."
+  },
+  {
+   "n": 16,
+   "point": [
+    18,
+    68
+   ],
+   "node": [
+    19,
+    68
+   ],
+   "kind": "soul",
+   "note": "Deep reliquary entrance."
+  }
+ ]
+}

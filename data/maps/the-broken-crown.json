@@ -1,0 +1,220 @@
+{
+ "id": "the-broken-crown",
+ "name": "The Broken Crown",
+ "tagline": "Recommended starting map",
+ "identity": "Once the religious and administrative heart of Aurelia, the Broken Crown is now a vast field of dismantled cathedrals, abandoned monasteries, collapsed aqueducts, and ruined settlements. The central cathedral was deliberately dismantled after the Fall, and its stones were transported across the surrounding countryside to build fortifications. What remains is a landscape of elevated foundations, broken walls, quarries, and burial grounds. The map is relatively open, but the ruins create natural defensive positions. Whoever controls the old religious infrastructure gains access to Spirit resources, while the abandoned stoneworks provide opportunities for establishing tall tower networks.",
+ "fortress": [
+  10,
+  37
+ ],
+ "points": [
+  {
+   "n": 1,
+   "point": [
+    17,
+    12
+   ],
+   "node": [
+    18,
+    12
+   ],
+   "kind": "gold",
+   "note": "Treasury ruins; early economic expansion."
+  },
+  {
+   "n": 2,
+   "point": [
+    25,
+    13
+   ],
+   "node": [
+    26,
+    13
+   ],
+   "kind": "aether",
+   "note": "Observatory foundation; valuable mage position."
+  },
+  {
+   "n": 3,
+   "point": [
+    13,
+    20
+   ],
+   "node": [
+    14,
+    20
+   ],
+   "kind": "faith",
+   "note": "Monastery gate; defensive religious stronghold."
+  },
+  {
+   "n": 4,
+   "point": [
+    22,
+    22
+   ],
+   "node": [
+    23,
+    22
+   ],
+   "kind": "soul",
+   "note": "Catacomb entrance; difficult to approach through ruins."
+  },
+  {
+   "n": 5,
+   "point": [
+    31,
+    19
+   ],
+   "node": [
+    32,
+    19
+   ],
+   "kind": "iron",
+   "note": "Northern quarry; tower construction position."
+  },
+  {
+   "n": 6,
+   "point": [
+    8,
+    28
+   ],
+   "node": [
+    9,
+    28
+   ],
+   "kind": "gold",
+   "note": "Old toll station; protects a western approach."
+  },
+  {
+   "n": 7,
+   "point": [
+    18,
+    30
+   ],
+   "node": [
+    19,
+    30
+   ],
+   "kind": "faith",
+   "note": "Pilgrim crossroads."
+  },
+  {
+   "n": 8,
+   "point": [
+    28,
+    29
+   ],
+   "node": [
+    29,
+    29
+   ],
+   "kind": "aether",
+   "note": "Collapsed bell tower; exposed magical position."
+  },
+  {
+   "n": 9,
+   "point": [
+    34,
+    35
+   ],
+   "node": [
+    34,
+    36
+   ],
+   "kind": "iron",
+   "note": "Northern Crownfield entrance; central choke."
+  },
+  {
+   "n": 10,
+   "point": [
+    16,
+    43
+   ],
+   "node": [
+    17,
+    43
+   ],
+   "kind": "ember",
+   "note": "Burned chapel; southern approach."
+  },
+  {
+   "n": 11,
+   "point": [
+    27,
+    44
+   ],
+   "node": [
+    28,
+    44
+   ],
+   "kind": "soul",
+   "note": "Ossuary; Spirit resource access."
+  },
+  {
+   "n": 12,
+   "point": [
+    34,
+    46
+   ],
+   "node": [
+    34,
+    47
+   ],
+   "kind": "gold",
+   "note": "Aqueduct crossing; central defensive position."
+  },
+  {
+   "n": 13,
+   "point": [
+    11,
+    54
+   ],
+   "node": [
+    12,
+    54
+   ],
+   "kind": "iron",
+   "note": "Southern quarry overlook."
+  },
+  {
+   "n": 14,
+   "point": [
+    22,
+    57
+   ],
+   "node": [
+    23,
+    57
+   ],
+   "kind": "ember",
+   "note": "Cremation fields; dangerous-looking but open terrain."
+  },
+  {
+   "n": 15,
+   "point": [
+    31,
+    60
+   ],
+   "node": [
+    32,
+    60
+   ],
+   "kind": "faith",
+   "note": "Abandoned abbey; isolated expansion point."
+  },
+  {
+   "n": 16,
+   "point": [
+    18,
+    67
+   ],
+   "node": [
+    19,
+    67
+   ],
+   "kind": "soul",
+   "note": "Southern burial complex; valuable but distant."
+  }
+ ]
+}

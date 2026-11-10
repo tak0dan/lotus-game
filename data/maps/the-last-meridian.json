@@ -1,0 +1,220 @@
+{
+ "id": "the-last-meridian",
+ "name": "The Last Meridian",
+ "tagline": "Vertical warfare and tower networks",
+ "identity": "The Last Meridian was once Aurelia's northern defensive frontier: an enormous system of mountain fortresses, elevated roads, bridges, watchtowers and fortified passes. When the empire collapsed, the roads fragmented and entire sections of the mountain infrastructure fell into the ravines. What remains is a landscape of plateaus, cliffs, narrow passes and abandoned military construction sites. The map is deliberately asymmetric in its terrain distribution, although its strategic layout remains perfectly mirrored. The most important locations are not necessarily the richest; they are the places where a tower network can dominate an entire valley. This is the map where the tower-level and dragon systems should have the greatest impact.",
+ "fortress": [
+  10,
+  37
+ ],
+ "points": [
+  {
+   "n": 1,
+   "point": [
+    16,
+    9
+   ],
+   "node": [
+    17,
+    9
+   ],
+   "kind": "aether",
+   "note": "Northern observatory."
+  },
+  {
+   "n": 2,
+   "point": [
+    27,
+    12
+   ],
+   "node": [
+    28,
+    12
+   ],
+   "kind": "gold",
+   "note": "Military command post."
+  },
+  {
+   "n": 3,
+   "point": [
+    9,
+    20
+   ],
+   "node": [
+    10,
+    20
+   ],
+   "kind": "faith",
+   "note": "Mountain monastery."
+  },
+  {
+   "n": 4,
+   "point": [
+    20,
+    22
+   ],
+   "node": [
+    21,
+    22
+   ],
+   "kind": "soul",
+   "note": "Fallen garrison cemetery."
+  },
+  {
+   "n": 5,
+   "point": [
+    33,
+    17
+   ],
+   "node": [
+    34,
+    17
+   ],
+   "kind": "iron",
+   "note": "Northern foundry."
+  },
+  {
+   "n": 6,
+   "point": [
+    8,
+    30
+   ],
+   "node": [
+    9,
+    30
+   ],
+   "kind": "ember",
+   "note": "Furnace entrance."
+  },
+  {
+   "n": 7,
+   "point": [
+    18,
+    31
+   ],
+   "node": [
+    19,
+    31
+   ],
+   "kind": "aether",
+   "note": "Elevated magical station."
+  },
+  {
+   "n": 8,
+   "point": [
+    29,
+    28
+   ],
+   "node": [
+    30,
+    28
+   ],
+   "kind": "gold",
+   "note": "Fortress treasury."
+  },
+  {
+   "n": 9,
+   "point": [
+    35,
+    35
+   ],
+   "node": [
+    35,
+    36
+   ],
+   "kind": "iron",
+   "note": "Main mountain pass."
+  },
+  {
+   "n": 10,
+   "point": [
+    11,
+    44
+   ],
+   "node": [
+    12,
+    44
+   ],
+   "kind": "soul",
+   "note": "Southern battlefield cemetery."
+  },
+  {
+   "n": 11,
+   "point": [
+    22,
+    46
+   ],
+   "node": [
+    23,
+    46
+   ],
+   "kind": "faith",
+   "note": "Isolated monastery."
+  },
+  {
+   "n": 12,
+   "point": [
+    34,
+    47
+   ],
+   "node": [
+    34,
+    48
+   ],
+   "kind": "aether",
+   "note": "High plateau access."
+  },
+  {
+   "n": 13,
+   "point": [
+    9,
+    55
+   ],
+   "node": [
+    10,
+    55
+   ],
+   "kind": "iron",
+   "note": "Southern military foundry."
+  },
+  {
+   "n": 14,
+   "point": [
+    20,
+    59
+   ],
+   "node": [
+    21,
+    59
+   ],
+   "kind": "ember",
+   "note": "Furnace complex."
+  },
+  {
+   "n": 15,
+   "point": [
+    30,
+    63
+   ],
+   "node": [
+    31,
+    63
+   ],
+   "kind": "gold",
+   "note": "Southern command post."
+  },
+  {
+   "n": 16,
+   "point": [
+    19,
+    68
+   ],
+   "node": [
+    20,
+    68
+   ],
+   "kind": "soul",
+   "note": "Forgotten frontier graveyard."
+  }
+ ]
+}

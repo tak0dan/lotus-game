@@ -4,7 +4,9 @@ import { planYear } from './ai.js';
 import { UNITS, UNIT_ORDER, SPECS, COSTS, TECHS, RES_ALL, SUBTYPES, FAMILY_LIST, RES_NAME, RES_INFO, ARCANE_CONVERT } from './balance.js';
 
 const rich = new URLSearchParams(location.search).get('rich') === '1';
-const s = R.newGame({ res: rich ? Object.fromEntries(SUBTYPES.map((k) => [k, 500])) : null });
+const mapId = new URLSearchParams(location.search).get('map');                                  // ?map=the-broken-crown  (data/maps/*.json); no ?map = the generated map
+const layout = mapId ? await (await fetch(`./data/maps/${mapId}.json`)).json() : null;
+const s = R.newGame({ layout, res: rich ? Object.fromEntries(SUBTYPES.map((k) => [k, 500])) : null });
 const N = s.N, K = Math.floor(720 / N), cv = document.getElementById('c'); cv.width = cv.height = N * K;
 const g = cv.getContext('2d');
 const $ = (id) => document.getElementById(id);
