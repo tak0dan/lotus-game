@@ -10,7 +10,7 @@ import { stateText, reachText, rulesText, ordersText, mapText } from './agentvie
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i < 0 ? d : (process.argv[i + 1] && !process.argv[i + 1].startsWith('--') ? process.argv[i + 1] : true); };
 const PORT = +arg('port', 8200), SIZE = +arg('size', 30), SEED = +arg('seed', (Math.random() * 1e6) | 0), CAP = +arg('cap', 40), BOTS = [!!arg('bot0', false), !!arg('bot1', false)];
-// --rich  => both sides start with a huge stockpile (500 of everything) so the economy never gates anything: faster, dirtier, fewer tokens.  --res gold=300,iron=300,mana=300 for custom.
+// --rich  => every year both sides have a huge budget (a floor of 500 of everything) so the economy never gates anything: faster, dirtier, fewer tokens.  --res gold=300,iron=300,mana=300 for custom.
 const resArg = arg('res', null);
 const RES = resArg && resArg !== true ? Object.fromEntries(String(resArg).split(',').map((kv) => { const [k, v] = kv.split('='); return [k, +v]; })) : (arg('rich', false) ? { gold: 500, iron: 500, mana: 500 } : null);
 let s, ready, waiters = [], history = [], startedAt;

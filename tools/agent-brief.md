@@ -26,7 +26,7 @@ HARD BOUNDARIES (breaking these makes your findings worthless — they are about
   - Never ask the user questions; there is no user to answer. Decide and act.
 
 TEST CONDITIONS
-This is a fast, token-cheap playtest: BOTH players start with a huge stockpile of gold, iron and mana (hundreds of each), so money almost never limits you. Do not waste turns on economy bookkeeping — spend freely and use that freedom to try aggressive, strange and rule-breaking lines quickly. (Upkeep and income still exist; try to find out whether they can be abused or ignored at this scale.) The match is short: year cap {{YEAR_CAP}}.
+This is a fast, token-cheap playtest: in this run BOTH players have a huge yearly budget of gold, iron and mana (hundreds of each, every year), so money almost never limits you. Do not waste turns on economy bookkeeping — spend freely and use that freedom to try aggressive, strange and rule-breaking lines quickly. (The normal game uses a tight per-year budget from your nodes that does not carry over; try to find out whether upkeep and the budget rules can be abused or ignored.) The match is short: year cap {{YEAR_CAP}}.
 
 HOW TO PLAY
   1. Run `node tg.mjs rules` once and read it carefully. Then `node tg.mjs state` (compact: lists only). Use `node tg.mjs map` only when you need geometry.

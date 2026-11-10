@@ -25,7 +25,7 @@ export function planYear(s, p) {
   const nearest = (list, from) => list.reduce((b, x) => (!b || R.manh(x, from) < R.manh(b, from) ? x : b), null);
 
   // ── 0. research (when rich enough and it would matter) ──
-  if (!pl.tech.siegecraft && pl.iron >= 12 && s.units.some((u) => u.owner === p && u.type === 'siege')) R.setResearch(s, p, 'siegecraft');
+  if (!pl.tech.siegecraft && pl.iron >= TECHS.siegecraft.cost.iron && s.units.some((u) => u.owner === p && u.type === 'siege')) R.setResearch(s, p, 'siegecraft');
 
   // ── 1. strikes: coordinated attacks (ATK + 1 per other friend on the same target) ──
   const attackers = mine().filter((u) => !UNITS[u.type].siege);

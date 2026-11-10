@@ -2,6 +2,8 @@
 // Values marked (RB) come straight from the rulebook (v1.0, "тестові" = test values); everything else is a [DECISION] of mine that the
 // rulebook leaves open (costs, build times, specialisations...) — tune these with `node test/sim.mjs`.
 //
+// NOTE: with a per-year budget (see START_RESOURCES) every cost below must fit inside ONE year's budget of the nodes you hold:
+// the Dragon / Dragonlore / lair costs were lowered from 8+8 / 6+4 / 4+2 for that reason — tune with `node test/sim.mjs`.
 // Currency: gold = recruiting + upkeep · iron = towers, siege, heavy units · mana = magic, dragons.
 
 // Tuning hook for the simulator:  TG_TUNE='{"CAPITAL_GOLD":8}' node test/sim.mjs   (ignored in the browser)
@@ -20,7 +22,7 @@ export const UNITS = {
   archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, atk: 2, def: 1, rng: 3, upkeep: 1, cost: { gold: 2 },            time: 1, at: 'range',    minLevel: 1, climb: true },
   siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, atk: 4, def: 1, rng: 5, upkeep: 2, cost: { gold: 3, iron: 3 },   time: 2, at: 'workshop', minLevel: 1, climb: false, siege: true },
   mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, atk: 2, def: 1, rng: 3, upkeep: 2, cost: { gold: 3, mana: 2 },   time: 2, at: 'arcane',   minLevel: 1, climb: true,  arcane: true },
-  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, atk: 7, def: 5, rng: 2, upkeep: 5, cost: { gold: 8, mana: 8 },   time: 4, at: 'lair',     minLevel: 2, climb: false, flying: true, tech: 'dragonlore' },
+  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, atk: 7, def: 5, rng: 2, upkeep: 5, cost: { gold: 6, mana: 3 },   time: 4, at: 'lair',     minLevel: 2, climb: false, flying: true, tech: 'dragonlore' },
 };
 export const UNIT_ORDER = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'siege', 'mage', 'dragon'];
 
@@ -31,7 +33,7 @@ export const COSTS = {
   foundation: { gold: 1, iron: 2 },
   normal:     { iron: 2 },
   reinforced: { gold: 1, iron: 4 },
-  spec: { outpost: {}, barracks: { gold: 1 }, stable: { gold: 1 }, range: { gold: 1 }, workshop: { iron: 2 }, arcane: { mana: 2 }, lair: { mana: 4, gold: 2 } },   // surcharge when the foundation is laid
+  spec: { outpost: {}, barracks: { gold: 1 }, stable: { gold: 1 }, range: { gold: 1 }, workshop: { iron: 2 }, arcane: { mana: 2 }, lair: { mana: 2, gold: 2 } },   // surcharge when the foundation is laid
 };
 // A tower's specialisation is chosen when its foundation is laid. The main fortress has the first three.
 export const SPECS = {
@@ -50,9 +52,11 @@ export const QUEUE_SLOTS = 1;                                                   
 // ── Economy ─────────────────────────────────────────────────────────────────────────────────────────
 export const YIELD = { unit: T.YU ?? 1, tower: T.YT ?? 1, garrisoned: T.YG ?? 2 };                                     // (RB, test values) per resource cell per year
 export const CAPITAL_GOLD = T.CAPITAL_GOLD ?? 10;                                                                 // [DECISION] the home province pays gold even without a cell
+// Resources are a per-YEAR BUDGET (designer's ruling, like tapping lands in MTG): your controlled nodes give this much this year, unspent is lost.
+// START_RESOURCES is a one-time OPENING budget added to year 1 only, so the first year is not empty of iron and mana.
 export const START_RESOURCES = { gold: T.START_GOLD ?? 14, iron: T.START_IRON ?? 6, mana: 2 };
 export const TECHS = {
-  dragonlore: { name: 'Dragonlore', cost: { mana: 6, gold: 4 }, text: 'Unlocks Dragon Lairs and Dragons.' },
+  dragonlore: { name: 'Dragonlore', cost: { mana: 3, gold: 4 }, text: 'Unlocks Dragon Lairs and Dragons.' },
   siegecraft: { name: 'Siegecraft', cost: { iron: 6 },          text: 'Siege Engines deal 2 structural damage per hit instead of 1.' },
 };
 

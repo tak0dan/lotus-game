@@ -40,7 +40,7 @@ export function ordersText(s, p) {
 export function stateText(s, p, ready, withMap = false) {
   const pl = s.pl[p], inc = R.incomeOf(s, p), up = R.upkeepOf(s, p), com = R.committed(s, p), out = [];
   out.push(`YEAR ${s.round} — you are ${NAMES[p]}.  ${s.winner !== null ? `GAME OVER: ${s.winReason}` : `PLANNING.  you: ${ready[p] ? 'READY' : 'not ready'}, opponent: ${ready[1 - p] ? 'READY' : 'planning'}`}`);
-  out.push(`RESOURCES gold ${pl.gold} iron ${pl.iron} mana ${pl.mana}  | already committed by your orders: ${costStr(com)}  | income next year: gold +${inc.gold} iron +${inc.iron} mana +${inc.mana}  | upkeep due at year end: ${up} gold (if you cannot pay, units go IDLE)`);
+  out.push(`BUDGET THIS YEAR (use it or lose it — resources do NOT carry over): gold ${pl.gold} iron ${pl.iron} mana ${pl.mana}  | already committed by your orders: ${costStr(com)}  | gross yield of your nodes next year: gold ${inc.gold} iron ${inc.iron} mana ${inc.mana}; your ${up} gold upkeep is deducted from the gold first (if it cannot be paid, units go IDLE)`);
   out.push(`TECH ${Object.entries(pl.tech).map(([k, v]) => k + ':' + (v ? 'yes' : 'no')).join(' ')}   UNPAID-IDLE units: ${pl.unpaid}`);
   const maj = Math.floor(s.points.length / 2) + 1;
   out.push(`STRATEGIC POINTS (hold ${maj} of ${s.points.length} with GARRISONED towers for ${POINTS_HOLD_YEARS} consecutive years to win): ` + s.points.map((pt) => `(${pt.x},${pt.y})=${R.pointOwner(s, pt) < 0 ? 'free' : 'P' + (R.pointOwner(s, pt) + 1)}`).join(' ') + `   | held-years: you ${s.pointsHeld[p]}, enemy ${s.pointsHeld[1 - p]}`);
@@ -75,12 +75,12 @@ GOAL — you win by ANY of:
 
 THE YEAR (resolves in this order after BOTH sides say 'ready'):
   economy -> recruitment -> movement -> combat -> building -> control -> end of year (upkeep, victory checks)
-  - economy: each resource cell you control pays: a unit standing on it ${YIELD.unit}; your tower on it ${YIELD.tower}, or ${YIELD.garrisoned} if garrisoned. + ${CAPITAL_GOLD} gold per fortress you own. Research orders complete here.
+  - BUDGET: resources are a per-YEAR budget, like tapping lands — NOT a stockpile. Each resource cell you control gives: a unit standing on it ${YIELD.unit}; your tower on it ${YIELD.tower}, or ${YIELD.garrisoned} if garrisoned; plus ${CAPITAL_GOLD} gold per fortress you own. Your army's upkeep is taken out of that gold first. What is left is what you may spend THIS year, on everything (recruits, towers, levels, research). UNSPENT RESOURCES ARE LOST. (The first year also has a one-time opening bonus.) Research orders complete in the economy phase.
   - recruitment: queued units whose time is up appear on a free square next to their tower; then NEW recruit orders are paid for (cost is paid when the order resolves).
   - movement: all move orders advance one square at a time in lockstep. A unit stops if the next square is occupied. If enemies try to enter the SAME square they collide: both stop and fight each other in combat.
   - combat: all strike orders resolve at once from the post-movement positions. effective ATK = ATK + (number of OTHER friendly units striking the same target). If effective ATK > target's effective DEF the target is destroyed; equal = nothing happens; lower = nothing. Garrisons defend with DEF +${GARRISON_DEF} (not vs Arcane). Melee units strike orthogonally adjacent targets only; a garrison on a tower top can only be hit by RANGED units. Ranged units (RNG>0) need a clear line (towers block ground fire; a shooter on a tower shoots over lower towers; Arcane and Flying ignore lines). RNG is measured in orthogonal steps (Manhattan). Siege engines damage towers (see below).
   - building: foundations and levels go up.
-  - end of year: you pay upkeep (gold) for every unit. If you cannot, the most expensive units become IDLE for the next year (they ignore orders) and you cannot recruit.
+  - end of year: victory checks; then next year's budget is computed. If the gold yield cannot cover the army's upkeep, the most expensive units become IDLE that year (they ignore orders) and you cannot recruit.
 
 MOVEMENT: orthogonal only, 1 MOV per square. Friendly and enemy units block. Tower bases block (you can only CLIMB a tower, as the last step, costing +1 MOV: ending garrisoned). Leaving a tower top costs +1 MOV. Cavalry, heavy cavalry, siege engines and dragons cannot climb. Dragons fly: they ignore obstacles, move up to MOV squares Manhattan, and must end on a free square.
 

@@ -10,6 +10,14 @@ const g = cv.getContext('2d');
 const $ = (id) => document.getElementById(id);
 const COL = ['#46587a', '#b0552f'], TXT = ['#7f95c9', '#d9794e'], RC = ['', '#e0b94f', '#a2abb6', '#7ea9ff'];
 const LET = { infantry: 'i', heavy_infantry: 'H', cavalry: 'c', heavy_cavalry: 'C', archer: 'a', siege: 'S', mage: 'm', dragon: 'D' };
+const rec = { id: Date.now(), seed: s.seed, started: new Date().toISOString(), rich, years: [] };      // saved to this browser after every year
+const HKEY = 'tower.games';
+const readAll = () => { try { return JSON.parse(localStorage.getItem(HKEY) || '[]'); } catch (e) { return []; } };
+function persist() {
+  Object.assign(rec, { round: s.round, winner: s.winner, reason: s.winReason, updated: new Date().toISOString(), log: s.log.map((l) => `[Y${l.round}] ${l.msg}`), units: s.units.map((u) => `${u.owner}:${u.type}@${u.x},${u.y}${u.z ? '^' : ''}`), towers: s.towers.map((t) => `${t.owner}:${t.fortress ? 'F' : t.spec}@${t.x},${t.y}L${t.levels.length}`) });
+  try { const all = readAll().filter((g) => g.id !== rec.id); all.push(rec); localStorage.setItem(HKEY, JSON.stringify(all.slice(-30))); } catch (e) { /* storage blocked: the game still plays */ }
+}
+function downloadLog() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(readAll(), null, 2)], { type: 'application/json' })); a.download = `tower-game-log-${new Date().toISOString().slice(0, 16).replace(':', '')}.json`; a.click(); }
 let sel = null, mode = null, info = null, cardsApi = null;            // sel = {kind:'unit'|'tower', id}; mode = {type:'found', builderId, spec}
 const cost = (c) => Object.entries(c || {}).filter(([, v]) => v).map(([k, v]) => `${v}${k[0]}`).join('+') || 'free';
 const say = (t, bad) => { $('msg').textContent = t; $('msg').style.color = bad ? '#ff8d7a' : 'var(--gold)'; };
@@ -72,7 +80,9 @@ function render() {
   draw();
   const pl = s.pl[0], inc = R.incomeOf(s, 0), up = R.upkeepOf(s, 0), com = R.committed(s, 0), mh = R.pointsHeld(s, 0), eh = R.pointsHeld(s, 1);
   const ef = R.towerById(s, s.fortress[1]);
-  $('status').innerHTML = `<h2>Year ${s.round}</h2><div class="res">Resources: <span class="g"><b>${pl.gold}</b>gold</span> <span class="i"><b>${pl.iron}</b>iron</span> <span class="m"><b>${pl.mana}</b>mana</span><br><small>committed by orders: ${cost(com)} · income next year: +${inc.gold}g +${inc.iron}i +${inc.mana}m · upkeep due: ${up}g${pl.unpaid ? ` · <b style="color:#ff8d7a">${pl.unpaid} idle (unpaid)</b>` : ''}</small></div>
+  const nodes = { gold: 0, iron: 0, mana: 0 }; for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) { const c = s.res[R.ix(s, x, y)]; if (!c) continue; const t = s.tg[R.ix(s, x, y)], u = s.ug[R.ix(s, x, y)]; if ((t && t.owner === 0) || (!t && u && u.owner === 0)) nodes[['', 'gold', 'iron', 'mana'][c]]++; }
+  const nextG = inc.gold - up;
+  $('status').innerHTML = `<h2>Year ${s.round} — budget</h2><div class="res"><span class="g"><b>${pl.gold}</b>gold</span> <span class="i"><b>${pl.iron}</b>iron</span> <span class="m"><b>${pl.mana}</b>mana</span> <small>to spend this year — <b>unspent is lost</b></small><br><small>already planned: ${cost(com)} · nodes you hold: ${nodes.gold} gold, ${nodes.iron} iron, ${nodes.mana} mana (+ capital ${inc.gold - nodes.gold} gold) · army upkeep ${up}g is taken from the gold first${pl.unpaid ? ` · <b style="color:#ff8d7a">${pl.unpaid} unit(s) idle: could not pay</b>` : ''}<br>next year if nothing changes: ${Math.max(0, nextG)}g ${inc.iron}i ${inc.mana}m</small></div>
     <div style="margin-top:6px"><small>Strategic points: you <b class="p0">${mh}</b> · AI <b class="p1">${eh}</b> (need ${Math.floor(s.points.length / 2) + 1}, held ${s.pointsHeld[0]}/2 years) · enemy fortress held by you for ${s.held[0]} year(s)${ef ? '' : ' (gone)'}</small></div>
     <div class="row" style="margin-top:6px">${Object.entries(TECHS).map(([k, T]) => `<button data-act="research" data-tech="${k}" ${s.pl[0].tech[k] || s.orders[0].research.some((r) => r.tech === k) || !R.canAfford(pl, R.addCost(com, T.cost)) ? 'disabled' : ''} title="${T.text}">${T.name} (${cost(T.cost)})${s.pl[0].tech[k] ? ' ✓' : ''}</button>`).join('')}</div>`;
   renderSel(); renderOrders();
@@ -151,11 +161,14 @@ document.addEventListener('click', (e) => {
   else if (a === 'cancelmove') delete s.orders[0].moves[b.dataset.uid];
   render();
 });
+$('dl').onclick = downloadLog;
 $('clearall').onclick = () => { R.clearOrders(s, 0); say('All orders cleared.'); render(); };
 function endYear() {
   if (s.winner !== null) return;
   planYear(s, 1);                                                  // the AI plans in secret
+  const yr = { year: s.round, budget: [0, 1].map((o) => ({ gold: s.pl[o].gold, iron: s.pl[o].iron, mana: s.pl[o].mana })), orders: JSON.parse(JSON.stringify(s.orders)) };
   const before = s.log.length; R.resolveYear(s);
+  yr.events = s.log.slice(before).map((l) => l.msg); rec.years.push(yr); persist();
   sel = null; info = null; mode = null;
   say(`Year ${s.round - 1} resolved: ${s.log.length - before} event(s). Plan year ${s.round}.`);
   render();
@@ -163,7 +176,7 @@ function endYear() {
 $('end').onclick = endYear;
 addEventListener('keydown', (e) => { if (e.key === 'Enter') endYear(); if (e.key === 'Escape') { sel = null; info = null; mode = null; render(); } });
 
-render();
+persist(); render();
 // card art needs the 3D models; load in the background and degrade silently if WebGL or a model is unavailable
 import('./modelLib.js').then(async (m) => { await m.loadLibrary(); cardsApi = await import('./cards.js'); cardsApi.injectCardCSS(); render(); }).catch(() => {});
 window.__tg = { s, R, select, endYear, get sel() { return sel; } };

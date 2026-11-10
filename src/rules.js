@@ -4,6 +4,10 @@
 // A game is a series of YEARS. Each year: both players plan orders in secret, then it resolves in phases:
 //   economy -> recruitment -> movement -> combat -> building -> control -> end of year (upkeep, victory checks).
 // No dice anywhere. Combat is deterministic: effective ATK > effective DEF destroys; equal = both stand.
+//
+// ECONOMY (designer's ruling, overrides rulebook §15.3 "unspent resources are kept"): resources are a per-year BUDGET, like tapping lands in MTG.
+// Each year the nodes you control give you a fixed amount of gold/iron/mana to spend; it does NOT accumulate — unspent resources are lost.
+// Upkeep is paid first, out of the year's gold. The first year also gets a one-time opening budget (balance.js START_RESOURCES).
 
 import { UNITS, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, MAX_LEVELS, GARRISON_DEF, COSTS, FORTRESS_SPECS, FORTRESS, QUEUE_SLOTS, YIELD, CAPITAL_GOLD,
   START_RESOURCES, TECHS, FORTRESS_HOLD_YEARS, POINTS_HOLD_YEARS, RESOURCES } from './balance.js';
@@ -17,14 +21,15 @@ export const manh = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 export function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 
 // ───────────────────────── state & scenario ─────────────────────────
-export function newGame({ size = 30, seed = (Math.random() * 1e9) | 0, res = null } = {}) {   // res: optional starting-stockpile override, e.g. { gold: 500, iron: 500, mana: 500 } (fast/dirty playtests)
+export function newGame({ size = 30, seed = (Math.random() * 1e9) | 0, res = null } = {}) {   // res: optional per-year budget FLOOR, e.g. { gold: 500, iron: 500, mana: 500 } — every year each player has at least this much (fast/dirty playtests)
   const s = {
     N: size, seed, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winReason: '',
     res: new Uint8Array(size * size), points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
-    pl: [0, 1].map(() => ({ ...START_RESOURCES, ...(res || {}), tech: { dragonlore: false, siegecraft: false }, unpaid: 0 })),
-    orders: [blankOrders(), blankOrders()], clashes: [], log: [], events: [], fortress: [null, null], held: [0, 0], pointsHeld: [0, 0], stats: { kills: [0, 0], lost: [0, 0], levelsLost: 0, sieges: 0 },
+    pl: [0, 1].map(() => ({ gold: 0, iron: 0, mana: 0, tech: { dragonlore: false, siegecraft: false }, unpaid: 0 })), floor: res,
+    orders: [blankOrders(), blankOrders()], clashes: [], log: [], events: [], fortress: [null, null], held: [0, 0], pointsHeld: [0, 0], stats: { kills: [0, 0], lost: [0, 0], levelsLost: 0, sieges: 0, wasted: [0, 0] },
   };
   scenario(s);
+  refreshBudget(s, true);
   return s;
 }
 const blankOrders = () => ({ moves: {}, attacks: [], siege: [], builds: [], recruits: [], research: [] });
@@ -256,14 +261,29 @@ export function resolveYear(s) {
 }
 
 function economy(s, order) {
-  for (const o of order) {                                    // research orders
+  // The year's budget was set when the previous year ended (refreshBudget): it is what your nodes yield, minus upkeep. Research is paid from it here.
+  for (const o of order) {
     for (const r of s.orders[o].research) { const T = TECHS[r.tech], pl = s.pl[o]; if (!pl.tech[r.tech] && canAfford(pl, T.cost)) { for (const k of RESOURCES) pl[k] -= T.cost[k] || 0; pl.tech[r.tech] = true; say(s, `P${o + 1} completes ${T.name}.`, o); s.events.push({ t: 'tech', owner: o, tech: r.tech }); } }
   }
+  for (const o of [0, 1]) s.events.push({ t: 'income', owner: o, now: { gold: s.pl[o].gold, iron: s.pl[o].iron, mana: s.pl[o].mana } });
+}
+// A new year's budget: what the controlled nodes yield (+ the capital), minus the army's upkeep paid out of the gold. Nothing is carried over.
+export function refreshBudget(s, first = false) {
   for (const o of [0, 1]) {
-    const inc = incomeOf(s, o); for (const k of RESOURCES) s.pl[o][k] += inc[k];
-    s.events.push({ t: 'income', owner: o, inc, now: { gold: s.pl[o].gold, iron: s.pl[o].iron, mana: s.pl[o].mana } });
+    const pl = s.pl[o], inc = incomeOf(s, o), up = upkeepOf(s, o);
+    pl.unpaid = 0; for (const u of s.units) if (u.owner === o) u.idle = false;
+    for (const k of RESOURCES) pl[k] = inc[k] + (first ? (START_RESOURCES[k] || 0) : 0);
+    if (pl.gold >= up) pl.gold -= up;
+    else {                                                                    // cannot cover the upkeep: the most expensive units stand idle this year
+      let short = up - pl.gold; pl.gold = 0;
+      for (const u of s.units.filter((z) => z.owner === o).sort((a, b) => UNITS[b.type].upkeep - UNITS[a.type].upkeep || a.id - b.id)) { if (short <= 0) break; u.idle = true; short -= UNITS[u.type].upkeep; pl.unpaid++; }
+      say(s, `P${o + 1} cannot cover its upkeep (${up} gold vs ${inc.gold} income): ${pl.unpaid} unit${pl.unpaid > 1 ? 's' : ''} stand idle this year.`, o);
+    }
+    if (s.floor) for (const k of RESOURCES) pl[k] = Math.max(pl[k], s.floor[k] || 0);
+    s.events.push({ t: 'budget', owner: o, budget: { gold: pl.gold, iron: pl.iron, mana: pl.mana }, upkeep: up, unpaid: pl.unpaid });
   }
 }
+
 function freeNeighbour(s, x, y) { for (const [dx, dy] of ORTH) { const nx = x + dx, ny = y + dy; if (inb(s, nx, ny) && !s.ug[ix(s, nx, ny)] && !s.tg[ix(s, nx, ny)]) return { x: nx, y: ny }; } return null; }
 function recruitment(s, order) {
   for (const o of order) {
@@ -415,16 +435,7 @@ function control(s) { s.events.push({ t: 'control', points: s.points.map((p) => 
 
 export const eliminated = (s, o) => !s.towers.some((t) => t.owner === o) && !s.units.some((u) => u.owner === o && UNITS[u.type].builder);
 function endYear(s) {
-  for (const o of [0, 1]) {                                                    // upkeep
-    const pl = s.pl[o], up = upkeepOf(s, o); pl.unpaid = 0; for (const u of s.units) if (u.owner === o) u.idle = false;
-    if (pl.gold >= up) pl.gold -= up;
-    else {
-      let short = up - pl.gold; pl.gold = 0;
-      for (const u of s.units.filter((z) => z.owner === o).sort((a, b) => UNITS[b.type].upkeep - UNITS[a.type].upkeep || a.id - b.id)) { if (short <= 0) break; u.idle = true; short -= UNITS[u.type].upkeep; pl.unpaid++; }
-      say(s, `P${o + 1} cannot pay upkeep: ${pl.unpaid} unit${pl.unpaid > 1 ? 's' : ''} stand idle next year.`, o);
-    }
-    s.events.push({ t: 'upkeep', owner: o, paid: up, unpaid: pl.unpaid, now: { gold: pl.gold, iron: pl.iron, mana: pl.mana } });
-  }
+  for (const o of [0, 1]) { const pl = s.pl[o]; s.stats.wasted[o] += (pl.gold || 0) + (pl.iron || 0) + (pl.mana || 0); }   // unspent budget is LOST
   // victory: (1) hold the enemy fortress through the next year  (2) strategic majority for POINTS_HOLD_YEARS years  (3) elimination
   for (const o of [0, 1]) {
     const F = towerById(s, s.fortress[1 - o]);
@@ -441,4 +452,5 @@ function endYear(s) {
   for (const u of s.units) u.moved = false;
   s.orders = [blankOrders(), blankOrders()]; s.round++; s.first = 1 - s.first; s.phase = 'plan';
   s.events.push({ t: 'year', round: s.round });
+  if (s.winner === null) refreshBudget(s, false);                              // next year's budget, planned against right away
 }

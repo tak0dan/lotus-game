@@ -35,6 +35,7 @@ siege-only tower destruction. The **Lotus** manifesto survives as the lore/world
 | Part | State |
 |---|---|
 | Rules engine `src/rules.js` | done: economy → recruitment → movement → combat → building → control → end of year; sieges, garrisons, clash fights, upkeep/idle, 3 victory conditions |
+| **Economy** | **per-year budget, no stockpile** (MTG-style: your nodes give a fixed amount each year; unspent is lost; upkeep comes out of the gold first) — a designer's ruling that overrides rulebook §15.3 |
 | All numbers `src/balance.js` | done; tunable (`TG_TUNE='{"CAPITAL_GOLD":8}' node test/sim.mjs`) |
 | Built-in AI `src/ai.js` | works, **passive**: games rarely finish (see Balance) |
 | Simulator `test/sim.mjs` | done |
