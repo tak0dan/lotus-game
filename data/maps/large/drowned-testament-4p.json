@@ -1,0 +1,987 @@
+{
+ "name": "The Drowned Testament",
+ "players": 4,
+ "boardSide": 237,
+ "sector": "west",
+ "fortress": [
+  0.14,
+  0.5
+ ],
+ "hub": [
+  0.5,
+  0.5
+ ],
+ "symmetry": {
+  "type": "rotation",
+  "order": 4,
+  "stepDegrees": 90,
+  "centre": [
+   0.5,
+   0.5
+  ]
+ },
+ "targets": {
+  "nodesPerSector": 40,
+  "pointsPerSector": 36,
+  "crossingsPerSector": 4,
+  "impassableBoardFraction": 0.17
+ },
+ "terrain": [
+  {
+   "type": "water",
+   "shape": "polygon",
+   "points": [
+    [
+     0.025,
+     0.12
+    ],
+    [
+     0.15,
+     0.08
+    ],
+    [
+     0.255,
+     0.17
+    ],
+    [
+     0.3,
+     0.25
+    ],
+    [
+     0.245,
+     0.32
+    ],
+    [
+     0.12,
+     0.27
+    ],
+    [
+     0.035,
+     0.23
+    ]
+   ]
+  },
+  {
+   "type": "water",
+   "shape": "polygon",
+   "points": [
+    [
+     0.025,
+     0.78
+    ],
+    [
+     0.12,
+     0.73
+    ],
+    [
+     0.245,
+     0.68
+    ],
+    [
+     0.3,
+     0.75
+    ],
+    [
+     0.255,
+     0.83
+    ],
+    [
+     0.15,
+     0.92
+    ],
+    [
+     0.025,
+     0.88
+    ]
+   ]
+  },
+  {
+   "type": "rock",
+   "shape": "polygon",
+   "points": [
+    [
+     0.25,
+     0.045
+    ],
+    [
+     0.34,
+     0.075
+    ],
+    [
+     0.405,
+     0.16
+    ],
+    [
+     0.365,
+     0.255
+    ],
+    [
+     0.29,
+     0.205
+    ],
+    [
+     0.23,
+     0.12
+    ]
+   ]
+  },
+  {
+   "type": "rock",
+   "shape": "polygon",
+   "points": [
+    [
+     0.25,
+     0.955
+    ],
+    [
+     0.34,
+     0.925
+    ],
+    [
+     0.405,
+     0.84
+    ],
+    [
+     0.365,
+     0.745
+    ],
+    [
+     0.29,
+     0.795
+    ],
+    [
+     0.23,
+     0.88
+    ]
+   ]
+  },
+  {
+   "type": "highland",
+   "shape": "line",
+   "points": [
+    [
+     0.24,
+     0.27
+    ],
+    [
+     0.34,
+     0.34
+    ]
+   ],
+   "width": 0.035
+  },
+  {
+   "type": "highland",
+   "shape": "line",
+   "points": [
+    [
+     0.24,
+     0.73
+    ],
+    [
+     0.34,
+     0.66
+    ]
+   ],
+   "width": 0.035
+  },
+  {
+   "type": "forest",
+   "shape": "ellipse",
+   "points": [
+    [
+     0.035,
+     0.29
+    ],
+    [
+     0.21,
+     0.4
+    ]
+   ]
+  },
+  {
+   "type": "forest",
+   "shape": "ellipse",
+   "points": [
+    [
+     0.035,
+     0.6
+    ],
+    [
+     0.21,
+     0.71
+    ]
+   ]
+  },
+  {
+   "type": "marsh",
+   "shape": "polygon",
+   "points": [
+    [
+     0.025,
+     0.415
+    ],
+    [
+     0.13,
+     0.385
+    ],
+    [
+     0.225,
+     0.425
+    ],
+    [
+     0.235,
+     0.475
+    ],
+    [
+     0.15,
+     0.49
+    ],
+    [
+     0.025,
+     0.465
+    ]
+   ]
+  },
+  {
+   "type": "marsh",
+   "shape": "polygon",
+   "points": [
+    [
+     0.025,
+     0.535
+    ],
+    [
+     0.15,
+     0.51
+    ],
+    [
+     0.235,
+     0.525
+    ],
+    [
+     0.225,
+     0.575
+    ],
+    [
+     0.13,
+     0.615
+    ],
+    [
+     0.025,
+     0.585
+    ]
+   ]
+  },
+  {
+   "type": "highland",
+   "shape": "ellipse",
+   "points": [
+    [
+     0.265,
+     0.405
+    ],
+    [
+     0.365,
+     0.465
+    ]
+   ]
+  },
+  {
+   "type": "highland",
+   "shape": "ellipse",
+   "points": [
+    [
+     0.265,
+     0.535
+    ],
+    [
+     0.365,
+     0.595
+    ]
+   ]
+  },
+  {
+   "type": "forest",
+   "shape": "ellipse",
+   "points": [
+    [
+     0.295,
+     0.455
+    ],
+    [
+     0.375,
+     0.545
+    ]
+   ]
+  },
+  {
+   "type": "marsh",
+   "shape": "ellipse",
+   "points": [
+    [
+     0.375,
+     0.465
+    ],
+    [
+     0.435,
+     0.535
+    ]
+   ]
+  }
+ ],
+ "crossings": [
+  {
+   "kind": "pass",
+   "at": [
+    0.225,
+    0.225
+   ],
+   "width": 3
+  },
+  {
+   "kind": "bridge",
+   "at": [
+    0.385,
+    0.385
+   ],
+   "width": 3
+  },
+  {
+   "kind": "ford",
+   "at": [
+    0.225,
+    0.775
+   ],
+   "width": 3
+  },
+  {
+   "kind": "causeway",
+   "at": [
+    0.385,
+    0.615
+   ],
+   "width": 3
+  }
+ ],
+ "nodes": [
+  {
+   "kind": "gold",
+   "at": [
+    0.045,
+    0.445
+   ],
+   "biome": "Hollow Granaries"
+  },
+  {
+   "kind": "iron",
+   "at": [
+    0.075,
+    0.355
+   ],
+   "biome": "Broken Highlands"
+  },
+  {
+   "kind": "aether",
+   "at": [
+    0.315,
+    0.435
+   ],
+   "biome": "Aether Scar"
+  },
+  {
+   "kind": "ember",
+   "at": [
+    0.075,
+    0.645
+   ],
+   "biome": "Ember Marches"
+  },
+  {
+   "kind": "faith",
+   "at": [
+    0.345,
+    0.515
+   ],
+   "biome": "Cathedral Graveyard"
+  },
+  {
+   "kind": "soul",
+   "at": [
+    0.115,
+    0.335
+   ],
+   "biome": "Blackwood"
+  },
+  {
+   "kind": "gold",
+   "at": [
+    0.055,
+    0.475
+   ],
+   "biome": "Hollow Granaries"
+  },
+  {
+   "kind": "iron",
+   "at": [
+    0.285,
+    0.185
+   ],
+   "biome": "Iron Crown"
+  },
+  {
+   "kind": "aether",
+   "at": [
+    0.325,
+    0.455
+   ],
+   "biome": "Aether Scar"
+  },
+  {
+   "kind": "ember",
+   "at": [
+    0.105,
+    0.665
+   ],
+   "biome": "Ember Marches"
+  },
+  {
+   "kind": "faith",
+   "at": [
+    0.355,
+    0.535
+   ],
+   "biome": "Cathedral Graveyard"
+  },
+  {
+   "kind": "soul",
+   "at": [
+    0.145,
+    0.365
+   ],
+   "biome": "Blackwood"
+  },
+  {
+   "kind": "gold",
+   "at": [
+    0.095,
+    0.465
+   ],
+   "biome": "Hollow Granaries"
+  },
+  {
+   "kind": "iron",
+   "at": [
+    0.305,
+    0.145
+   ],
+   "biome": "Iron Crown"
+  },
+  {
+   "kind": "aether",
+   "at": [
+    0.335,
+    0.475
+   ],
+   "biome": "Aether Scar"
+  },
+  {
+   "kind": "ember",
+   "at": [
+    0.135,
+    0.685
+   ],
+   "biome": "Ember Marches"
+  },
+  {
+   "kind": "faith",
+   "at": [
+    0.345,
+    0.555
+   ],
+   "biome": "Cathedral Graveyard"
+  },
+  {
+   "kind": "soul",
+   "at": [
+    0.165,
+    0.385
+   ],
+   "biome": "Blackwood"
+  },
+  {
+   "kind": "gold",
+   "at": [
+    0.075,
+    0.505
+   ],
+   "biome": "Hollow Granaries"
+  },
+  {
+   "kind": "iron",
+   "at": [
+    0.285,
+    0.815
+   ],
+   "biome": "Iron Crown"
+  },
+  {
+   "kind": "aether",
+   "at": [
+    0.315,
+    0.565
+   ],
+   "biome": "Aether Scar"
+  },
+  {
+   "kind": "ember",
+   "at": [
+    0.075,
+    0.685
+   ],
+   "biome": "Ember Marches"
+  },
+  {
+   "kind": "faith",
+   "at": [
+    0.325,
+    0.535
+   ],
+   "biome": "Cathedral Graveyard"
+  },
+  {
+   "kind": "soul",
+   "at": [
+    0.115,
+    0.665
+   ],
+   "biome": "Mourning Fen"
+  },
+  {
+   "kind": "gold",
+   "at": [
+    0.095,
+    0.535
+   ],
+   "biome": "Hollow Granaries"
+  },
+  {
+   "kind": "iron",
+   "at": [
+    0.305,
+    0.855
+   ],
+   "biome": "Iron Crown"
+  },
+  {
+   "kind": "aether",
+   "at": [
+    0.335,
+    0.525
+   ],
+   "biome": "Aether Scar"
+  },
+  {
+   "kind": "ember",
+   "at": [
+    0.105,
+    0.315
+   ],
+   "biome": "Ember Marches"
+  },
+  {
+   "kind": "faith",
+   "at": [
+    0.355,
+    0.465
+   ],
+   "biome": "Cathedral Graveyard"
+  },
+  {
+   "kind": "soul",
+   "at": [
+    0.145,
+    0.635
+   ],
+   "biome": "Mourning Fen"
+  },
+  {
+   "kind": "gold",
+   "at": [
+    0.055,
+    0.525
+   ],
+   "biome": "Hollow Granaries"
+  },
+  {
+   "kind": "iron",
+   "at": [
+    0.285,
+    0.855
+   ],
+   "biome": "Iron Crown"
+  },
+  {
+   "kind": "aether",
+   "at": [
+    0.315,
+    0.545
+   ],
+   "biome": "Aether Scar"
+  },
+  {
+   "kind": "ember",
+   "at": [
+    0.135,
+    0.295
+   ],
+   "biome": "Ember Marches"
+  },
+  {
+   "kind": "faith",
+   "at": [
+    0.345,
+    0.485
+   ],
+   "biome": "Cathedral Graveyard"
+  },
+  {
+   "kind": "soul",
+   "at": [
+    0.165,
+    0.615
+   ],
+   "biome": "Mourning Fen"
+  },
+  {
+   "kind": "gold",
+   "at": [
+    0.125,
+    0.445
+   ],
+   "biome": "Hollow Granaries"
+  },
+  {
+   "kind": "iron",
+   "at": [
+    0.325,
+    0.165
+   ],
+   "biome": "Iron Crown"
+  },
+  {
+   "kind": "aether",
+   "at": [
+    0.345,
+    0.445
+   ],
+   "biome": "Aether Scar"
+  },
+  {
+   "kind": "faith",
+   "at": [
+    0.365,
+    0.515
+   ],
+   "biome": "Cathedral Graveyard"
+  },
+  {
+   "kind": "soul",
+   "at": [
+    0.185,
+    0.345
+   ],
+   "biome": "Blackwood"
+  }
+ ],
+ "points": [
+  {
+   "at": [
+    0.045,
+    0.449
+   ],
+   "nextToNode": 0,
+   "note": "Western granary crossroads"
+  },
+  {
+   "at": [
+    0.075,
+    0.359
+   ],
+   "nextToNode": 1,
+   "note": "Highland watchtower"
+  },
+  {
+   "at": [
+    0.315,
+    0.439
+   ],
+   "nextToNode": 2,
+   "note": "Arcane observatory approach"
+  },
+  {
+   "at": [
+    0.075,
+    0.649
+   ],
+   "nextToNode": 3,
+   "note": "Abandoned imperial forge"
+  },
+  {
+   "at": [
+    0.345,
+    0.519
+   ],
+   "nextToNode": 4,
+   "note": "Cathedral square"
+  },
+  {
+   "at": [
+    0.115,
+    0.339
+   ],
+   "nextToNode": 5,
+   "note": "Blackwood shrine"
+  },
+  {
+   "at": [
+    0.055,
+    0.479
+   ],
+   "nextToNode": 6,
+   "note": "Western market ruins"
+  },
+  {
+   "at": [
+    0.285,
+    0.189
+   ],
+   "nextToNode": 7,
+   "note": "Northern mountain gate"
+  },
+  {
+   "at": [
+    0.325,
+    0.459
+   ],
+   "nextToNode": 8,
+   "note": "Aether tower approach"
+  },
+  {
+   "at": [
+    0.105,
+    0.669
+   ],
+   "nextToNode": 9,
+   "note": "Southern forge road"
+  },
+  {
+   "at": [
+    0.355,
+    0.539
+   ],
+   "nextToNode": 10,
+   "note": "Bishop's ruined residence"
+  },
+  {
+   "at": [
+    0.145,
+    0.369
+   ],
+   "nextToNode": 11,
+   "note": "Forest burial ground"
+  },
+  {
+   "at": [
+    0.095,
+    0.469
+   ],
+   "nextToNode": 12,
+   "note": "Old imperial granary"
+  },
+  {
+   "at": [
+    0.305,
+    0.149
+   ],
+   "nextToNode": 13,
+   "note": "Northern iron quarry"
+  },
+  {
+   "at": [
+    0.335,
+    0.479
+   ],
+   "nextToNode": 14,
+   "note": "Arcane convergence"
+  },
+  {
+   "at": [
+    0.135,
+    0.689
+   ],
+   "nextToNode": 15,
+   "note": "Ember watchtower"
+  },
+  {
+   "at": [
+    0.345,
+    0.559
+   ],
+   "nextToNode": 16,
+   "note": "Cathedral cloister"
+  },
+  {
+   "at": [
+    0.165,
+    0.389
+   ],
+   "nextToNode": 17,
+   "note": "Blackwood chapel"
+  },
+  {
+   "at": [
+    0.075,
+    0.509
+   ],
+   "nextToNode": 18,
+   "note": "Western road junction"
+  },
+  {
+   "at": [
+    0.285,
+    0.819
+   ],
+   "nextToNode": 19,
+   "note": "Southern mountain gate"
+  },
+  {
+   "at": [
+    0.315,
+    0.569
+   ],
+   "nextToNode": 20,
+   "note": "Southern aether ruin"
+  },
+  {
+   "at": [
+    0.075,
+    0.689
+   ],
+   "nextToNode": 21,
+   "note": "Burned village"
+  },
+  {
+   "at": [
+    0.325,
+    0.539
+   ],
+   "nextToNode": 22,
+   "note": "Cathedral cemetery"
+  },
+  {
+   "at": [
+    0.115,
+    0.669
+   ],
+   "nextToNode": 23,
+   "note": "Sunken burial mound"
+  },
+  {
+   "at": [
+    0.095,
+    0.539
+   ],
+   "nextToNode": 24,
+   "note": "Southern market ruins"
+  },
+  {
+   "at": [
+    0.305,
+    0.859
+   ],
+   "nextToNode": 25,
+   "note": "Iron quarry approach"
+  },
+  {
+   "at": [
+    0.335,
+    0.529
+   ],
+   "nextToNode": 26,
+   "note": "Aether ruin"
+  },
+  {
+   "at": [
+    0.105,
+    0.319
+   ],
+   "nextToNode": 27,
+   "note": "Northern ember deposit"
+  },
+  {
+   "at": [
+    0.355,
+    0.469
+   ],
+   "nextToNode": 28,
+   "note": "Northern cathedral gate"
+  },
+  {
+   "at": [
+    0.145,
+    0.639
+   ],
+   "nextToNode": 29,
+   "note": "Fen shrine"
+  },
+  {
+   "at": [
+    0.055,
+    0.529
+   ],
+   "nextToNode": 30,
+   "note": "Provincial trade road"
+  },
+  {
+   "at": [
+    0.285,
+    0.859
+   ],
+   "nextToNode": 31,
+   "note": "Southern iron works"
+  },
+  {
+   "at": [
+    0.315,
+    0.549
+   ],
+   "nextToNode": 32,
+   "note": "Arcane tower foundation"
+  },
+  {
+   "at": [
+    0.135,
+    0.299
+   ],
+   "nextToNode": 33,
+   "note": "Northern forge"
+  },
+  {
+   "at": [
+    0.345,
+    0.489
+   ],
+   "nextToNode": 34,
+   "note": "Cathedral western gate"
+  },
+  {
+   "at": [
+    0.165,
+    0.619
+   ],
+   "nextToNode": 35,
+   "note": "Fen burial ground"
+  }
+ ]
+}

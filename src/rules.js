@@ -19,8 +19,9 @@ export const RES_NAMES = [null, ...SUBTYPES]; export const RES_CODE = Object.fro
 export const PHASES = ['economy', 'recruitment', 'movement', 'combat', 'building', 'control', 'endyear'];
 export const inb = (s, x, y) => x >= 0 && y >= 0 && x < s.N && y < s.N;
 export const ix = (s, x, y) => y * s.N + x;
-export const TERRAIN = ['plain', 'rock', 'water', 'forest', 'highland'];               // 0 plain · 1 rock / 2 deep water: impassable (nothing walks, nothing is built) · 3 forest: no Cavalry or Siege · 4 highland: a tower here may be 1 level higher
+export const TERRAIN = ['plain', 'rock', 'water', 'forest', 'highland', 'marsh'];               // 0 plain · 1 rock / 2 deep water: impassable (nothing walks, nothing is built) · 3 forest: no Cavalry or Siege · 4 highland: a tower here may be 1 level higher
 export const blocked = (s, x, y) => s.ter[y * s.N + x] === 1 || s.ter[y * s.N + x] === 2;
+export const noBuild = (s, x, y) => blocked(s, x, y) || s.ter[y * s.N + x] === 5;                     // marsh is walkable but nothing may be founded on it
 export const forestFor = (s, u, x, y) => s.ter[y * s.N + x] === 3 && (UNITS[u.type].class === 'Mounted' || UNITS[u.type].siege);
 export const manh = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 export function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -30,7 +31,8 @@ export const sizeFor = (np) => (np <= 2 ? 75 : Math.round(75 + (np - 2) * 485 / 
 export function newGame({ size = null, seed = (Math.random() * 1e9) | 0, res = null, layout = null, players = 2, mode = 'ffa', teams = null, terrain = null } = {}) {
   // players: 2..8 · mode: 'ffa' (every player alone) or 'teams' (teams[] gives each player's side; default alternating) · layout: a hand-made 2-player map (data/maps/*.json, one half, mirrored)
   // res: optional per-year budget FLOOR, e.g. { gold: 500, iron: 500 } (fast/dirty playtests) · terrain: force the landscape on/off (default: on for 3+ players)
-  const np = Math.max(2, Math.min(8, players)); size = size || sizeFor(np);
+  if (layout && layout.players) players = layout.players;                  // a large hand-made map fixes the player count and the board side
+  const np = Math.max(2, Math.min(8, players)); size = size || (layout && layout.boardSide) || sizeFor(np);
   const team = teams ? teams.slice(0, np) : mode === 'teams' ? Array.from({ length: np }, (_, i) => i % 2) : Array.from({ length: np }, (_, i) => i);
   const s = {
     N: size, np, mode, team, alive: Array(np).fill(true), seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winTeam: null, winReason: '',
@@ -73,12 +75,14 @@ export const towerAt = (s, x, y) => s.tg[ix(s, x, y)];
 // Scenario "Two Fortresses": 180-degree symmetric. Rulebook: a 30x30 cut of the full map is recommended for first tests; bigger sizes scale the same layout.
 function scenario(s, terrainFlag) {
   const N = s.N, sc = N / 30, rot = (p) => ({ x: N - 1 - p.x, y: N - 1 - p.y });
-  const L = s.layout, big = s.np > 2 || terrainFlag === true;
-  const F = big ? mapgen.fortresses(s) : [L ? { x: L.fortress[0], y: L.fortress[1] } : { x: Math.round(4 * sc), y: Math.round(14 * sc) }]; if (!big) F.push(rot(F[0]));
-  if (big) mapgen.landscape(s, F);                                           // N players or a landscape asked for: terrain first, then symmetric nodes and points
+  const L = s.layout, spec = L && L.terrain ? L : null, big = !spec && (s.np > 2 || terrainFlag === true);
+  const F = spec ? mapgen.specFortresses(s, spec) : big ? mapgen.fortresses(s) : [L ? { x: L.fortress[0], y: L.fortress[1] } : { x: Math.round(4 * sc), y: Math.round(14 * sc) }]; if (!big) F.push(rot(F[0]));
+  if (spec) mapgen.specLandscape(s, spec, F);
+  else if (big) mapgen.landscape(s, F);                                           // N players or a landscape asked for: terrain first, then symmetric nodes and points
   const taken = new Set(); const take = (p) => taken.add(ix(s, p.x, p.y));
   for (const f of F) for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) take({ x: f.x + dx, y: f.y + dy });
-  if (big) mapgen.populate(s, F, taken);
+  if (spec) mapgen.specPopulate(s, spec, taken);
+  else if (big) mapgen.populate(s, F, taken);
   else if (L) {                                                             // a hand-made layout: nodes and points for one half, mirrored by (x,y) -> (N-1-x, N-1-y)
     for (const q of L.points) for (const [x, y, kind] of [[q.node[0], q.node[1], q.kind], [rot({ x: q.node[0], y: q.node[1] }).x, rot({ x: q.node[0], y: q.node[1] }).y, q.kind]]) if (inb(s, x, y) && RES_CODE[kind]) s.res[ix(s, x, y)] = RES_CODE[kind];
     for (const q of L.points) for (const pt of [{ x: q.point[0], y: q.point[1] }, rot({ x: q.point[0], y: q.point[1] })]) if (inb(s, pt.x, pt.y) && !s.res[ix(s, pt.x, pt.y)] && !s.points.some((r) => r.x === pt.x && r.y === pt.y)) s.points.push(pt);
@@ -295,7 +299,7 @@ export function setRecruit(s, p, towerId, type) {
 }
 export function setBuildFoundation(s, p, builderId, x, y, spec) {
   const u = unitById(s, builderId); if (!u || u.owner !== p || !UNITS[u.type].builder || u.idle) return false;
-  const pos = plannedPos(s, u); if (Math.abs(pos.x - x) + Math.abs(pos.y - y) !== 1 || !inb(s, x, y) || s.ug[ix(s, x, y)] || s.tg[ix(s, x, y)] || blocked(s, x, y)) return false;
+  const pos = plannedPos(s, u); if (Math.abs(pos.x - x) + Math.abs(pos.y - y) !== 1 || !inb(s, x, y) || s.ug[ix(s, x, y)] || s.tg[ix(s, x, y)] || noBuild(s, x, y)) return false;
   if (spec === 'lair' && !s.pl[p].tech.dragonlore) return false;
   if (!SPECS_OK.includes(spec)) return false;                                  // Arcane Towers are made by pouring resources into a finished tower, never founded
   if (s.orders[p].builds.some((b) => b.kind === 'foundation' && b.x === x && b.y === y)) return false;
@@ -544,7 +548,7 @@ function building(s, order) {
       const pl = s.pl[o], cost = buildCost(b); if (!canAfford(pl, cost)) continue;
       if (b.kind === 'foundation') {
         const u = unitById(s, b.builderId); if (!u || u.owner !== o || u.z !== 0 || !UNITS[u.type].builder || Math.abs(u.x - b.x) + Math.abs(u.y - b.y) !== 1) continue;
-        if (s.ug[ix(s, b.x, b.y)] || s.tg[ix(s, b.x, b.y)] || blocked(s, b.x, b.y) || (b.spec === 'lair' && !pl.tech.dragonlore)) continue;
+        if (s.ug[ix(s, b.x, b.y)] || s.tg[ix(s, b.x, b.y)] || noBuild(s, b.x, b.y) || (b.spec === 'lair' && !pl.tech.dragonlore)) continue;
         spend(pl, cost);
         const t = addTower(s, o, b.x, b.y, b.spec, []); t.builtRound = s.round; say(s, `P${o + 1} lays a ${b.spec} foundation at (${b.x},${b.y}).`, o);
       } else {

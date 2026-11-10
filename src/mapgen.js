@@ -84,3 +84,46 @@ export function populate(s, F, taken) {
   }
   for (const p of chosen) for (const q of copies(p)) if (!s.points.some((r) => r.x === q.x && r.y === q.y)) s.points.push(q);
 }
+
+// ── hand-designed large maps ("sector specs", e.g. data/maps/large/*.json from the ChatGPT map session) ──
+// A spec describes ONE sector (player 0, the west) in fractions of the board side: terrain features (polygon | ellipse | line), crossings, nodes,
+// strategic points and the fortress. The other sectors are produced by rotating by 360/players degrees. Order of features matters: later paint over earlier.
+const TERR_CODE = { plain: 0, rock: 1, water: 2, forest: 3, highland: 4, marsh: 5 };
+export const specFortresses = (s, spec) => { const out = []; for (let k = 0; k < s.np; k++) out.push(rotk(s, { x: Math.round(spec.fortress[0] * s.N), y: Math.round(spec.fortress[1] * s.N) }, k)); return out; };
+const inPoly = (x, y, pts) => { let c = false; for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) { const [xi, yi] = pts[i], [xj, yj] = pts[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
+const segDist = (x, y, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy || 1e-9; let t = ((x - a[0]) * dx + (y - a[1]) * dy) / l2; t = Math.max(0, Math.min(1, t)); return Math.hypot(x - (a[0] + t * dx), y - (a[1] + t * dy)); };
+export function specLandscape(s, spec, F) {
+  const N = s.N, put = (x, y, code) => { if (x >= 0 && y >= 0 && x < N && y < N) s.ter[y * N + x] = code; };
+  const paint = (f, k) => {
+    const code = TERR_CODE[f.type], P = f.points.map(([x, y]) => [x * N, y * N]);
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity; for (const [x, y] of P) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
+    const pad = f.shape === 'line' ? (f.width || 0.03) * N : 1;
+    for (let y = Math.floor(y0 - pad); y <= Math.ceil(y1 + pad); y++) for (let x = Math.floor(x0 - pad); x <= Math.ceil(x1 + pad); x++) {
+      let hit = false;
+      if (f.shape === 'polygon') hit = inPoly(x + 0.5, y + 0.5, P);
+      else if (f.shape === 'ellipse') { const cx = (P[0][0] + P[1][0]) / 2, cy = (P[0][1] + P[1][1]) / 2, rx = Math.abs(P[1][0] - P[0][0]) / 2, ry = Math.abs(P[1][1] - P[0][1]) / 2; hit = ((x + 0.5 - cx) / rx) ** 2 + ((y + 0.5 - cy) / ry) ** 2 <= 1; }
+      else if (f.shape === 'line') hit = segDist(x + 0.5, y + 0.5, P[0], P[P.length - 1]) <= ((f.width || 0.03) * N) / 2;
+      if (hit) { const q = rotk(s, { x, y }, k); put(q.x, q.y, code); }
+    }
+  };
+  for (const f of spec.terrain) for (let k = 0; k < s.np; k++) paint(f, k);
+  const clear = (c, r) => { for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (dx * dx + dy * dy <= r * r) put(Math.round(c.x) + dx, Math.round(c.y) + dy, 0); };
+  for (const c of spec.crossings || []) for (let k = 0; k < s.np; k++) clear(rotk(s, { x: c.at[0] * N, y: c.at[1] * N }, k), Math.max(2, (c.width || 3) >> 1));   // designed crossings are open ground
+  for (const f of F) clear(f, Math.max(4, Math.round(0.03 * N)));
+  clear({ x: centre(s), y: centre(s) }, Math.max(4, Math.round(0.03 * N)));
+  // safety net: if a fortress still cannot reach the next one over land, carve a 3-wide road to the hub (and warn)
+  const reachable = () => { const seen = new Uint8Array(N * N), q = [F[0].y * N + F[0].x]; seen[q[0]] = 1; for (let h = 0; h < q.length; h++) { const k = q[h], x = k % N, y = (k - x) / N; for (const [a, b] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = x + a, ny = y + b; if (nx < 0 || ny < 0 || nx >= N || ny >= N) continue; const j = ny * N + nx; if (seen[j] || s.ter[j] === 1 || s.ter[j] === 2) continue; seen[j] = 1; q.push(j); } } return F.every((f) => seen[f.y * N + f.x]); };
+  if (!reachable()) { s.log.push({ msg: 'map spec: fortresses were cut off; carved roads to the hub', owner: -1, round: 0 }); const C = centre(s); for (const f of F) { const n = Math.ceil(Math.hypot(f.x - C, f.y - C)); for (let i = 0; i <= n; i++) clear({ x: f.x + ((C - f.x) * i) / n, y: f.y + ((C - f.y) * i) / n }, 1); } }
+}
+export function specPopulate(s, spec, taken) {
+  const N = s.N, ix = (x, y) => y * N + x, ok = (x, y) => x >= 1 && y >= 1 && x < N - 1 && y < N - 1;
+  const nodePos = spec.nodes.map((n) => ({ x: Math.round(n.at[0] * N), y: Math.round(n.at[1] * N), kind: n.kind }));
+  for (let k = 0; k < s.np; k++) for (const n of nodePos) { const q = rotk(s, n, k); if (!ok(q.x, q.y) || taken.has(ix(q.x, q.y)) || s.res[ix(q.x, q.y)]) continue; if (s.ter[ix(q.x, q.y)] !== 0) s.ter[ix(q.x, q.y)] = 0; s.res[ix(q.x, q.y)] = RES_CODE[n.kind]; taken.add(ix(q.x, q.y)); }
+  const spots = [];
+  for (const p of spec.points) {                                      // a point goes on the free square beside its node that lies closest to the stated position
+    const nd = nodePos[p.nextToNode] || nodePos[0], want = { x: p.at[0] * N, y: p.at[1] * N };
+    const opts = [[1, 0], [-1, 0], [0, 1], [0, -1]].map(([a, b]) => ({ x: nd.x + a, y: nd.y + b })).filter((c) => ok(c.x, c.y) && !nodePos.some((m) => m.x === c.x && m.y === c.y));
+    opts.sort((a, b) => Math.hypot(a.x - want.x, a.y - want.y) - Math.hypot(b.x - want.x, b.y - want.y)); if (opts[0]) spots.push(opts[0]);
+  }
+  for (let k = 0; k < s.np; k++) for (const sp of spots) { const q = rotk(s, sp, k); if (!ok(q.x, q.y) || s.res[ix(q.x, q.y)] || taken.has(ix(q.x, q.y)) || s.points.some((r) => r.x === q.x && r.y === q.y)) continue; if (s.ter[ix(q.x, q.y)] === 1 || s.ter[ix(q.x, q.y)] === 2) s.ter[ix(q.x, q.y)] = 0; s.points.push(q); }
+}
