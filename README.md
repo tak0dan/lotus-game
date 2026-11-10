@@ -40,14 +40,24 @@ siege-only tower destruction. The **Lotus** manifesto survives as the lore/world
 | Simulator `test/sim.mjs` | done |
 | Cards (units, tower, orders) `cards.html` | done — MTG-style, art rendered from the 3D models, printable 63×88 mm |
 | 3D models `assets/models/*.glb` | done: 8 figurines + 3 tower modules, in the style of the movie's war-room table (`reference/style-notes.md`) |
-| 3D client for the new game | **not built yet** (old Lotus client is archived); `spectate.html` is a 2D live viewer |
+| **Playable version** | `play.html` — a **2D prototype** (you vs the AI, real rules engine); `index.html` is the menu. The **3D client is not built yet** (the old Lotus 3D client is archived and still playable) |
 | Agent playtest harness | done: `tools/server.mjs`, `tools/tg.mjs`, `tools/play-match.sh` |
 
 ## Run
-    ./run.sh                              # static server -> http://localhost:8000/cards.html
-    node tools/server.mjs --bot1          # match server (you = player 0 via tools/tg.mjs, AI = player 1); spectate: /spectate.html
+**Play it (browser only — see the license):**
+
+    ./run.sh                    # serves the game on http://localhost:8000 and opens your browser at the menu
+    ./install.sh                # optional, Linux: per-user install — adds the `tower-game` command and an application-menu entry
+    tower-game                  # start (opens the browser) · tower-game stop · tower-game status · tower-game uninstall
+    ./uninstall.sh              # removes exactly what install.sh created (reads its manifest; never touches your browser data)
+
+`install.sh [--prefix DIR] [--bin DIR] [--port N] [--no-desktop] [--yes]` copies only the playable files (no docs/data/tests) to `~/.local/share/tower-game`, runs a **local-only** web server (127.0.0.1) and opens the game in your web browser — it is a convenience launcher, not a native app. On Windows/macOS there is no installer by design (see `LICENSE` §3.2): open the pages through any local web server.
+
+**Tools:**
+
+    node tools/server.mjs --bot1          # match server (you = player 0 via tools/tg.mjs, AI = player 1); watch at /spectate.html
     node test/sim.mjs [games] [yearCap] [seed] [size]     # AI-vs-AI statistics
-    tools/play-match.sh [yearCap] [seed] [model]          # TWO opencode agents play each other, dirty, and write findings (see below)
+    tools/play-match.sh [yearCap] [seed] [model]          # two agent sessions play each other, dirty, and write findings (see below)
 
 ## Dirty-play playtests
 `tools/play-match.sh` starts a local match server and two sandboxed opencode sessions (`--auto`, but bash limited to `node tg.mjs *`, edits limited to `findings.md`, no access outside the sandbox).

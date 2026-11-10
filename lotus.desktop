@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Lotus
-Comment=Lotus — tabletop strategy in 3D
-Exec=bash -c 'cd "$(dirname "%k")" && ./run.sh'
-Terminal=true
-Categories=Game;StrategyGame;

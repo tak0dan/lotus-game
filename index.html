@@ -1,95 +1,27 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>LOTUS — a game of sacrifice, faith and dominion</title>
-<link rel="icon" href="data:,"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><meta charset="utf-8"><title>THE TOWER GAME</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
 <style>
-  :root{--bg:#0b0f15;--panel:rgba(14,19,27,.88);--line:#2b3644;--ink:#d9d3c3;--dim:#8b8f94;--gold:#e8c477;--p0:#58b4ff;--p1:#ff6a55}
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI",system-ui,sans-serif;overflow:hidden}
-  canvas{display:block}
-  .panel{position:absolute;background:var(--panel);border:1px solid var(--line);border-radius:6px;backdrop-filter:blur(6px)}
-  h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:normal;margin:0}
-  #top{left:14px;top:14px;padding:10px 16px;display:flex;gap:18px;align-items:center}
-  #top h1{font-size:26px;letter-spacing:.35em;color:var(--gold)}
-  .pl{padding:2px 10px;border-radius:4px;border:1px solid var(--line);font-size:13px;opacity:.55}
-  .pl.on{opacity:1;box-shadow:0 0 0 1px currentColor}
-  .pl b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
-  #p0{color:var(--p0)}#p1{color:var(--p1)}
-  #turn{color:var(--dim);font-size:12px}
-  #hint{left:50%;bottom:96px;transform:translateX(-50%);padding:8px 18px;max-width:46vw;text-align:center;color:var(--gold);font-family:Georgia,serif;font-size:15px}
-  #bar{left:50%;bottom:16px;transform:translateX(-50%);padding:10px 14px;display:flex;gap:12px;align-items:center}
-  #die{width:56px;height:56px;border-radius:10px;background:#f1e9d2;color:#14110a;display:grid;place-items:center;font:700 30px Georgia,serif;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2),0 2px 8px #000a;user-select:none}
-  #die.roll{animation:wob .12s infinite}
-  @keyframes wob{50%{transform:rotate(9deg) scale(1.06)}}
-  button{background:#1b2431;color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:9px 14px;font:inherit;cursor:pointer}
-  button:hover:not(:disabled){border-color:var(--gold);color:#fff}
-  button:disabled{opacity:.35;cursor:default}
-  button.primary{background:#5b4720;border-color:var(--gold);color:#fff}
-  button.active{border-color:var(--gold);background:#3a3019}
-  #card{left:14px;bottom:16px;width:320px;padding:12px 14px}
-  #card h2{font-size:20px;display:flex;justify-content:space-between;align-items:baseline}
-  #card .sub{color:var(--dim);font-size:12px;margin-bottom:6px}
-  #card table{width:100%;border-collapse:collapse;font-size:13px}
-  #card td{padding:1px 0}#card td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-  #card .lore{margin-top:8px;font:italic 13px Georgia,serif;color:#b9b19c;border-top:1px solid var(--line);padding-top:7px}
-  #logp{right:14px;bottom:16px;width:340px;height:210px;padding:8px 12px;overflow:auto;font-size:12.5px}
-  #logp div{padding:1px 0;color:#aab}
-  #help{right:14px;top:14px;display:flex;gap:8px}
-  .modal{position:fixed;inset:0;background:rgba(5,7,10,.82);display:grid;place-items:center;z-index:10}
-  .modal .box{max-width:760px;max-height:88vh;overflow:auto;padding:30px 38px;background:#10161f;border:1px solid var(--line);border-radius:8px}
-  .modal h1{font-size:54px;letter-spacing:.5em;color:var(--gold);text-align:center;margin-bottom:2px;padding-left:.5em}
-  .modal .tag{text-align:center;color:var(--dim);letter-spacing:.2em;font-size:12px;text-transform:uppercase;margin-bottom:22px}
-  .modal p{margin:.5em 0}.modal h3{color:var(--gold);margin-top:16px}
-  .modal li{margin:3px 0}
-  .q{font:italic 18px Georgia,serif;color:#cdbf9a;text-align:center;margin:18px 0}
-  kbd{background:#222b38;border:1px solid var(--line);border-radius:3px;padding:0 5px}
-  #tip{position:absolute;pointer-events:none;background:#000d;border:1px solid var(--line);padding:5px 9px;border-radius:4px;font-size:12px;display:none;max-width:340px;line-height:1.5}
-  .hide{display:none!important}
+  :root{--bg:#15171d;--panel:#1c1f27;--line:#2c303b;--ink:#d9d3c3;--dim:#8b8f96;--gold:#e8c477}
+  *{box-sizing:border-box}body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#2a2f3c,var(--bg));color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,sans-serif;min-height:100vh}
+  main{max-width:880px;margin:0 auto;padding:48px 20px}
+  h1{font:700 44px Georgia,serif;letter-spacing:.32em;color:var(--gold);margin:0;text-align:center;padding-left:.32em}
+  .tag{text-align:center;color:var(--dim);letter-spacing:.18em;text-transform:uppercase;font-size:12px;margin:6px 0 34px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  a.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px 18px;color:inherit;text-decoration:none}
+  a.card:hover{border-color:var(--gold)}a.card b{display:block;color:var(--gold);font:700 17px Georgia,serif;margin-bottom:4px}a.card small{color:var(--dim);font-size:13px}
+  .note{margin-top:26px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:14px}code{color:var(--gold)}
+  .badge{display:inline-block;font:600 10px system-ui;letter-spacing:.1em;border:1px solid #3a4152;border-radius:9px;padding:1px 7px;margin-left:6px;color:#9db8ff;vertical-align:middle}
 </style>
-</head>
-<body>
-<div id="top" class="panel">
-  <h1>LOTUS</h1>
-  <div class="pl on" id="p0"><b>You</b><span></span></div>
-  <div class="pl" id="p1"><b>The Exiled Host (AI)</b><span></span></div>
-  <div id="turn"></div>
-</div>
-<div id="hint" class="panel"></div>
-<div id="help" class="panel" style="padding:6px"><button id="btnHelp">Codex</button><button id="btnNew">New game</button><button id="btnLog" title="Download the log of every recent game as JSON">Game log</button></div>
-<div id="bar" class="panel">
-  <div id="die">–</div>
-  <button id="bRoll" class="primary">Roll D6</button>
-  <button id="bMove">Move</button>
-  <button id="bSummon">Summon</button>
-  <button id="bRitual">Ritual</button>
-  <button id="bEmpower" class="hide">Sacrifice Lotus (+1 Level)</button>
-  <button id="bEnd">End turn</button>
-</div>
-<div id="card" class="panel hide"></div>
-<div id="logp" class="panel"></div>
-<div id="tip"></div>
-
-<div id="intro" class="modal"><div class="box">
-  <h1>LOTUS</h1>
-  <div class="tag">A tabletop strategy game of sacrifice, faith and territorial dominion</div>
-  <p>Aurelia was a prosperous realm until the Great Cathedral sank. Now its towers loom over exhausted land, every institution promises that the suffering has a purpose — and the Lotuses, older than the kingdoms, wait to be called back at a price.</p>
-  <p class="q">“In a world where everything demands a sacrifice, what is the difference between faith and exploitation?”</p>
-  <h3>The short version</h3>
-  <ul>
-    <li><b>Roll a D6.</b> Move that many units one action each, <b>or</b> summon the unit on the die (1 Archer · 2 Infantry · 3 Cavalry · 4 Ship · 6 Tower) beside a Tower. <b>5 is the Ritual:</b> sacrifice a unit for rerolls, hoping to call a Lotus.</li>
-    <li>Chess-like: pieces move in fixed patterns and a capture removes the piece. Infantry creep as <b>formations</b>; Cavalry charge; Archers shoot.</li>
-    <li><b>Win</b> by holding the gold <b>control points</b> with Towers, or by leaving the enemy with no Towers and no Infantry. The <b>Codex</b> button has every rule.</li>
-  </ul>
-  <p style="text-align:center;margin-top:24px"><button id="bStart" class="primary" style="font-size:17px;padding:12px 34px">Enter Aurelia</button></p>
-  <p style="text-align:center;color:var(--dim);font-size:12px">Drag to orbit · right-drag to pan · wheel to zoom</p>
-</div></div>
-
-<div id="rules" class="modal hide"><div class="box" id="rulesBox"></div></div>
-<div id="over" class="modal hide"><div class="box" style="text-align:center"><h1 id="overT" style="font-size:44px;letter-spacing:.2em"></h1><p class="q" id="overQ"></p><button id="bAgain" class="primary">Play again</button></div></div>
-
-<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
-<script type="module" src="./src/main.js"></script>
-</body>
-</html>
+<main>
+  <h1>THE TOWER GAME</h1>
+  <div class="tag">tabletop-first · deterministic · built on the lore of Lotus</div>
+  <div class="grid">
+    <a class="card" href="./play.html"><b>Play vs the AI <span class="badge">2D PROTOTYPE</span></b><small>The real rules engine: yearly secret orders, towers, economy, sieges. Click to plan, press End year.</small></a>
+    <a class="card" href="./play.html?rich=1"><b>Fast start <span class="badge">500 OF EACH</span></b><small>Same game with huge stockpiles, so money never gets in the way — for trying ideas quickly.</small></a>
+    <a class="card" href="./cards.html"><b>Cards</b><small>MTG-style cards for every unit, the tower and the orders. Art is rendered from the 3D models. Printable.</small></a>
+    <a class="card" href="./tools/viewer.html?model=dragon"><b>Model viewer</b><small>Every miniature and tower module on its own, with a scale ruler. Drop your own .glb to preview it.</small></a>
+    <a class="card" href="./archive/lotus-v2-d6/"><b>Lotus (archived) <span class="badge">3D · PLAYABLE</span></b><small>The previous game: D6 turns, the ritual, three Lotuses, 3D board. Kept whole.</small></a>
+    <a class="card" href="./spectate.html"><b>Live match viewer</b><small>Watch a match from the local match server (<code>node tools/server.mjs --bot1</code>).</small></a>
+  </div>
+  <div class="note">The 3D client for The Tower Game is not built yet — the 2D prototype above is the playable version. Rules: <code>reference-games/tower-game/</code> · License: <code>LICENSE</code> (play, print and build for free; nobody but the author sells it; browser only).</div>
+</main></html>

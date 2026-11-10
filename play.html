@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>THE TOWER GAME — play vs AI (2D prototype)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,">
+<style>
+  :root{--bg:#15171d;--panel:#1c1f27;--line:#2c303b;--ink:#d9d3c3;--dim:#8b8f96;--gold:#e8c477;--p0:#7f95c9;--p1:#d9794e}
+  *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 "Segoe UI",system-ui,sans-serif}
+  #app{display:flex;gap:14px;padding:12px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+  #left{display:flex;flex-direction:column;gap:6px}
+  canvas{background:#23262d;border:1px solid var(--line);border-radius:4px;cursor:crosshair;max-width:96vw;height:auto}
+  #hover{color:var(--dim);font-size:12px;min-height:1.4em}
+  #msg{min-height:1.4em;color:var(--gold)}
+  #side{width:400px;max-width:96vw;display:flex;flex-direction:column;gap:10px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+  h1{font:700 20px Georgia,serif;letter-spacing:.14em;color:var(--gold);margin:0}h2{font:700 13px system-ui;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+  .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  button,select{background:#252a36;color:#fff;border:1px solid #3a4152;border-radius:5px;padding:5px 9px;font:inherit;cursor:pointer}
+  button:hover:not(:disabled){border-color:var(--gold)}button:disabled{opacity:.4;cursor:default}button.go{background:#5b4720;border-color:var(--gold)}
+  .res b{display:inline-block;min-width:2.2em}.g{color:#e0b94f}.i{color:#a2abb6}.m{color:#7ea9ff}.p0{color:var(--p0)}.p1{color:var(--p1)}
+  #log{max-height:210px;overflow:auto;font-size:12.5px}#log div{padding:1px 0}
+  #orders div{display:flex;justify-content:space-between;gap:8px;padding:1px 0;font-size:13px}#orders button{padding:0 6px}
+  #cardbox .card{--cs:10px;margin:6px auto 0}
+  small{color:var(--dim)}a{color:var(--gold)}
+  #over{display:none;position:fixed;inset:0;background:#000b;place-items:center;z-index:5}#over .box{background:var(--panel);border:1px solid var(--gold);border-radius:8px;padding:26px 34px;max-width:520px;text-align:center}
+</style>
+<div id="app">
+  <div id="left"><canvas id="c" width="720" height="720"></canvas><div id="hover"></div><div id="msg"></div></div>
+  <div id="side">
+    <div class="panel"><h1>THE TOWER GAME</h1><small>2D prototype · you are <b class="p0">Slate</b> vs the AI <b class="p1">Rust</b> · <a href="./">menu</a> · <a href="?rich=1">fast start</a> · <a href="./play.html">normal</a></small></div>
+    <div class="panel" id="status"></div>
+    <div class="panel" id="sel"><small>Click one of your units or towers.</small></div>
+    <div class="panel"><div class="row"><button class="go" id="end">End year ▶ (Enter)</button><button id="clearall">Clear all orders</button></div>
+      <h2 style="margin-top:8px">Your orders</h2><div id="orders"></div></div>
+    <div class="panel" id="cardbox" style="display:none"></div>
+    <div class="panel"><h2>Log</h2><div id="log"></div></div>
+    <div class="panel"><small><b>How to play.</b> Each year you plan orders, then press <b>End year</b>; the AI plans in secret and everything resolves together: economy → recruitment → movement → combat → building → control → upkeep. Select a unit: <b>blue</b> squares are where it can move (click to order), <b>red</b> rings are enemies it can strike (click to attack). Siege engines are the only way to hurt towers and must not move. Select a tower to recruit or add levels; select an Infantry to <i>lay a foundation</i>. Win: hold the enemy fortress through a full year, hold a majority of the gold-ringed points (garrisoned towers) for 2 years, or leave the enemy without towers and builders. Full rules: <code>reference-games/tower-game/</code>.</small></div>
+  </div>
+</div>
+<div id="over"><div class="box"><h1 id="overT"></h1><p id="overR"></p><button class="go" onclick="location.reload()">Play again</button></div></div>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+<script type="module" src="./src/play.js"></script>
+</html>
