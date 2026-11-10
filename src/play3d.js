@@ -58,7 +58,7 @@ function render() {
   const desk = RES_ALL.filter((k) => pl[k] > 0).map((k) => { const I = RES_INFO[k], n = pl[k], t = used[k] || 0; return `<span class="dc${I.primary ? ' prim' : ''}" style="--c:${I.color}" title="${RES_NAME[k]}${I.primary ? ' (wild: any of its two kinds)' : ''}: ${n} this year, ${t} tapped by your orders">${Array.from({ length: Math.min(n, 12) }, (_, i) => `<i class="${i < t ? 'tap' : ''}"></i>`).join('')}<b>${n - t}</b>${RES_NAME[k]}</span>`; }).join('') || '<small>no cards this year</small>';
   const held = SUBTYPES.filter((k) => nodes[k]).map((k) => `${nodes[k]} ${RES_NAME[k]}`).join(', ') || 'none';
   const nxt = RES_ALL.filter((k) => inc[k]).map((k) => `${inc[k]} ${RES_NAME[k]}`).join(', ') || 'nothing';
-  $('status').innerHTML = `<h2>Year ${s.round} — your desk</h2><div class="desk">${desk}</div><small>Cards are tapped by your planned orders (${cost(com)}); <b>unspent cards are lost</b> at year end. A primary card (Physical/Mana/Spirit) is wild for its two kinds.<br>Nodes worked by you: ${held} · army upkeep ${up} Gold (gold first, then Physical)${pl.unpaid ? ` · <b style="color:#ff8d7a">${pl.unpaid} unit(s) idle: could not pay</b>` : ''}<br>Next year if nothing changes: ${nxt}</small>
+  $('status').innerHTML = `<h2>Round ${s.round} · your turn — your desk</h2><div class="desk">${desk}</div><small>Cards are tapped by your planned orders (${cost(com)}); <b>unspent cards are lost</b> at year end. A primary card (Physical/Mana/Spirit) is wild for its two kinds.<br>Nodes worked by you: ${held} · army upkeep ${up} Gold (gold first, then Physical)${pl.unpaid ? ` · <b style="color:#ff8d7a">${pl.unpaid} unit(s) idle: could not pay</b>` : ''}<br>Next year if nothing changes: ${nxt}</small>
     <div style="margin-top:6px"><small>Strategic points: you <b class="p0">${mh}</b> · best rival <b class="p1">${eh}</b> (need ${Math.floor(s.points.length / 2) + 1}, held ${s.pointsHeld[0]}/2 years) · enemy fortress held by you for ${s.held[0]} year(s)${ef ? '' : ' (gone)'}</small></div>
     <div class="row" style="margin-top:6px">${Object.entries(TECHS).map(([k, T]) => `<button data-act="research" data-tech="${k}" ${s.pl[0].tech[k] || s.orders[0].research.some((r) => r.tech === k) || !R.canAfford(pl, R.addCost(com, T.cost)) ? 'disabled' : ''} title="${T.text}">${T.name} (${cost(T.cost)})${s.pl[0].tech[k] ? ' ✓' : ''}</button>`).join('')}</div>`;
   renderSel(); renderOrders();
@@ -147,21 +147,25 @@ document.addEventListener('click', (e) => {
 });
 $('dl').onclick = downloadLog;
 $('clearall').onclick = () => { R.clearOrders(s, 0); say('All orders cleared.'); render(); };
-function endYear() {
-  if (s.winner !== null) return;
-  document.activeElement && document.activeElement.blur && document.activeElement.blur();   // so a held Enter cannot re-click the button
-  for (const p of R.playersOf(s)) if (p !== 0 && s.alive[p]) planYear(s, p);   // every other seat is an AI planning in secret
-  const yr = { year: s.round, budget: R.playersOf(s).map((o) => Object.fromEntries(RES_ALL.map((k) => [k, s.pl[o][k]]))), orders: JSON.parse(JSON.stringify(s.orders)) };
-  const before = s.log.length; R.resolveYear(s);
+let busy = false;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function endYear() {                                           // END TURN: your orders resolve now; then every other seat takes its turn, one after another, like chess
+  if (s.winner !== null || busy || s.turn !== 0) return;
+  busy = true; document.activeElement && document.activeElement.blur && document.activeElement.blur();
+  const before = s.log.length, yr = { round: s.round, seat: 0, budget: Object.fromEntries(RES_ALL.map((k) => [k, s.pl[0][k]])), orders: JSON.parse(JSON.stringify(s.orders[0])) };
+  R.resolveTurn(s); sel = null; info = null; mode = null; render();
+  while (s.winner === null && s.turn !== 0 && s.alive[0]) {
+    const p = s.turn; say(`Seat ${p + 1} (${NAME[p]}) is playing…`); await sleep(350);
+    planYear(s, p); const b2 = s.log.length; R.resolveTurn(s); render(); await sleep(550);
+  }
+  while (s.winner === null && !s.alive[0]) { planYear(s, s.turn); R.resolveTurn(s); }            // you are out: the others finish the game
   yr.events = s.log.slice(before).map((l) => l.msg); rec.years.push(yr); persist();
-  sel = null; info = null; mode = null;
-  say(`Year ${s.round - 1} resolved: ${s.log.length - before} event(s). Plan year ${s.round}.`);
-  render();
+  say(s.winner !== null ? 'Game over.' : `Round ${s.round}: your turn.`); busy = false; render();
 }
 $('end').onclick = endYear;
 addEventListener('keydown', (e) => {
   // Enter ends the year ONCE: ignore key auto-repeat, and let a focused button/select handle its own Enter (it used to fire twice per press)
-  if (e.key === 'Enter') { if (e.repeat || ['BUTTON', 'SELECT', 'INPUT'].includes(document.activeElement.tagName)) return; e.preventDefault(); endYear(); }
+  if (e.key === 'Enter') { if (busy) return; if (e.repeat || ['BUTTON', 'SELECT', 'INPUT'].includes(document.activeElement.tagName)) return; e.preventDefault(); endYear(); }
   if (e.key === 'Escape') { sel = null; info = null; mode = null; render(); }
 });
 

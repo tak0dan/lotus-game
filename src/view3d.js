@@ -5,7 +5,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from '../vendor/OrbitControls.js';
 import { makeModel, loadLibrary } from './modelLib.js';
-import { FOUNDATION_H, LEVEL_H, OWNER_COL } from './models.js';
+import { FOUNDATION_H, LEVEL_H, OWNER_COL, resourceMarker } from './models.js';
+import { mergeGeometries } from '../vendor/utils/BufferGeometryUtils.js';
 import { RES_INFO, SUBTYPES } from './balance.js';
 
 const HIGH = 0.35, hash = (x, y) => { let h = (Math.imul(x, 374761393) + Math.imul(y, 668265263)) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295; };
@@ -44,11 +45,21 @@ export async function createView(s, el, handlers = {}) {
   // water gets a faint sheen so it reads as water
   const wcells = []; for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (ter(x, y) === 2) wcells.push([x, y]);
   inst(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ color: 0x3f7bd0, roughness: 0.25, metalness: 0.2, transparent: true, opacity: 0.55 }), wcells, (d, x, y) => { d.position.set(W(x), 0.04, W(y)); d.rotation.set(-Math.PI / 2, 0, 0); d.scale.set(1, 1, 1); });
-  // resource nodes: crystals coloured by kind; strategic points: gold rings
-  const nodeCells = s.nodes.map((i) => [i % N, Math.floor(i / N)]);
-  const kindCol = ['', ...SUBTYPES.map((k) => RES_INFO[k].color)];
-  const nodeMesh = inst(new THREE.OctahedronGeometry(0.34, 0), new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x222222, roughness: 0.35, flatShading: true }), nodeCells, (d, x, y) => { d.position.set(W(x), 0.42 + ground(x, y), W(y)); d.scale.set(0.8, 1.25, 0.8); d.rotation.set(0, 0.5, 0); }, null);
-  if (nodeMesh) { nodeCells.forEach(([x, y], i) => { col.set(kindCol[s.res[y * N + x]]); nodeMesh.setColorAt(i, col); }); nodeMesh.instanceColor.needsUpdate = true; }
+  // resource nodes: one distinct 3D prop per kind (coin stack, ore rocks, blue crystals, embers, candle shrine, soul wisp) on a coloured disc; richer nodes (nearer the centre) are bigger and ringed
+  const GLOWKIND = { aether: 0x2a4a90, ember: 0x8a3a10, faith: 0x6a5a30, soul: 0x4a2a90 };
+  const flatten = (grp) => { grp.updateMatrixWorld(true); const gs = []; grp.traverse((o) => { if (!o.isMesh) return; const g = o.geometry.clone(); g.applyMatrix4(o.matrixWorld); const cc = new THREE.Color(o.material.color); const em = o.material.emissive ? new THREE.Color(o.material.emissive).multiplyScalar(o.material.emissiveIntensity || 0) : null; if (em) cc.add(em); const n = g.attributes.position.count, arr = new Float32Array(n * 3); for (let i = 0; i < n; i++) { arr[i * 3] = cc.r; arr[i * 3 + 1] = cc.g; arr[i * 3 + 2] = cc.b; } g.setAttribute('color', new THREE.BufferAttribute(arr, 3)); const ng = g.index ? g.toNonIndexed() : g; for (const k of Object.keys(ng.attributes)) if (!['position', 'normal', 'color'].includes(k)) ng.deleteAttribute(k); gs.push(ng); }); return mergeGeometries(gs); };
+  const byKind = {}; s.nodes.forEach((i) => { const k = SUBTYPES[s.res[i] - 1]; (byKind[k] || (byKind[k] = [])).push(i); });
+  const discGeo = new THREE.CircleGeometry(0.5, 20), ringGeo = new THREE.TorusGeometry(0.5, 0.035, 5, 28);
+  for (const [kind, list] of Object.entries(byKind)) {
+    const cells = list.map((i) => [i % N, Math.floor(i / N), (s.mult && s.mult[i]) || 1]);
+    const mk = new THREE.InstancedMesh(flatten(resourceMarker(kind)), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55, flatShading: true, emissive: GLOWKIND[kind] || 0x000000, emissiveIntensity: GLOWKIND[kind] ? 0.55 : 0 }), cells.length);
+    const disc = new THREE.InstancedMesh(discGeo, new THREE.MeshBasicMaterial({ color: RES_INFO[kind].color, transparent: true, opacity: 0.55, depthWrite: false }), cells.length), rings = [];
+    cells.forEach(([x, y, m], i) => { dummy.position.set(W(x), ground(x, y), W(y)); dummy.rotation.set(0, hash(x, y) * 6, 0); const sc = 1.15 + 0.3 * (m - 1); dummy.scale.set(sc, sc, sc); dummy.updateMatrix(); mk.setMatrixAt(i, dummy.matrix);
+      dummy.position.y = ground(x, y) + 0.03; dummy.rotation.set(-Math.PI / 2, 0, 0); dummy.scale.set(sc * 1.05, sc * 1.05, 1); dummy.updateMatrix(); disc.setMatrixAt(i, dummy.matrix);
+      for (let r = 1; r < m; r++) rings.push([x, y, r, sc]); });
+    scene.add(mk, disc);
+    if (rings.length) { const rm = new THREE.InstancedMesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xffe08a }), rings.length); rings.forEach(([x, y, r, sc], i) => { dummy.position.set(W(x), ground(x, y) + 0.05, W(y)); dummy.rotation.set(-Math.PI / 2, 0, 0); dummy.scale.setScalar(sc * (1.05 + 0.26 * r)); dummy.updateMatrix(); rm.setMatrixAt(i, dummy.matrix); }); scene.add(rm); }
+  }
   const ptMat = new THREE.MeshStandardMaterial({ color: 0xe8c477, emissive: 0x8a6a20, roughness: 0.4 });
   inst(new THREE.TorusGeometry(0.46, 0.05, 6, 24), ptMat, s.points.map((p) => [p.x, p.y]), (d, x, y) => { d.position.set(W(x), 0.07 + ground(x, y), W(y)); d.rotation.set(-Math.PI / 2, 0, 0); d.scale.set(1, 1, 1); });
 

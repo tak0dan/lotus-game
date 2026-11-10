@@ -141,7 +141,7 @@ export function startRing(s, F, taken) {                           // 10 nodes o
     const a = Math.atan2(C - f.y, C - f.x), cs = Math.cos(a), sn = Math.sin(a);
     for (const [kind, u, v] of START_PATTERN) {
       const bx = Math.round(f.x + u * cs - v * sn), by = Math.round(f.y + u * sn + v * cs); let done = false;
-      for (let r = 0; r <= 3 && !done; r++) for (let dy = -r; dy <= r && !done; dy++) for (let dx = -r; dx <= r && !done; dx++) { const x = bx + dx, y = by + dy; if (Math.max(Math.abs(dx), Math.abs(dy)) !== r || !free(x, y)) continue; if (s.ter[ix(x, y)] === 5) s.ter[ix(x, y)] = 0; s.res[ix(x, y)] = RES_CODE[kind]; taken.add(ix(x, y)); done = true; }
+      for (let r = 0; r <= 3 && !done; r++) for (let dy = -r; dy <= r && !done; dy++) for (let dx = -r; dx <= r && !done; dx++) { const x = bx + dx, y = by + dy; if (Math.max(Math.abs(dx), Math.abs(dy)) !== r || !free(x, y)) continue; if (s.ter[ix(x, y)] === 5 || s.ter[ix(x, y)] === 3) s.ter[ix(x, y)] = 0; s.res[ix(x, y)] = RES_CODE[kind]; taken.add(ix(x, y)); done = true; }
     }
   }
 }
@@ -181,7 +181,7 @@ export function islandPopulate(s, F, taken) {
   const copies = (pt) => Array.from({ length: ord }, (_, k) => rotk(s, pt, k));
   const nearFort = (p, r) => F.some((q) => Math.abs(q.x - p.x) + Math.abs(q.y - p.y) <= r);
   const polar = (rho, phi) => ({ x: Math.round(C + rho * Math.cos(phi)), y: Math.round(C + rho * Math.sin(phi)) });
-  const put = (kind, p, mult) => { const cs = copies(p); if (!cs.every((q) => ok(q.x, q.y)) || new Set(cs.map((q) => ix(q.x, q.y))).size !== ord) return false; for (const q of cs) { if (s.ter[ix(q.x, q.y)] === 5) s.ter[ix(q.x, q.y)] = 0; s.res[ix(q.x, q.y)] = RES_CODE[kind]; s.mult[ix(q.x, q.y)] = mult; taken.add(ix(q.x, q.y)); } return true; };
+  const put = (kind, p, mult) => { const cs = copies(p); if (!cs.every((q) => ok(q.x, q.y)) || new Set(cs.map((q) => ix(q.x, q.y))).size !== ord) return false; for (const q of cs) { if (s.ter[ix(q.x, q.y)] === 5 || s.ter[ix(q.x, q.y)] === 3) s.ter[ix(q.x, q.y)] = 0; s.res[ix(q.x, q.y)] = RES_CODE[kind]; s.mult[ix(q.x, q.y)] = mult; taken.add(ix(q.x, q.y)); } return true; };
   const wedge = () => Math.PI + (rng() - 0.5) * (TAU / ord);
   const zone = (kinds, n, rlo, rhi, mult, avoidFort) => { let placed = 0, guard = 0; while (placed < n && guard++ < 4000) { const kind = kinds[placed % kinds.length]; if (put(kind, ((p) => (avoidFort && nearFort(p, 10) ? { x: -1, y: -1 } : p))(polar(rlo + rng() * (rhi - rlo), wedge())), mult)) placed++; } };
   const nI = Math.max(4, Math.round(4 * Math.sqrt(f))), nM = Math.round(14 * Math.pow(f, 0.55)), nO = Math.round(18 * Math.pow(f, 0.6));
