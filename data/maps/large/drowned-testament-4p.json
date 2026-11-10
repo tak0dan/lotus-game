@@ -1,987 +1,1247 @@
 {
- "name": "The Drowned Testament",
- "players": 4,
- "boardSide": 237,
- "sector": "west",
- "fortress": [
-  0.14,
-  0.5
- ],
- "hub": [
-  0.5,
-  0.5
- ],
- "symmetry": {
-  "type": "rotation",
-  "order": 4,
-  "stepDegrees": 90,
-  "centre": [
-   0.5,
-   0.5
+  "name": "The Drowned Testament",
+  "players": 4,
+  "boardSide": 237,
+  "symmetry": {
+    "type": "rotation",
+    "order": 4
+  },
+  "coordinateSystem": "Fractions of board side; origin north-west; x increases east, y increases south.",
+  "sectorDefinition": "One western 90-degree wedge bounded by x <= 0.5 - abs(y - 0.5); rotate this sector 90 degrees for the other three seats.",
+  "fortress": [
+    0.14,
+    0.5
+  ],
+  "hub": [
+    0.5,
+    0.5
+  ],
+  "terrain": [
+    {
+      "type": "water",
+      "shape": "polygon",
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.115,
+          0.0
+        ],
+        [
+          0.075,
+          0.135
+        ],
+        [
+          0.0,
+          0.205
+        ]
+      ]
+    },
+    {
+      "type": "water",
+      "shape": "polygon",
+      "points": [
+        [
+          0.0,
+          0.795
+        ],
+        [
+          0.075,
+          0.865
+        ],
+        [
+          0.115,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    {
+      "type": "rock",
+      "shape": "polygon",
+      "points": [
+        [
+          0.145,
+          0.115
+        ],
+        [
+          0.205,
+          0.155
+        ],
+        [
+          0.245,
+          0.245
+        ],
+        [
+          0.19,
+          0.285
+        ],
+        [
+          0.135,
+          0.225
+        ]
+      ]
+    },
+    {
+      "type": "rock",
+      "shape": "polygon",
+      "points": [
+        [
+          0.145,
+          0.885
+        ],
+        [
+          0.205,
+          0.845
+        ],
+        [
+          0.245,
+          0.755
+        ],
+        [
+          0.19,
+          0.715
+        ],
+        [
+          0.135,
+          0.775
+        ]
+      ]
+    },
+    {
+      "type": "forest",
+      "shape": "polygon",
+      "points": [
+        [
+          0.025,
+          0.27
+        ],
+        [
+          0.115,
+          0.245
+        ],
+        [
+          0.18,
+          0.315
+        ],
+        [
+          0.145,
+          0.39
+        ],
+        [
+          0.055,
+          0.385
+        ]
+      ]
+    },
+    {
+      "type": "forest",
+      "shape": "polygon",
+      "points": [
+        [
+          0.025,
+          0.73
+        ],
+        [
+          0.115,
+          0.755
+        ],
+        [
+          0.18,
+          0.685
+        ],
+        [
+          0.145,
+          0.61
+        ],
+        [
+          0.055,
+          0.615
+        ]
+      ]
+    },
+    {
+      "type": "highland",
+      "shape": "polygon",
+      "points": [
+        [
+          0.245,
+          0.115
+        ],
+        [
+          0.31,
+          0.145
+        ],
+        [
+          0.345,
+          0.215
+        ],
+        [
+          0.29,
+          0.26
+        ],
+        [
+          0.235,
+          0.215
+        ]
+      ]
+    },
+    {
+      "type": "highland",
+      "shape": "polygon",
+      "points": [
+        [
+          0.245,
+          0.885
+        ],
+        [
+          0.31,
+          0.855
+        ],
+        [
+          0.345,
+          0.785
+        ],
+        [
+          0.29,
+          0.74
+        ],
+        [
+          0.235,
+          0.785
+        ]
+      ]
+    },
+    {
+      "type": "marsh",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.205,
+          0.365
+        ],
+        [
+          0.275,
+          0.425
+        ]
+      ]
+    },
+    {
+      "type": "marsh",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.205,
+          0.575
+        ],
+        [
+          0.275,
+          0.635
+        ]
+      ]
+    },
+    {
+      "type": "forest",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.3,
+          0.3
+        ],
+        [
+          0.35,
+          0.355
+        ]
+      ]
+    },
+    {
+      "type": "forest",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.3,
+          0.645
+        ],
+        [
+          0.35,
+          0.7
+        ]
+      ]
+    },
+    {
+      "type": "highland",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.355,
+          0.255
+        ],
+        [
+          0.385,
+          0.285
+        ]
+      ]
+    },
+    {
+      "type": "highland",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.355,
+          0.715
+        ],
+        [
+          0.385,
+          0.745
+        ]
+      ]
+    },
+    {
+      "type": "marsh",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.315,
+          0.455
+        ],
+        [
+          0.345,
+          0.485
+        ]
+      ]
+    },
+    {
+      "type": "marsh",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.315,
+          0.515
+        ],
+        [
+          0.345,
+          0.545
+        ]
+      ]
+    },
+    {
+      "type": "rock",
+      "shape": "polygon",
+      "points": [
+        [
+          0.405,
+          0.405
+        ],
+        [
+          0.465,
+          0.42
+        ],
+        [
+          0.475,
+          0.455
+        ],
+        [
+          0.43,
+          0.465
+        ]
+      ]
+    },
+    {
+      "type": "rock",
+      "shape": "polygon",
+      "points": [
+        [
+          0.405,
+          0.595
+        ],
+        [
+          0.465,
+          0.58
+        ],
+        [
+          0.475,
+          0.545
+        ],
+        [
+          0.43,
+          0.535
+        ]
+      ]
+    },
+    {
+      "type": "marsh",
+      "shape": "polygon",
+      "points": [
+        [
+          0.39,
+          0.475
+        ],
+        [
+          0.425,
+          0.485
+        ],
+        [
+          0.425,
+          0.515
+        ],
+        [
+          0.39,
+          0.525
+        ]
+      ]
+    },
+    {
+      "type": "marsh",
+      "shape": "polygon",
+      "points": [
+        [
+          0.455,
+          0.475
+        ],
+        [
+          0.485,
+          0.485
+        ],
+        [
+          0.485,
+          0.515
+        ],
+        [
+          0.455,
+          0.525
+        ]
+      ]
+    },
+    {
+      "type": "highland",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.385,
+          0.455
+        ],
+        [
+          0.405,
+          0.475
+        ]
+      ]
+    },
+    {
+      "type": "highland",
+      "shape": "ellipse",
+      "points": [
+        [
+          0.385,
+          0.525
+        ],
+        [
+          0.405,
+          0.545
+        ]
+      ]
+    }
+  ],
+  "crossings": [
+    {
+      "kind": "pass",
+      "at": [
+        0.245,
+        0.245
+      ],
+      "width": 9
+    },
+    {
+      "kind": "bridge",
+      "at": [
+        0.245,
+        0.755
+      ],
+      "width": 9
+    },
+    {
+      "kind": "ford",
+      "at": [
+        0.355,
+        0.355
+      ],
+      "width": 8
+    },
+    {
+      "kind": "causeway",
+      "at": [
+        0.355,
+        0.645
+      ],
+      "width": 8
+    }
+  ],
+  "nodes": [
+    {
+      "kind": "gold",
+      "at": [
+        0.19,
+        0.5
+      ],
+      "biome": "granary/market ruins",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.14,
+        0.445
+      ],
+      "biome": "granary/market ruins",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.14,
+        0.555
+      ],
+      "biome": "granary/market ruins",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.19,
+        0.47
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.19,
+        0.53
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.175,
+        0.455
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "faith",
+      "at": [
+        0.175,
+        0.545
+      ],
+      "biome": "graveyard or shrine",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "soul",
+      "at": [
+        0.195,
+        0.5
+      ],
+      "biome": "mass grave or reliquary",
+      "ring": "start",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.245,
+        0.455
+      ],
+      "biome": "granary/market ruins",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.26,
+        0.545
+      ],
+      "biome": "granary/market ruins",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.3,
+        0.485
+      ],
+      "biome": "granary/market ruins",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.245,
+        0.535
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.28,
+        0.43
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.315,
+        0.555
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "aether",
+      "at": [
+        0.345,
+        0.465
+      ],
+      "biome": "Architect ruin",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "ember",
+      "at": [
+        0.335,
+        0.535
+      ],
+      "biome": "ash vent",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "faith",
+      "at": [
+        0.29,
+        0.405
+      ],
+      "biome": "graveyard or shrine",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "faith",
+      "at": [
+        0.325,
+        0.595
+      ],
+      "biome": "graveyard or shrine",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "soul",
+      "at": [
+        0.27,
+        0.595
+      ],
+      "biome": "mass grave or reliquary",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "soul",
+      "at": [
+        0.355,
+        0.505
+      ],
+      "biome": "mass grave or reliquary",
+      "ring": "mid",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.39,
+        0.41
+      ],
+      "biome": "granary/market ruins",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.415,
+        0.5
+      ],
+      "biome": "granary/market ruins",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.39,
+        0.59
+      ],
+      "biome": "granary/market ruins",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "gold",
+      "at": [
+        0.445,
+        0.455
+      ],
+      "biome": "granary/market ruins",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.375,
+        0.355
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.43,
+        0.385
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.375,
+        0.645
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "iron",
+      "at": [
+        0.43,
+        0.615
+      ],
+      "biome": "quarry or broken foundry",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "aether",
+      "at": [
+        0.455,
+        0.405
+      ],
+      "biome": "Architect ruin",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "aether",
+      "at": [
+        0.465,
+        0.475
+      ],
+      "biome": "Architect ruin",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "aether",
+      "at": [
+        0.455,
+        0.595
+      ],
+      "biome": "Architect ruin",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "aether",
+      "at": [
+        0.42,
+        0.665
+      ],
+      "biome": "Architect ruin",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "aether",
+      "at": [
+        0.385,
+        0.535
+      ],
+      "biome": "Architect ruin",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "ember",
+      "at": [
+        0.465,
+        0.535
+      ],
+      "biome": "ash vent",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "ember",
+      "at": [
+        0.445,
+        0.645
+      ],
+      "biome": "ash vent",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "ember",
+      "at": [
+        0.405,
+        0.325
+      ],
+      "biome": "ash vent",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "faith",
+      "at": [
+        0.365,
+        0.285
+      ],
+      "biome": "graveyard or shrine",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "faith",
+      "at": [
+        0.365,
+        0.715
+      ],
+      "biome": "graveyard or shrine",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "soul",
+      "at": [
+        0.465,
+        0.325
+      ],
+      "biome": "mass grave or reliquary",
+      "ring": "far",
+      "seat": 0
+    },
+    {
+      "kind": "soul",
+      "at": [
+        0.465,
+        0.675
+      ],
+      "biome": "mass grave or reliquary",
+      "ring": "far",
+      "seat": 0
+    }
+  ],
+  "points": [
+    {
+      "at": [
+        0.198,
+        0.5
+      ],
+      "nextToNode": 0,
+      "ring": "start",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.14,
+        0.437
+      ],
+      "nextToNode": 1,
+      "ring": "start",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.132,
+        0.555
+      ],
+      "nextToNode": 2,
+      "ring": "start",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.19,
+        0.478
+      ],
+      "nextToNode": 3,
+      "ring": "start",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.198,
+        0.53
+      ],
+      "nextToNode": 4,
+      "ring": "start",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.175,
+        0.447
+      ],
+      "nextToNode": 5,
+      "ring": "start",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.167,
+        0.545
+      ],
+      "nextToNode": 6,
+      "ring": "start",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.195,
+        0.508
+      ],
+      "nextToNode": 7,
+      "ring": "start",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.253,
+        0.455
+      ],
+      "nextToNode": 8,
+      "ring": "mid",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.26,
+        0.537
+      ],
+      "nextToNode": 9,
+      "ring": "mid",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.292,
+        0.485
+      ],
+      "nextToNode": 10,
+      "ring": "mid",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.245,
+        0.543
+      ],
+      "nextToNode": 11,
+      "ring": "mid",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.288,
+        0.43
+      ],
+      "nextToNode": 12,
+      "ring": "mid",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.315,
+        0.547
+      ],
+      "nextToNode": 13,
+      "ring": "mid",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.337,
+        0.465
+      ],
+      "nextToNode": 14,
+      "ring": "mid",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.335,
+        0.543
+      ],
+      "nextToNode": 15,
+      "ring": "mid",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.298,
+        0.405
+      ],
+      "nextToNode": 16,
+      "ring": "mid",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.325,
+        0.587
+      ],
+      "nextToNode": 17,
+      "ring": "mid",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.262,
+        0.595
+      ],
+      "nextToNode": 18,
+      "ring": "mid",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.355,
+        0.513
+      ],
+      "nextToNode": 19,
+      "ring": "mid",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.398,
+        0.41
+      ],
+      "nextToNode": 20,
+      "ring": "far",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.415,
+        0.492
+      ],
+      "nextToNode": 21,
+      "ring": "far",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.382,
+        0.59
+      ],
+      "nextToNode": 22,
+      "ring": "far",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.445,
+        0.463
+      ],
+      "nextToNode": 23,
+      "ring": "far",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.383,
+        0.355
+      ],
+      "nextToNode": 24,
+      "ring": "far",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.43,
+        0.377
+      ],
+      "nextToNode": 25,
+      "ring": "far",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.367,
+        0.645
+      ],
+      "nextToNode": 26,
+      "ring": "far",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.43,
+        0.623
+      ],
+      "nextToNode": 27,
+      "ring": "far",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.463,
+        0.405
+      ],
+      "nextToNode": 28,
+      "ring": "far",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.465,
+        0.467
+      ],
+      "nextToNode": 29,
+      "ring": "far",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.447,
+        0.595
+      ],
+      "nextToNode": 30,
+      "ring": "far",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.42,
+        0.673
+      ],
+      "nextToNode": 31,
+      "ring": "far",
+      "seat": 0,
+      "note": "buried monument"
+    },
+    {
+      "at": [
+        0.393,
+        0.535
+      ],
+      "nextToNode": 32,
+      "ring": "far",
+      "seat": 0,
+      "note": "ruined watch-post"
+    },
+    {
+      "at": [
+        0.465,
+        0.527
+      ],
+      "nextToNode": 33,
+      "ring": "far",
+      "seat": 0,
+      "note": "collapsed chapel"
+    },
+    {
+      "at": [
+        0.437,
+        0.645
+      ],
+      "nextToNode": 34,
+      "ring": "far",
+      "seat": 0,
+      "note": "toll-house remains"
+    },
+    {
+      "at": [
+        0.405,
+        0.333
+      ],
+      "nextToNode": 35,
+      "ring": "far",
+      "seat": 0,
+      "note": "buried monument"
+    }
   ]
- },
- "targets": {
-  "nodesPerSector": 40,
-  "pointsPerSector": 36,
-  "crossingsPerSector": 4,
-  "impassableBoardFraction": 0.17
- },
- "terrain": [
-  {
-   "type": "water",
-   "shape": "polygon",
-   "points": [
-    [
-     0.025,
-     0.12
-    ],
-    [
-     0.15,
-     0.08
-    ],
-    [
-     0.255,
-     0.17
-    ],
-    [
-     0.3,
-     0.25
-    ],
-    [
-     0.245,
-     0.32
-    ],
-    [
-     0.12,
-     0.27
-    ],
-    [
-     0.035,
-     0.23
-    ]
-   ]
-  },
-  {
-   "type": "water",
-   "shape": "polygon",
-   "points": [
-    [
-     0.025,
-     0.78
-    ],
-    [
-     0.12,
-     0.73
-    ],
-    [
-     0.245,
-     0.68
-    ],
-    [
-     0.3,
-     0.75
-    ],
-    [
-     0.255,
-     0.83
-    ],
-    [
-     0.15,
-     0.92
-    ],
-    [
-     0.025,
-     0.88
-    ]
-   ]
-  },
-  {
-   "type": "rock",
-   "shape": "polygon",
-   "points": [
-    [
-     0.25,
-     0.045
-    ],
-    [
-     0.34,
-     0.075
-    ],
-    [
-     0.405,
-     0.16
-    ],
-    [
-     0.365,
-     0.255
-    ],
-    [
-     0.29,
-     0.205
-    ],
-    [
-     0.23,
-     0.12
-    ]
-   ]
-  },
-  {
-   "type": "rock",
-   "shape": "polygon",
-   "points": [
-    [
-     0.25,
-     0.955
-    ],
-    [
-     0.34,
-     0.925
-    ],
-    [
-     0.405,
-     0.84
-    ],
-    [
-     0.365,
-     0.745
-    ],
-    [
-     0.29,
-     0.795
-    ],
-    [
-     0.23,
-     0.88
-    ]
-   ]
-  },
-  {
-   "type": "highland",
-   "shape": "line",
-   "points": [
-    [
-     0.24,
-     0.27
-    ],
-    [
-     0.34,
-     0.34
-    ]
-   ],
-   "width": 0.035
-  },
-  {
-   "type": "highland",
-   "shape": "line",
-   "points": [
-    [
-     0.24,
-     0.73
-    ],
-    [
-     0.34,
-     0.66
-    ]
-   ],
-   "width": 0.035
-  },
-  {
-   "type": "forest",
-   "shape": "ellipse",
-   "points": [
-    [
-     0.035,
-     0.29
-    ],
-    [
-     0.21,
-     0.4
-    ]
-   ]
-  },
-  {
-   "type": "forest",
-   "shape": "ellipse",
-   "points": [
-    [
-     0.035,
-     0.6
-    ],
-    [
-     0.21,
-     0.71
-    ]
-   ]
-  },
-  {
-   "type": "marsh",
-   "shape": "polygon",
-   "points": [
-    [
-     0.025,
-     0.415
-    ],
-    [
-     0.13,
-     0.385
-    ],
-    [
-     0.225,
-     0.425
-    ],
-    [
-     0.235,
-     0.475
-    ],
-    [
-     0.15,
-     0.49
-    ],
-    [
-     0.025,
-     0.465
-    ]
-   ]
-  },
-  {
-   "type": "marsh",
-   "shape": "polygon",
-   "points": [
-    [
-     0.025,
-     0.535
-    ],
-    [
-     0.15,
-     0.51
-    ],
-    [
-     0.235,
-     0.525
-    ],
-    [
-     0.225,
-     0.575
-    ],
-    [
-     0.13,
-     0.615
-    ],
-    [
-     0.025,
-     0.585
-    ]
-   ]
-  },
-  {
-   "type": "highland",
-   "shape": "ellipse",
-   "points": [
-    [
-     0.265,
-     0.405
-    ],
-    [
-     0.365,
-     0.465
-    ]
-   ]
-  },
-  {
-   "type": "highland",
-   "shape": "ellipse",
-   "points": [
-    [
-     0.265,
-     0.535
-    ],
-    [
-     0.365,
-     0.595
-    ]
-   ]
-  },
-  {
-   "type": "forest",
-   "shape": "ellipse",
-   "points": [
-    [
-     0.295,
-     0.455
-    ],
-    [
-     0.375,
-     0.545
-    ]
-   ]
-  },
-  {
-   "type": "marsh",
-   "shape": "ellipse",
-   "points": [
-    [
-     0.375,
-     0.465
-    ],
-    [
-     0.435,
-     0.535
-    ]
-   ]
-  }
- ],
- "crossings": [
-  {
-   "kind": "pass",
-   "at": [
-    0.225,
-    0.225
-   ],
-   "width": 3
-  },
-  {
-   "kind": "bridge",
-   "at": [
-    0.385,
-    0.385
-   ],
-   "width": 3
-  },
-  {
-   "kind": "ford",
-   "at": [
-    0.225,
-    0.775
-   ],
-   "width": 3
-  },
-  {
-   "kind": "causeway",
-   "at": [
-    0.385,
-    0.615
-   ],
-   "width": 3
-  }
- ],
- "nodes": [
-  {
-   "kind": "gold",
-   "at": [
-    0.045,
-    0.445
-   ],
-   "biome": "Hollow Granaries"
-  },
-  {
-   "kind": "iron",
-   "at": [
-    0.075,
-    0.355
-   ],
-   "biome": "Broken Highlands"
-  },
-  {
-   "kind": "aether",
-   "at": [
-    0.315,
-    0.435
-   ],
-   "biome": "Aether Scar"
-  },
-  {
-   "kind": "ember",
-   "at": [
-    0.075,
-    0.645
-   ],
-   "biome": "Ember Marches"
-  },
-  {
-   "kind": "faith",
-   "at": [
-    0.345,
-    0.515
-   ],
-   "biome": "Cathedral Graveyard"
-  },
-  {
-   "kind": "soul",
-   "at": [
-    0.115,
-    0.335
-   ],
-   "biome": "Blackwood"
-  },
-  {
-   "kind": "gold",
-   "at": [
-    0.055,
-    0.475
-   ],
-   "biome": "Hollow Granaries"
-  },
-  {
-   "kind": "iron",
-   "at": [
-    0.285,
-    0.185
-   ],
-   "biome": "Iron Crown"
-  },
-  {
-   "kind": "aether",
-   "at": [
-    0.325,
-    0.455
-   ],
-   "biome": "Aether Scar"
-  },
-  {
-   "kind": "ember",
-   "at": [
-    0.105,
-    0.665
-   ],
-   "biome": "Ember Marches"
-  },
-  {
-   "kind": "faith",
-   "at": [
-    0.355,
-    0.535
-   ],
-   "biome": "Cathedral Graveyard"
-  },
-  {
-   "kind": "soul",
-   "at": [
-    0.145,
-    0.365
-   ],
-   "biome": "Blackwood"
-  },
-  {
-   "kind": "gold",
-   "at": [
-    0.095,
-    0.465
-   ],
-   "biome": "Hollow Granaries"
-  },
-  {
-   "kind": "iron",
-   "at": [
-    0.305,
-    0.145
-   ],
-   "biome": "Iron Crown"
-  },
-  {
-   "kind": "aether",
-   "at": [
-    0.335,
-    0.475
-   ],
-   "biome": "Aether Scar"
-  },
-  {
-   "kind": "ember",
-   "at": [
-    0.135,
-    0.685
-   ],
-   "biome": "Ember Marches"
-  },
-  {
-   "kind": "faith",
-   "at": [
-    0.345,
-    0.555
-   ],
-   "biome": "Cathedral Graveyard"
-  },
-  {
-   "kind": "soul",
-   "at": [
-    0.165,
-    0.385
-   ],
-   "biome": "Blackwood"
-  },
-  {
-   "kind": "gold",
-   "at": [
-    0.075,
-    0.505
-   ],
-   "biome": "Hollow Granaries"
-  },
-  {
-   "kind": "iron",
-   "at": [
-    0.285,
-    0.815
-   ],
-   "biome": "Iron Crown"
-  },
-  {
-   "kind": "aether",
-   "at": [
-    0.315,
-    0.565
-   ],
-   "biome": "Aether Scar"
-  },
-  {
-   "kind": "ember",
-   "at": [
-    0.075,
-    0.685
-   ],
-   "biome": "Ember Marches"
-  },
-  {
-   "kind": "faith",
-   "at": [
-    0.325,
-    0.535
-   ],
-   "biome": "Cathedral Graveyard"
-  },
-  {
-   "kind": "soul",
-   "at": [
-    0.115,
-    0.665
-   ],
-   "biome": "Mourning Fen"
-  },
-  {
-   "kind": "gold",
-   "at": [
-    0.095,
-    0.535
-   ],
-   "biome": "Hollow Granaries"
-  },
-  {
-   "kind": "iron",
-   "at": [
-    0.305,
-    0.855
-   ],
-   "biome": "Iron Crown"
-  },
-  {
-   "kind": "aether",
-   "at": [
-    0.335,
-    0.525
-   ],
-   "biome": "Aether Scar"
-  },
-  {
-   "kind": "ember",
-   "at": [
-    0.105,
-    0.315
-   ],
-   "biome": "Ember Marches"
-  },
-  {
-   "kind": "faith",
-   "at": [
-    0.355,
-    0.465
-   ],
-   "biome": "Cathedral Graveyard"
-  },
-  {
-   "kind": "soul",
-   "at": [
-    0.145,
-    0.635
-   ],
-   "biome": "Mourning Fen"
-  },
-  {
-   "kind": "gold",
-   "at": [
-    0.055,
-    0.525
-   ],
-   "biome": "Hollow Granaries"
-  },
-  {
-   "kind": "iron",
-   "at": [
-    0.285,
-    0.855
-   ],
-   "biome": "Iron Crown"
-  },
-  {
-   "kind": "aether",
-   "at": [
-    0.315,
-    0.545
-   ],
-   "biome": "Aether Scar"
-  },
-  {
-   "kind": "ember",
-   "at": [
-    0.135,
-    0.295
-   ],
-   "biome": "Ember Marches"
-  },
-  {
-   "kind": "faith",
-   "at": [
-    0.345,
-    0.485
-   ],
-   "biome": "Cathedral Graveyard"
-  },
-  {
-   "kind": "soul",
-   "at": [
-    0.165,
-    0.615
-   ],
-   "biome": "Mourning Fen"
-  },
-  {
-   "kind": "gold",
-   "at": [
-    0.125,
-    0.445
-   ],
-   "biome": "Hollow Granaries"
-  },
-  {
-   "kind": "iron",
-   "at": [
-    0.325,
-    0.165
-   ],
-   "biome": "Iron Crown"
-  },
-  {
-   "kind": "aether",
-   "at": [
-    0.345,
-    0.445
-   ],
-   "biome": "Aether Scar"
-  },
-  {
-   "kind": "faith",
-   "at": [
-    0.365,
-    0.515
-   ],
-   "biome": "Cathedral Graveyard"
-  },
-  {
-   "kind": "soul",
-   "at": [
-    0.185,
-    0.345
-   ],
-   "biome": "Blackwood"
-  }
- ],
- "points": [
-  {
-   "at": [
-    0.045,
-    0.449
-   ],
-   "nextToNode": 0,
-   "note": "Western granary crossroads"
-  },
-  {
-   "at": [
-    0.075,
-    0.359
-   ],
-   "nextToNode": 1,
-   "note": "Highland watchtower"
-  },
-  {
-   "at": [
-    0.315,
-    0.439
-   ],
-   "nextToNode": 2,
-   "note": "Arcane observatory approach"
-  },
-  {
-   "at": [
-    0.075,
-    0.649
-   ],
-   "nextToNode": 3,
-   "note": "Abandoned imperial forge"
-  },
-  {
-   "at": [
-    0.345,
-    0.519
-   ],
-   "nextToNode": 4,
-   "note": "Cathedral square"
-  },
-  {
-   "at": [
-    0.115,
-    0.339
-   ],
-   "nextToNode": 5,
-   "note": "Blackwood shrine"
-  },
-  {
-   "at": [
-    0.055,
-    0.479
-   ],
-   "nextToNode": 6,
-   "note": "Western market ruins"
-  },
-  {
-   "at": [
-    0.285,
-    0.189
-   ],
-   "nextToNode": 7,
-   "note": "Northern mountain gate"
-  },
-  {
-   "at": [
-    0.325,
-    0.459
-   ],
-   "nextToNode": 8,
-   "note": "Aether tower approach"
-  },
-  {
-   "at": [
-    0.105,
-    0.669
-   ],
-   "nextToNode": 9,
-   "note": "Southern forge road"
-  },
-  {
-   "at": [
-    0.355,
-    0.539
-   ],
-   "nextToNode": 10,
-   "note": "Bishop's ruined residence"
-  },
-  {
-   "at": [
-    0.145,
-    0.369
-   ],
-   "nextToNode": 11,
-   "note": "Forest burial ground"
-  },
-  {
-   "at": [
-    0.095,
-    0.469
-   ],
-   "nextToNode": 12,
-   "note": "Old imperial granary"
-  },
-  {
-   "at": [
-    0.305,
-    0.149
-   ],
-   "nextToNode": 13,
-   "note": "Northern iron quarry"
-  },
-  {
-   "at": [
-    0.335,
-    0.479
-   ],
-   "nextToNode": 14,
-   "note": "Arcane convergence"
-  },
-  {
-   "at": [
-    0.135,
-    0.689
-   ],
-   "nextToNode": 15,
-   "note": "Ember watchtower"
-  },
-  {
-   "at": [
-    0.345,
-    0.559
-   ],
-   "nextToNode": 16,
-   "note": "Cathedral cloister"
-  },
-  {
-   "at": [
-    0.165,
-    0.389
-   ],
-   "nextToNode": 17,
-   "note": "Blackwood chapel"
-  },
-  {
-   "at": [
-    0.075,
-    0.509
-   ],
-   "nextToNode": 18,
-   "note": "Western road junction"
-  },
-  {
-   "at": [
-    0.285,
-    0.819
-   ],
-   "nextToNode": 19,
-   "note": "Southern mountain gate"
-  },
-  {
-   "at": [
-    0.315,
-    0.569
-   ],
-   "nextToNode": 20,
-   "note": "Southern aether ruin"
-  },
-  {
-   "at": [
-    0.075,
-    0.689
-   ],
-   "nextToNode": 21,
-   "note": "Burned village"
-  },
-  {
-   "at": [
-    0.325,
-    0.539
-   ],
-   "nextToNode": 22,
-   "note": "Cathedral cemetery"
-  },
-  {
-   "at": [
-    0.115,
-    0.669
-   ],
-   "nextToNode": 23,
-   "note": "Sunken burial mound"
-  },
-  {
-   "at": [
-    0.095,
-    0.539
-   ],
-   "nextToNode": 24,
-   "note": "Southern market ruins"
-  },
-  {
-   "at": [
-    0.305,
-    0.859
-   ],
-   "nextToNode": 25,
-   "note": "Iron quarry approach"
-  },
-  {
-   "at": [
-    0.335,
-    0.529
-   ],
-   "nextToNode": 26,
-   "note": "Aether ruin"
-  },
-  {
-   "at": [
-    0.105,
-    0.319
-   ],
-   "nextToNode": 27,
-   "note": "Northern ember deposit"
-  },
-  {
-   "at": [
-    0.355,
-    0.469
-   ],
-   "nextToNode": 28,
-   "note": "Northern cathedral gate"
-  },
-  {
-   "at": [
-    0.145,
-    0.639
-   ],
-   "nextToNode": 29,
-   "note": "Fen shrine"
-  },
-  {
-   "at": [
-    0.055,
-    0.529
-   ],
-   "nextToNode": 30,
-   "note": "Provincial trade road"
-  },
-  {
-   "at": [
-    0.285,
-    0.859
-   ],
-   "nextToNode": 31,
-   "note": "Southern iron works"
-  },
-  {
-   "at": [
-    0.315,
-    0.549
-   ],
-   "nextToNode": 32,
-   "note": "Arcane tower foundation"
-  },
-  {
-   "at": [
-    0.135,
-    0.299
-   ],
-   "nextToNode": 33,
-   "note": "Northern forge"
-  },
-  {
-   "at": [
-    0.345,
-    0.489
-   ],
-   "nextToNode": 34,
-   "note": "Cathedral western gate"
-  },
-  {
-   "at": [
-    0.165,
-    0.619
-   ],
-   "nextToNode": 35,
-   "note": "Fen burial ground"
-  }
- ]
 }

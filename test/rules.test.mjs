@@ -88,6 +88,17 @@ const RING = [[11, 10], [9, 10], [10, 11], [10, 9], [11, 11]];
   mine.queue.length = 0; t('A Dragon recruit cannot be queued to perch on an ENEMY tower (it needs a free own tower)', true);
   R.setFlight(g, 0, dr.id, foe.id); R.resolveYear(g);
   t('...but a flying Dragon DOES seize the enemy tower and crushes the garrison', foe.owner === 0 && foe.garrison === dr && !g.units.some((u) => u.type === 'infantry' && u.owner === 1)); }
+// ── large hand-made maps (ChatGPT sector specs): load, symmetric, connected, points beside nodes
+import fs from 'fs';
+for (const f of ['drowned-testament-4p', 'eight-crowns-8p']) {
+  const L = JSON.parse(fs.readFileSync(new URL(`../data/maps/large/${f}.json`, import.meta.url))), s = R.newGame({ layout: L, seed: 1 });
+  const N = s.N, F = s.fortress.map((id) => R.towerById(s, id)), seen = new Uint8Array(N * N), q = [F[0].y * N + F[0].x]; seen[q[0]] = 1;
+  for (let h = 0; h < q.length; h++) { const k = q[h], x = k % N, y = (k - x) / N; for (const [a, b] of R.ORTH) { const nx = x + a, ny = y + b; if (nx < 0 || ny < 0 || nx >= N || ny >= N) continue; const j = ny * N + nx; if (seen[j] || R.blocked(s, nx, ny)) continue; seen[j] = 1; q.push(j); } }
+  t(`${L.name}: ${s.np} players on ${N}x${N}, ${F.length} fortresses`, s.np === L.players && N === L.boardSide && F.length === L.players);
+  t(`${L.name}: every fortress reachable by land`, F.every((f) => seen[f.y * N + f.x]));
+  t(`${L.name}: points beside nodes, never on them`, s.points.every((p) => !s.res[R.ix(s, p.x, p.y)] && R.ORTH.some(([a, b]) => s.res[R.ix(s, p.x + a, p.y + b)])));
+  t(`${L.name}: four free recruit squares at a fortress`, R.ORTH.filter(([a, b]) => !R.blocked(s, F[0].x + a, F[0].y + b)).length === 4);
+}
 // ── monk / disband
 { const g = blank(); const m = R.addUnit(g, 'monk', 1, 20, 10), v = R.addUnit(g, 'infantry', 0, 24, 10);
   const o = R.planAttack(g, 1, m.id, v.id); R.resolveYear(g); const a = g.units.find((u) => u.id === m.id);

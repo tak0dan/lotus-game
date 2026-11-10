@@ -15,10 +15,13 @@ export function fortresses(s) {                                    // player p s
   for (let p = 0; p < s.np; p++) { const a = Math.PI + (TAU * p) / s.np; out.push({ x: Math.round(C + R * Math.cos(a)), y: Math.round(C + R * Math.sin(a)) }); }
   return out;
 }
+export const orderOf = (s) => s.symOrder || s.np;                    // how many rotated copies make the board (a map with 2 fortresses per quadrant has order 4 for 8 players)
 export function rotk(s, pt, k) {                                   // rotate a square by k sectors about the board centre
-  if (k === 0) return { x: pt.x, y: pt.y };
-  if (s.np === 2) return { x: s.N - 1 - pt.x, y: s.N - 1 - pt.y };
-  const C = centre(s), a = (TAU * k) / s.np, dx = pt.x - C, dy = pt.y - C;
+  const ord = orderOf(s); if (k === 0) return { x: pt.x, y: pt.y };
+  if (ord === 2) return { x: s.N - 1 - pt.x, y: s.N - 1 - pt.y };
+  const C = centre(s);
+  if (ord === 4) { let dx = pt.x - C, dy = pt.y - C; for (let i = 0; i < k; i++) { const t = dx; dx = -dy; dy = t; } return { x: Math.round(C + dx), y: Math.round(C + dy) }; }       // exact quarter turns
+  const a = (TAU * k) / ord, dx = pt.x - C, dy = pt.y - C;
   return { x: Math.round(C + dx * Math.cos(a) - dy * Math.sin(a)), y: Math.round(C + dx * Math.sin(a) + dy * Math.cos(a)) };
 }
 function fold(s, x, y) {                                           // bring any square into player 0's sector
@@ -89,7 +92,7 @@ export function populate(s, F, taken) {
 // A spec describes ONE sector (player 0, the west) in fractions of the board side: terrain features (polygon | ellipse | line), crossings, nodes,
 // strategic points and the fortress. The other sectors are produced by rotating by 360/players degrees. Order of features matters: later paint over earlier.
 const TERR_CODE = { plain: 0, rock: 1, water: 2, forest: 3, highland: 4, marsh: 5 };
-export const specFortresses = (s, spec) => { const out = []; for (let k = 0; k < s.np; k++) out.push(rotk(s, { x: Math.round(spec.fortress[0] * s.N), y: Math.round(spec.fortress[1] * s.N) }, k)); return out; };
+export const specFortresses = (s, spec) => { const out = [], base = spec.fortresses || [spec.fortress]; for (let k = 0; k < orderOf(s); k++) for (const f of base) out.push(rotk(s, { x: Math.round(f[0] * s.N), y: Math.round(f[1] * s.N) }, k)); return out; };
 const inPoly = (x, y, pts) => { let c = false; for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) { const [xi, yi] = pts[i], [xj, yj] = pts[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
 const segDist = (x, y, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy || 1e-9; let t = ((x - a[0]) * dx + (y - a[1]) * dy) / l2; t = Math.max(0, Math.min(1, t)); return Math.hypot(x - (a[0] + t * dx), y - (a[1] + t * dy)); };
 export function specLandscape(s, spec, F) {
@@ -106,9 +109,9 @@ export function specLandscape(s, spec, F) {
       if (hit) { const q = rotk(s, { x, y }, k); put(q.x, q.y, code); }
     }
   };
-  for (const f of spec.terrain) for (let k = 0; k < s.np; k++) paint(f, k);
+  for (const f of spec.terrain) for (let k = 0; k < orderOf(s); k++) paint(f, k);
   const clear = (c, r) => { for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (dx * dx + dy * dy <= r * r) put(Math.round(c.x) + dx, Math.round(c.y) + dy, 0); };
-  for (const c of spec.crossings || []) for (let k = 0; k < s.np; k++) clear(rotk(s, { x: c.at[0] * N, y: c.at[1] * N }, k), Math.max(2, (c.width || 3) >> 1));   // designed crossings are open ground
+  for (const c of spec.crossings || []) for (let k = 0; k < orderOf(s); k++) clear(rotk(s, { x: c.at[0] * N, y: c.at[1] * N }, k), Math.max(2, (c.width || 3) >> 1));   // designed crossings are open ground
   for (const f of F) clear(f, Math.max(4, Math.round(0.03 * N)));
   clear({ x: centre(s), y: centre(s) }, Math.max(4, Math.round(0.03 * N)));
   // safety net: if a fortress still cannot reach the next one over land, carve a 3-wide road to the hub (and warn)
@@ -118,12 +121,12 @@ export function specLandscape(s, spec, F) {
 export function specPopulate(s, spec, taken) {
   const N = s.N, ix = (x, y) => y * N + x, ok = (x, y) => x >= 1 && y >= 1 && x < N - 1 && y < N - 1;
   const nodePos = spec.nodes.map((n) => ({ x: Math.round(n.at[0] * N), y: Math.round(n.at[1] * N), kind: n.kind }));
-  for (let k = 0; k < s.np; k++) for (const n of nodePos) { const q = rotk(s, n, k); if (!ok(q.x, q.y) || taken.has(ix(q.x, q.y)) || s.res[ix(q.x, q.y)]) continue; if (s.ter[ix(q.x, q.y)] !== 0) s.ter[ix(q.x, q.y)] = 0; s.res[ix(q.x, q.y)] = RES_CODE[n.kind]; taken.add(ix(q.x, q.y)); }
+  for (let k = 0; k < orderOf(s); k++) for (const n of nodePos) { const q = rotk(s, n, k); if (!ok(q.x, q.y) || taken.has(ix(q.x, q.y)) || s.res[ix(q.x, q.y)]) continue; if (s.ter[ix(q.x, q.y)] !== 0) s.ter[ix(q.x, q.y)] = 0; s.res[ix(q.x, q.y)] = RES_CODE[n.kind]; taken.add(ix(q.x, q.y)); }
   const spots = [];
   for (const p of spec.points) {                                      // a point goes on the free square beside its node that lies closest to the stated position
     const nd = nodePos[p.nextToNode] || nodePos[0], want = { x: p.at[0] * N, y: p.at[1] * N };
     const opts = [[1, 0], [-1, 0], [0, 1], [0, -1]].map(([a, b]) => ({ x: nd.x + a, y: nd.y + b })).filter((c) => ok(c.x, c.y) && !nodePos.some((m) => m.x === c.x && m.y === c.y));
     opts.sort((a, b) => Math.hypot(a.x - want.x, a.y - want.y) - Math.hypot(b.x - want.x, b.y - want.y)); if (opts[0]) spots.push(opts[0]);
   }
-  for (let k = 0; k < s.np; k++) for (const sp of spots) { const q = rotk(s, sp, k); if (!ok(q.x, q.y) || s.res[ix(q.x, q.y)] || taken.has(ix(q.x, q.y)) || s.points.some((r) => r.x === q.x && r.y === q.y)) continue; if (s.ter[ix(q.x, q.y)] === 1 || s.ter[ix(q.x, q.y)] === 2) s.ter[ix(q.x, q.y)] = 0; s.points.push(q); }
+  for (let k = 0; k < orderOf(s); k++) for (const sp of spots) { const q = rotk(s, sp, k); if (!ok(q.x, q.y) || s.res[ix(q.x, q.y)] || taken.has(ix(q.x, q.y)) || s.points.some((r) => r.x === q.x && r.y === q.y)) continue; if (s.ter[ix(q.x, q.y)] === 1 || s.ter[ix(q.x, q.y)] === 2) s.ter[ix(q.x, q.y)] = 0; s.points.push(q); }
 }

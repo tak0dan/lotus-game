@@ -35,7 +35,7 @@ export function newGame({ size = null, seed = (Math.random() * 1e9) | 0, res = n
   const np = Math.max(2, Math.min(8, players)); size = size || (layout && layout.boardSide) || sizeFor(np);
   const team = teams ? teams.slice(0, np) : mode === 'teams' ? Array.from({ length: np }, (_, i) => i % 2) : Array.from({ length: np }, (_, i) => i);
   const s = {
-    N: size, np, mode, team, alive: Array(np).fill(true), seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winTeam: null, winReason: '',
+    N: size, np, symOrder: (layout && layout.symmetry && layout.symmetry.order) || np, mode, team, alive: Array(np).fill(true), seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winTeam: null, winReason: '',
     res: new Uint8Array(size * size), ter: new Uint8Array(size * size), nodes: [], points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
     pl: Array.from({ length: np }, () => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false, runic: false }, unpaid: 0 })), floor: res,
     orders: Array.from({ length: np }, blankOrders), clashes: [], log: [], events: [], fortress: Array(np).fill(null), held: Array(np).fill(0), capt: Array(np).fill(null), pointsHeld: Array(np).fill(0), teamPoints: {},
