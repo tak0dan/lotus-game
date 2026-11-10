@@ -61,7 +61,7 @@ function unitRules(t) {
   if (u.hitrun) out.push('<b>Strike and return.</b> Moves to the target, strikes, then moves back exactly as far as it came.');
   if (u.priest) out.push(`<b>Ward.</b> Each friend within ${PRIEST_RADIUS} squares voids ONE lethal hit a year.`);
   for (const [fam, who] of Object.entries(DOUBLERS)) if (who.includes(t)) out.push(`<b>Doubles ${FAMILIES[fam].name}.</b> On a ${FAMILIES[fam].name} node it yields ${YIELD.double}, not ${YIELD.unit}.`);
-  out.push(`<b>Recruit:</b> ${SPECS[u.at].name}${u.minLevel > 1 ? ` lvl ${u.minLevel}+` : ''}, ${u.time} yr${u.time > 1 ? 's' : ''}${u.tech ? ' · Dragonlore' : ''}.`);
+  out.push(`<b>Recruit:</b> ${SPECS[u.at].name}${u.minLevel > 1 ? ` lvl ${u.minLevel}+` : ''}, same turn${u.tech ? ' · Dragonlore' : ''}.`);
   return out;
 }
 const stat = (k, v) => `<div class="st"><b>${v}</b><span>${k}</span></div>`;

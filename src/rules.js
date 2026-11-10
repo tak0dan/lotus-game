@@ -401,25 +401,26 @@ export function refreshBudgetFor(s, o) {                                   // th
 }
 
 function freeNeighbour(s, x, y) { for (const [dx, dy] of ORTH) { const nx = x + dx, ny = y + dy; if (inb(s, nx, ny) && !s.ug[ix(s, nx, ny)] && !s.tg[ix(s, nx, ny)] && !blocked(s, nx, ny)) return { x: nx, y: ny }; } return null; }
-function recruitment(s, order) {
-  for (const o of order) {
-    for (const t of s.towers.filter((z) => z.owner === o)) {            // finish what is in the queue
-      for (const it of t.queue) it.left--;
-      for (const it of [...t.queue]) if (it.left <= 0 && UNITS[it.type].flying) {       // a hatchling must perch at once on a free tower of height 3+ (not arcane) — or it dies
-        t.queue.splice(t.queue.indexOf(it), 1);
-        const perch = [t, ...s.towers.filter((z) => z !== t && z.owner === o)].filter((z) => z.owner === o && canPerch(z) && !z.garrison).sort((a, b) => (a === t ? -1 : b === t ? 1 : (Math.abs(a.x - t.x) + Math.abs(a.y - t.y)) - (Math.abs(b.x - t.x) + Math.abs(b.y - t.y))))[0];
-        if (!perch) { say(s, `P${o + 1}'s Dragon hatches with nowhere to perch and dies.`, o); s.events.push({ t: 'hatchDied', tower: t.id }); continue; }
-        const u = addUnit(s, it.type, o, perch.x, perch.y, 1); perch.garrison = u; s.events.push({ t: 'towerGarrison', id: perch.id, unit: u.id }); say(s, `P${o + 1} Dragon hatches and perches on the tower at (${perch.x},${perch.y}).`, o);
-      }
-      for (const it of [...t.queue]) if (it.left <= 0) { const c = freeNeighbour(s, t.x, t.y); if (!c) { it.left = 0; continue; } const u = addUnit(s, it.type, o, c.x, c.y); u.moved = false; t.queue.splice(t.queue.indexOf(it), 1); say(s, `P${o + 1} ${UNITS[it.type].name} musters at (${c.x},${c.y}).`, o); }
+function recruitment(s, order) {                                          // units appear in the SAME turn they are ordered (no build time): the order is paid and the figure is placed at once
+  const settle = (o, t) => {
+    for (const it of [...t.queue]) if (it.left <= 0 && UNITS[it.type].flying) {       // a Dragon perches at once on a free tower of height 3+ (not arcane): the lair itself first, else the nearest — or it dies
+      t.queue.splice(t.queue.indexOf(it), 1);
+      const perch = [t, ...s.towers.filter((z) => z !== t && z.owner === o)].filter((z) => z.owner === o && canPerch(z) && !z.garrison).sort((a, b) => (a === t ? -1 : b === t ? 1 : (Math.abs(a.x - t.x) + Math.abs(a.y - t.y)) - (Math.abs(b.x - t.x) + Math.abs(b.y - t.y))))[0];
+      if (!perch) { say(s, `P${o + 1}'s Dragon hatches with nowhere to perch and dies.`, o); s.events.push({ t: 'hatchDied', tower: t.id }); continue; }
+      const u = addUnit(s, it.type, o, perch.x, perch.y, 1); perch.garrison = u; s.events.push({ t: 'towerGarrison', id: perch.id, unit: u.id }); say(s, `P${o + 1} Dragon hatches and perches on the tower at (${perch.x},${perch.y}).`, o);
     }
-    for (const r of s.orders[o].recruits) {                              // new orders: pay now
+    for (const it of [...t.queue]) if (it.left <= 0) { const c = freeNeighbour(s, t.x, t.y); if (!c) { it.left = 0; continue; } const u = addUnit(s, it.type, o, c.x, c.y); u.moved = false; t.queue.splice(t.queue.indexOf(it), 1); say(s, `P${o + 1} ${UNITS[it.type].name} musters at (${c.x},${c.y}).`, o); }
+  };
+  for (const o of order) {
+    for (const t of s.towers.filter((z) => z.owner === o)) { for (const it of t.queue) it.left--; settle(o, t); }       // anything left over (a blocked square last time)
+    for (const r of s.orders[o].recruits) {
       const t = towerById(s, r.towerId), pl = s.pl[o]; if (!t || t.owner !== o || !recruitable(s, t, r.type) || t.queue.length >= queueSlots(t)) continue;
       if (pl.unpaid > 0) { say(s, `P${o + 1} cannot recruit: unpaid upkeep.`, o); continue; }
+      if (!UNITS[r.type].flying && !freeNeighbour(s, t.x, t.y)) { say(s, `P${o + 1} cannot recruit at (${t.x},${t.y}): every square beside the tower is occupied.`, o); continue; }
       const cost = UNITS[r.type].cost; if (!canAfford(pl, cost)) continue;
       spend(pl, cost);
       t.queue.push({ type: r.type, left: UNITS[r.type].time }); s.events.push({ t: 'recruit', tower: t.id, type: r.type });
-      say(s, `P${o + 1} orders ${UNITS[r.type].name} at (${t.x},${t.y}).`, o);
+      say(s, `P${o + 1} orders ${UNITS[r.type].name} at (${t.x},${t.y}).`, o); settle(o, t);
     }
   }
 }

@@ -33,18 +33,18 @@ export const RES_INFO = {                                                       
 // ── Units ───────────────────────────────────────────────────────────────────────────────────────────
 // mov: squares per year (orthogonal, 1 each) · hits: how many hits it takes to kill it THIS YEAR (a unit that survives is whole again next year) · rng: 0 = melee
 // There are NO attack/defence numbers: every strike is exactly one hit. A Heavy unit also voids one hit a year from its light version or from a distance; a Priest wards its friends.
-// upkeep: gold per year (RB) · cost: paid when ordered · time: years to recruit · at: building spec that can recruit it · minLevel: tower levels needed
+// upkeep: gold per year (RB) · cost: paid when ordered · time: always 0 — a recruit appears in the same turn it is ordered (designer: deterministic, it happens in one year) · at: building spec that can recruit it · minLevel: tower levels needed
 export const UNITS = {
-  infantry:       { name: 'Infantry',        class: 'Foot',     mov: 3, hits: 1, rng: 0, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'barracks',  minLevel: 1, climb: true,  builder: true },
-  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, iron: 2 },        time: 2, at: 'barracks',  minLevel: 2, climb: true,  heavy: true, light: 'infantry' },
-  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, iron: 1 },                 time: 1, at: 'stable',    minLevel: 1, climb: false },
-  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, hits: 1, rng: 0, upkeep: 3, cost: { gold: 3, iron: 3 },        time: 2, at: 'stable',    minLevel: 2, climb: false, heavy: true, light: 'cavalry' },
-  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, hits: 1, rng: 3, upkeep: 1, cost: { gold: 1, iron: 2 },                 time: 1, at: 'range',     minLevel: 1, climb: true },
-  monk:           { name: 'Monk',            class: 'Spirit',   mov: 6, hits: 1, rng: 0, upkeep: 1, cost: { soul: 2, gold: 1 },       time: 1, at: 'monastery', minLevel: 1, climb: true,  hitrun: true },
-  priest:         { name: 'Priest',          class: 'Spirit',   mov: 3, hits: 1, rng: 0, upkeep: 2, cost: { faith: 2, gold: 1 },      time: 2, at: 'monastery', minLevel: 2, climb: true,  priest: true },
-  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, hits: 1, rng: 5, upkeep: 2, cost: { iron: 4, gold: 1 },        time: 2, at: 'workshop',  minLevel: 1, climb: false, siege: true },
-  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, hits: 1, rng: 3, upkeep: 2, cost: { aether: 1, ember: 1, gold: 1 },        time: 2, at: 'arcane',    minLevel: 1, climb: true,  arcane: true },
-  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, hits: 5, rng: 2, upkeep: 5, cost: { ember: 3, aether: 2, soul: 1 },        time: 4, at: 'lair',      minLevel: 3, climb: false, flying: true, tech: 'dragonlore' },
+  infantry:       { name: 'Infantry',        class: 'Foot',     mov: 3, hits: 1, rng: 0, upkeep: 1, cost: { gold: 2 },                 time: 0, at: 'barracks',  minLevel: 1, climb: true,  builder: true },
+  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, iron: 2 },        time: 0, at: 'barracks',  minLevel: 2, climb: true,  heavy: true, light: 'infantry' },
+  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, iron: 1 },                 time: 0, at: 'stable',    minLevel: 1, climb: false },
+  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, hits: 1, rng: 0, upkeep: 3, cost: { gold: 3, iron: 3 },        time: 0, at: 'stable',    minLevel: 2, climb: false, heavy: true, light: 'cavalry' },
+  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, hits: 1, rng: 3, upkeep: 1, cost: { gold: 1, iron: 2 },                 time: 0, at: 'range',     minLevel: 1, climb: true },
+  monk:           { name: 'Monk',            class: 'Spirit',   mov: 6, hits: 1, rng: 0, upkeep: 1, cost: { soul: 2, gold: 1 },       time: 0, at: 'monastery', minLevel: 1, climb: true,  hitrun: true },
+  priest:         { name: 'Priest',          class: 'Spirit',   mov: 3, hits: 1, rng: 0, upkeep: 2, cost: { faith: 2, gold: 1 },      time: 0, at: 'monastery', minLevel: 2, climb: true,  priest: true },
+  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, hits: 1, rng: 5, upkeep: 2, cost: { iron: 4, gold: 1 },        time: 0, at: 'workshop',  minLevel: 1, climb: false, siege: true },
+  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, hits: 1, rng: 3, upkeep: 2, cost: { aether: 1, ember: 1, gold: 1 },        time: 0, at: 'arcane',    minLevel: 1, climb: true,  arcane: true },
+  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, hits: 5, rng: 2, upkeep: 5, cost: { ember: 3, aether: 2, soul: 1 },        time: 0, at: 'lair',      minLevel: 3, climb: false, flying: true, tech: 'dragonlore' },
 };
 export const UNIT_ORDER = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'monk', 'priest', 'siege', 'mage', 'dragon'];
 
@@ -72,7 +72,7 @@ export const SPECS = {
   lair:     { name: 'Dragon Lair', text: 'Needs Dragonlore. Raises Dragons over several years; the hatchling must find a free tower of height 3+ to perch on, or it dies.' },
 };
 export const FORTRESS_SPECS = ['barracks', 'stable', 'range'];
-export const FORTRESS = { levels: ['reinforced', 'reinforced'], queueSlots: 2 };               // start-state of each main fortress
+export const FORTRESS = { levels: ['reinforced', 'reinforced', 'normal'], queueSlots: 2 };    // a fortress starts 3 high, so a Dragon can perch on it from the first turn               // start-state of each main fortress
 export const QUEUE_SLOTS = 1;                                                                  // recruits in progress per ordinary tower
 
 // ── Economy ─────────────────────────────────────────────────────────────────────────────────────────

@@ -38,7 +38,9 @@ function select(x) {
       if (ok) strikes.add(e.id);
     }
     if (UNITS[u.type].siege) for (const t of s.towers) if (t.owner !== 0 && R.canSiege(s, u, t, u, true)) sieges.add(t.id);
-    info = { reach, strikes, sieges };
+    const flights = UNITS[u.type].flying ? s.towers.filter((t) => R.canLand(s, u, t)).map((t) => t.id) : [];
+    info = { reach, strikes, sieges, flights };
+    if (UNITS[u.type].flying) say(flights.length ? `Dragon #${u.id} can fly to ${flights.length} tower${flights.length > 1 ? 's' : ''} (purple rings): click one. Landing on an enemy tower crushes its garrison.` : `Dragon #${u.id} has nowhere to fly: it needs another tower of height 3+ (not Arcane) with no friendly garrison. Raise a tower to 3 levels, or take an enemy one that tall.`, !flights.length);
   }
   render();
 }
@@ -106,7 +108,7 @@ function renderSel() {
     const conv = mine && !t.fortress && t.spec !== 'arcane' && t.spec !== 'lair' ? `<div class="row" style="margin-top:6px"><button data-act="convert" title="Soul, Aether and Ember poured into the stone">Make Arcane (${cost(ARCANE_CONVERT)})</button></div>` : '';
     el.innerHTML = conv + `<h2><span class="p${t.owner}">${t.fortress ? 'Fortress' : SPECS[t.spec].name}</span> #${t.id}${mine ? '' : ' (enemy)'}</h2><small>(${t.x},${t.y}) · foundation ${t.fHp}/6 · levels [${t.levels.map((l) => (l.kind === 'reinforced' ? 'R' : 'N') + l.hp).join(' ') || 'none'}] · garrison ${t.garrison ? '#' + t.garrison.id + ' ' + t.garrison.type : 'none'} · queue ${t.queue.map((q) => q.type + ':' + q.left + 'y').join(', ') || 'empty'} (${qs} slot${qs > 1 ? 's' : ''})</small>` +
       (mine && t.queue.some((q) => q.left <= 0) ? `<div style="color:#ff8d7a;margin:6px 0"><b>Recruits are blocked:</b> every square next to this tower is occupied. A finished unit appears only on a free orthogonal neighbour — move a unit away.</div>` : '') + (mine ? `<div class="row" style="margin-top:6px"><button data-act="level" data-r="0" ${t.levels.length >= R.maxLevels(s, t) ? 'disabled' : ''}>+ Level (${cost(COSTS.normal)})</button><button data-act="level" data-r="1" ${t.levels.length >= R.maxLevels(s, t) ? 'disabled' : ''}>+ Reinforced (${cost(COSTS.reinforced)})</button>${t.garrison ? `<button data-act="selgar">Select garrison</button>` : ''}</div>
-      <div class="row" style="margin-top:6px">${UNIT_ORDER.filter((ty) => R.recruitable(s, t, ty)).map((ty) => `<button data-act="recruit" data-type="${ty}" title="${UNITS[ty].time} year(s)" ${R.canAfford(s.pl[0], R.addCost(R.committed(s, 0), UNITS[ty].cost)) ? '' : 'disabled'}>${UNITS[ty].name} (${cost(UNITS[ty].cost)})</button>`).join('') || '<small>Nothing can be recruited here yet (needs a level, or the right specialisation).</small>'}</div>` : '');
+      <div class="row" style="margin-top:6px">${UNIT_ORDER.filter((ty) => R.recruitable(s, t, ty)).map((ty) => `<button data-act="recruit" data-type="${ty}" title="appears this turn" ${R.canAfford(s.pl[0], R.addCost(R.committed(s, 0), UNITS[ty].cost)) ? '' : 'disabled'}>${UNITS[ty].name} (${cost(UNITS[ty].cost)})</button>`).join('') || '<small>Nothing can be recruited here yet (needs a level, or the right specialisation).</small>'}</div>` : '');
   } else el.innerHTML = '<small>Click one of your units or towers (blue = yours). Click an enemy to inspect it.</small>';
 }
 function renderOrders() {

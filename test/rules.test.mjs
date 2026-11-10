@@ -110,6 +110,14 @@ for (const f of ['drowned-testament-4p', 'eight-crowns-8p']) {
   t('seat 0 budget was spent/lost at the end of its turn and seat 1 now has its own', RES_ALL.every((k) => g.pl[0][k] === 0) && RES_ALL.some((k) => g.pl[1][k] > 0));
   R.resolveTurn(g); R.resolveTurn(g); t('after the last seat the round counter advances and seat 0 is up again', g.round === 2 && g.turn === 0); }
 { const g = R.newGame({ seed: 6, players: 3 }); g.alive[1] = false; R.resolveTurn(g); t('a dropped seat is skipped', g.turn === 2); }
+// ── no waiting: a recruit appears in the same turn it is ordered; Dragons hatch and perch at once
+{ const g = blank(); const bar = tower(g, 0, 30, 30, 'barracks', 1); g.pl[0].gold = 5;
+  t('Infantry order is accepted', R.setRecruit(g, 0, bar.id, 'infantry')); R.resolveYear(g);
+  t('...and the Infantry stands beside the tower in the SAME turn', g.units.some((u) => u.type === 'infantry' && u.owner === 0 && Math.abs(u.x - 30) + Math.abs(u.y - 30) === 1)); }
+{ const g = blank(); const lair = tower(g, 0, 30, 30, 'lair', 3); g.pl[0].tech.dragonlore = true; Object.assign(g.pl[0], { ember: 3, aether: 2, soul: 1 });
+  t('Dragon order is accepted', R.setRecruit(g, 0, lair.id, 'dragon')); R.resolveYear(g);
+  t('...and the Dragon is already perched on its lair', lair.garrison && lair.garrison.type === 'dragon'); }
+{ const g = R.newGame({ seed: 4, players: 2 }); const F = R.towerById(g, g.fortress[0]); t('a fortress starts 3 high (Dragons can perch on it from the start)', F.levels.length === 3 && R.canPerch(F)); }
 // ── monk / disband
 { const g = blank(); const m = R.addUnit(g, 'monk', 1, 20, 10), v = R.addUnit(g, 'infantry', 0, 24, 10);
   const o = R.planAttack(g, 1, m.id, v.id); R.resolveYear(g); const a = g.units.find((u) => u.id === m.id);
