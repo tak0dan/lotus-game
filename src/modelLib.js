@@ -34,7 +34,7 @@ export function prepare(root, owner) {
       if (!cache.has(m)) {
         const c = m.clone();
         if (c.name === 'owner') c.color.setHex(OWNER_COL[owner]);   // matte paint: no emissive
-        if (flat && c.isMeshStandardMaterial) c.flatShading = true;
+        if (flat && c.isMeshStandardMaterial && !c.userData.smooth) c.flatShading = true;
         c.needsUpdate = true; cache.set(m, c);
       }
       return cache.get(m);

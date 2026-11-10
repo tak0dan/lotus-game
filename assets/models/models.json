@@ -4,40 +4,35 @@
   "models": {
     "infantry": {
       "file": "infantry.glb",
-      "top": 1.15
+      "top": 1.55
     },
     "heavy_infantry": {
       "file": "heavy_infantry.glb",
-      "top": 1.2
+      "top": 1.75
     },
     "cavalry": {
       "file": "cavalry.glb",
-      "top": 1.1
+      "top": 1.9
     },
     "heavy_cavalry": {
       "file": "heavy_cavalry.glb",
-      "top": 1.2
+      "top": 2.0
     },
     "archer": {
       "file": "archer.glb",
-      "top": 1.2
+      "top": 1.65
     },
     "siege": {
       "file": "siege.glb",
-      "top": 1.1
+      "top": 1.45
     },
     "mage": {
       "file": "mage.glb",
-      "top": 1.8,
-      "glow": {
-        "color": "#9db8ff",
-        "size": 1.0,
-        "y": 1.6
-      }
+      "top": 2.2
     },
     "dragon": {
       "file": "dragon.glb",
-      "top": 1.35
+      "top": 2.1
     },
     "tower_foundation": {
       "file": "tower_foundation.glb",
@@ -53,11 +48,11 @@
     },
     "monk": {
       "file": "monk.glb",
-      "top": 1.2
+      "top": 1.5
     },
     "priest": {
       "file": "priest.glb",
-      "top": 1.45
+      "top": 2.15
     }
   }
 }

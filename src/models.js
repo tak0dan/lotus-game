@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { HD_TYPES, buildHD } from './models_hd.js';
 
 // THE TOWER GAME — procedural miniatures, styled after the war-room table in "Justin and the Knights of Valour":
 // matte, faceted, hand-carved figures on small stone plinths; towers are stacks of open-frame stone modules.
@@ -36,10 +37,11 @@ export const ownerMat = (o, dark = false) => mat(dark ? OWNER_DARK[o] : OWNER_CO
 // A small square stone plinth every figurine stands on (as on the movie's table).
 const plinth = () => { const g = new THREE.Group(); g.name = 'plinth'; g.add(part(G.box(0.74, 0.07, 0.74), DSTONE, 0, 0.035, 0), part(G.box(0.66, 0.04, 0.66), STONE, 0, 0.09, 0)); return g; };
 
-export const TYPE_HEIGHT = { infantry: 1.15, heavy_infantry: 1.2, cavalry: 1.1, heavy_cavalry: 1.2, archer: 1.2, monk: 1.2, priest: 1.45, siege: 1.1, mage: 1.8, dragon: 2.1 };
+export const TYPE_HEIGHT = { infantry: 1.55, heavy_infantry: 1.75, cavalry: 1.9, heavy_cavalry: 2.0, archer: 1.65, monk: 1.5, priest: 2.15, siege: 1.45, mage: 2.2, dragon: 2.1 };
 
 // ── figurines (built facing +X, wrapped so the finished model faces +Z) ──
 function figure(type, o) {
+  if (HD_TYPES.includes(type)) return buildHD(type, o);                // the high-detail kit (src/models_hd.js); the code below is the low-poly fallback
   const g = new THREE.Group(), m = new THREE.Group(); g.add(m); m.rotation.y = -Math.PI / 2;
   g.add(plinth());
   const om = ownerMat(o), od = ownerMat(o, true);
