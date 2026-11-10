@@ -36,15 +36,15 @@ export const RES_INFO = {                                                       
 // upkeep: gold per year (RB) · cost: paid when ordered · time: years to recruit · at: building spec that can recruit it · minLevel: tower levels needed
 export const UNITS = {
   infantry:       { name: 'Infantry',        class: 'Foot',     mov: 3, hits: 1, rng: 0, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'barracks',  minLevel: 1, climb: true,  builder: true },
-  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, hits: 1, rng: 0, upkeep: 2, cost: { gold: 3, iron: 2 },        time: 2, at: 'barracks',  minLevel: 2, climb: true,  heavy: true, light: 'infantry' },
-  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, hits: 1, rng: 0, upkeep: 2, cost: { gold: 3 },                 time: 1, at: 'stable',    minLevel: 1, climb: false },
-  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, hits: 1, rng: 0, upkeep: 3, cost: { gold: 4, iron: 2 },        time: 2, at: 'stable',    minLevel: 2, climb: false, heavy: true, light: 'cavalry' },
-  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, hits: 1, rng: 3, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'range',     minLevel: 1, climb: true },
-  monk:           { name: 'Monk',            class: 'Spirit',   mov: 6, hits: 1, rng: 0, upkeep: 1, cost: { gold: 2, faith: 1 },       time: 1, at: 'monastery', minLevel: 1, climb: true,  hitrun: true },
-  priest:         { name: 'Priest',          class: 'Spirit',   mov: 3, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, spirit: 2 },      time: 2, at: 'monastery', minLevel: 2, climb: true,  priest: true },
-  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, hits: 1, rng: 5, upkeep: 2, cost: { gold: 3, iron: 3 },        time: 2, at: 'workshop',  minLevel: 1, climb: false, siege: true },
-  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, hits: 1, rng: 3, upkeep: 2, cost: { gold: 3, mana: 2 },        time: 2, at: 'arcane',    minLevel: 1, climb: true,  arcane: true },
-  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, hits: 5, rng: 2, upkeep: 5, cost: { gold: 6, mana: 3 },        time: 4, at: 'lair',      minLevel: 3, climb: false, flying: true, tech: 'dragonlore' },
+  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, iron: 2 },        time: 2, at: 'barracks',  minLevel: 2, climb: true,  heavy: true, light: 'infantry' },
+  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, iron: 1 },                 time: 1, at: 'stable',    minLevel: 1, climb: false },
+  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, hits: 1, rng: 0, upkeep: 3, cost: { gold: 3, iron: 3 },        time: 2, at: 'stable',    minLevel: 2, climb: false, heavy: true, light: 'cavalry' },
+  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, hits: 1, rng: 3, upkeep: 1, cost: { gold: 1, iron: 2 },                 time: 1, at: 'range',     minLevel: 1, climb: true },
+  monk:           { name: 'Monk',            class: 'Spirit',   mov: 6, hits: 1, rng: 0, upkeep: 1, cost: { soul: 2, gold: 1 },       time: 1, at: 'monastery', minLevel: 1, climb: true,  hitrun: true },
+  priest:         { name: 'Priest',          class: 'Spirit',   mov: 3, hits: 1, rng: 0, upkeep: 2, cost: { faith: 2, gold: 1 },      time: 2, at: 'monastery', minLevel: 2, climb: true,  priest: true },
+  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, hits: 1, rng: 5, upkeep: 2, cost: { iron: 4, gold: 1 },        time: 2, at: 'workshop',  minLevel: 1, climb: false, siege: true },
+  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, hits: 1, rng: 3, upkeep: 2, cost: { aether: 1, ember: 1, gold: 1 },        time: 2, at: 'arcane',    minLevel: 1, climb: true,  arcane: true },
+  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, hits: 5, rng: 2, upkeep: 5, cost: { ember: 3, aether: 2, soul: 1 },        time: 4, at: 'lair',      minLevel: 3, climb: false, flying: true, tech: 'dragonlore' },
 };
 export const UNIT_ORDER = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'monk', 'priest', 'siege', 'mage', 'dragon'];
 
@@ -54,11 +54,11 @@ export const GARRISON_HITS = 1;                                                 
 export const ATTACH_BONUS_MIN = 3;                                                            // ... unless 3 towers are ATTACHED (orthogonal neighbours): then +1 height for every level they ALL share (the lowest of them)
 export const DRAGON = { minHeight: 3, radius: 5 };                                              // a Dragon perches only on towers of height >= 3; it strikes within radius 5, +1 for each level above 3
 export const ARCANE_CONVERT = { soul: 2, aether: 2, ember: 2 };                              // pour this into a finished tower and it becomes an Arcane Tower
-export const COSTS = {
-  foundation: { gold: 1, iron: 2 },
-  normal:     { iron: 2 },
-  reinforced: { gold: 1, iron: 4 },
-  spec: { outpost: {}, barracks: { gold: 1 }, stable: { gold: 1 }, range: { gold: 1 }, workshop: { iron: 2 }, lair: { mana: 2, gold: 2 }, monastery: { spirit: 1 } },   // surcharge when the foundation is laid
+export const COSTS = {                                                                         // a unit asks for SPECIFIC resources; a building asks for any card of a FAMILY ("physical: 2" = any 2 Gold/Iron, "spirit: 3" = any 3 Faith/Soul)
+  foundation: { physical: 2 },
+  normal:     { physical: 2 },
+  reinforced: { physical: 4 },
+  spec: { outpost: {}, barracks: { physical: 1 }, stable: { physical: 1 }, range: { physical: 1 }, workshop: { physical: 2 }, lair: { mana: 3 }, monastery: { spirit: 3 } },   // surcharge when the foundation is laid
 };
 // A tower's specialisation is chosen when its foundation is laid. The main fortress has the first three.
 export const SPECS = {
@@ -85,15 +85,16 @@ export const YIELD = { tower: T.YT ?? 1, unit: T.YU ?? 1, double: 2 };
 export const DOUBLERS = { mana: ['mage'], spirit: ['monk', 'priest'] };
 export const ONLY_GATHERERS = { spirit: ['monk', 'priest'] };                                   // Spirit nodes can be worked ONLY by spiritual units — or by an Arcane Tower built on the node
 // Towers also yield a PRIMARY (family) card each year if they have at least one level — the three families have a home:
-export const PRIMARY_YIELD = { fortress: { physical: T.CAPITAL ?? 12 }, arcane: { mana: 1 }, monastery: { spirit: 1 } };   // [DECISION] fortress >= the starting army's upkeep, so the start is not a trap
+export const PRIMARY_YIELD = { fortress: { gold: 2, iron: 1 }, arcane: { mana: 1 }, monastery: { spirit: 1 } };   // [DECISION 2026-11-10] no more flat Physical wildcard: a fortress is a small mine (2 Gold, 1 Iron a turn); the real economy is the nodes
+export const FREE_UPKEEP = T.FREE_UPKEEP ?? 10;                                               // the first 10 Gold of army upkeep a turn is supplied by the fortress; only the excess is paid from your cards   // [DECISION] fortress >= the starting army's upkeep, so the start is not a trap
 export const PRIEST_RADIUS = 2;                                                            // squares (Chebyshev) around a Priest whose friends may void one hit a year
 // Resources are a per-YEAR BUDGET (designer's ruling, like tapping lands in MTG): your nodes give this much this year, unspent is lost.
 // START_RESOURCES is a one-time OPENING budget added to year 1 only, so the first year is not empty of the rarer cards.
-export const START_RESOURCES = { gold: T.START_GOLD ?? 6, iron: T.START_IRON ?? 6, aether: 1, ember: 1, faith: 1, soul: 1 };
+export const START_RESOURCES = { gold: T.START_GOLD ?? 6, iron: T.START_IRON ?? 4, aether: 1, ember: 1, faith: 2, soul: 2 };
 export const TECHS = {
-  dragonlore: { name: 'Dragonlore', cost: { mana: 3, gold: 4 }, text: 'Unlocks Dragon Lairs and Dragons.' },
+  dragonlore: { name: 'Dragonlore', cost: { mana: 3, gold: 2 }, text: 'Unlocks Dragon Lairs and Dragons.' },
   runic:      { name: 'Runic Gauntlets', cost: { ember: 2, iron: 2 }, text: 'Your Monks wear fire-rune gauntlets: their blows burst inside armour. A Heavy unit can no longer void a hit from them — only a Priest\'s ward can.' },
-  siegecraft: { name: 'Siegecraft', cost: { iron: 6 },          text: 'Siege Engines deal 2 structural damage per hit instead of 1.' },
+  siegecraft: { name: 'Siegecraft', cost: { iron: 4 },          text: 'Siege Engines deal 2 structural damage per hit instead of 1.' },
 };
 
 // ── Victory ─────────────────────────────────────────────────────────────────────────────────────────

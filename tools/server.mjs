@@ -15,7 +15,7 @@ const resArg = arg('res', null);
 const RES = resArg && resArg !== true ? Object.fromEntries(String(resArg).split(',').map((kv) => { const [k, v] = kv.split('='); return [k, +v]; })) : (arg('rich', false) ? { gold: 500, iron: 500, mana: 500 } : null);
 let s, ready, waiters = [], history = [], startedAt;
 const matchDir = path.join(ROOT, 'matches'); fs.mkdirSync(matchDir, { recursive: true });
-function newMatch(o = {}) { s = R.newGame({ size: o.size || SIZE, seed: o.seed || SEED, res: RES }); ready = [false, false]; history = []; startedAt = new Date().toISOString(); botsPlan(); }
+function newMatch(o = {}) { s = R.newGame({ sequential: false, size: o.size || SIZE, seed: o.seed || SEED, res: RES }); ready = [false, false]; history = []; startedAt = new Date().toISOString(); botsPlan(); }
 function botsPlan() { for (const p of [0, 1]) if (BOTS[p]) { planYear(s, p); ready[p] = true; } maybeResolve(); }
 function maybeResolve() {
   if (s.winner !== null || !(ready[0] && ready[1])) return;

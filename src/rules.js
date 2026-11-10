@@ -10,7 +10,7 @@
 // Upkeep is paid first, out of the year's gold. The first year also gets a one-time opening budget (balance.js START_RESOURCES).
 
 import * as mapgen from './mapgen.js';
-import { UNITS, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, MAX_LEVELS, GARRISON_HITS, DRAGON, ATTACH_BONUS_MIN, ARCANE_CONVERT, ONLY_GATHERERS, COSTS, FORTRESS_SPECS, FORTRESS, QUEUE_SLOTS, YIELD, DOUBLERS, PRIMARY_YIELD, PRIEST_RADIUS,
+import { FREE_UPKEEP, UNITS, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, MAX_LEVELS, GARRISON_HITS, DRAGON, ATTACH_BONUS_MIN, ARCANE_CONVERT, ONLY_GATHERERS, COSTS, FORTRESS_SPECS, FORTRESS, QUEUE_SLOTS, YIELD, DOUBLERS, PRIMARY_YIELD, PRIEST_RADIUS,
   START_RESOURCES, TECHS, FORTRESS_HOLD_YEARS, POINTS_HOLD_YEARS, FAMILIES, FAMILY_LIST, SUBTYPES, FAMILY_OF, RES_ALL } from './balance.js';
 
 const SPECS_OK = ['outpost', 'barracks', 'stable', 'range', 'workshop', 'lair', 'monastery'];
@@ -28,22 +28,23 @@ export function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5
 
 // ───────────────────────── state & scenario ─────────────────────────
 export const sizeFor = (np) => (np <= 2 ? 75 : Math.round(75 + (np - 2) * 485 / 6));        // 75 squares for 2 players, 560 for 8 (designer's rule), linear between
-export function newGame({ size = null, seed = (Math.random() * 1e9) | 0, res = null, layout = null, players = 2, mode = 'ffa', teams = null, terrain = null } = {}) {
+export function newGame({ size = null, seed = (Math.random() * 1e9) | 0, res = null, layout = null, players = 2, mode = 'ffa', teams = null, terrain = null, sequential = true } = {}) {   // sequential: true = TURNS one player after another, like chess (default) · false = the old simultaneous secret-order year
   // players: 2..8 · mode: 'ffa' (every player alone) or 'teams' (teams[] gives each player's side; default alternating) · layout: a hand-made 2-player map (data/maps/*.json, one half, mirrored)
   // res: optional per-year budget FLOOR, e.g. { gold: 500, iron: 500 } (fast/dirty playtests) · terrain: force the landscape on/off (default: on for 3+ players)
   if (layout && layout.players) players = layout.players;                  // a large hand-made map fixes the player count and the board side
   const np = Math.max(2, Math.min(8, players)); size = size || (layout && layout.boardSide) || sizeFor(np);
   const team = teams ? teams.slice(0, np) : mode === 'teams' ? Array.from({ length: np }, (_, i) => i % 2) : Array.from({ length: np }, (_, i) => i);
   const s = {
-    N: size, np, symOrder: (layout && layout.symmetry && layout.symmetry.order) || np, mode, team, alive: Array(np).fill(true), seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winTeam: null, winReason: '',
+    N: size, np, seq: sequential, turn: 0, symOrder: (layout && layout.symmetry && layout.symmetry.order) || np, mode, team, alive: Array(np).fill(true), seed, layout, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winTeam: null, winReason: '',
     res: new Uint8Array(size * size), ter: new Uint8Array(size * size), nodes: [], points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
     pl: Array.from({ length: np }, () => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false, runic: false }, unpaid: 0 })), floor: res,
     orders: Array.from({ length: np }, blankOrders), clashes: [], log: [], events: [], fortress: Array(np).fill(null), held: Array(np).fill(0), capt: Array(np).fill(null), pointsHeld: Array(np).fill(0), teamPoints: {},
     stats: { kills: Array(np).fill(0), lost: Array(np).fill(0), levelsLost: 0, sieges: 0, wasted: Array(np).fill(0) },
   };
   scenario(s, terrain);
-  s.nodes = []; for (let i = 0; i < s.res.length; i++) if (s.res[i]) s.nodes.push(i);                  // the node squares, so income does not scan the whole board
-  refreshBudget(s, true);
+  s.nodes = []; for (let i = 0; i < s.res.length; i++) if (s.res[i]) s.nodes.push(i);
+  if (!s.mult) { s.mult = new Uint8Array(size * size).fill(1); const Cc = (size - 1) / 2; for (const i of s.nodes) { const rr = Math.hypot((i % size) - Cc, Math.floor(i / size) - Cc) / (size / 2); s.mult[i] = rr < 0.14 ? 3 : rr < 0.32 ? 2 : 1; } }   // closer to the centre = richer node (x1, x2, x3 yield)                  // the node squares, so income does not scan the whole board
+  if (sequential) refreshBudgetFor(s, 0); else refreshBudget(s, true);
   return s;
 }
 // helpers for N players
@@ -75,14 +76,14 @@ export const towerAt = (s, x, y) => s.tg[ix(s, x, y)];
 // Scenario "Two Fortresses": 180-degree symmetric. Rulebook: a 30x30 cut of the full map is recommended for first tests; bigger sizes scale the same layout.
 function scenario(s, terrainFlag) {
   const N = s.N, sc = N / 30, rot = (p) => ({ x: N - 1 - p.x, y: N - 1 - p.y });
-  const L = s.layout, spec = L && L.terrain ? L : null, big = !spec && (s.np > 2 || terrainFlag === true);
+  const L = s.layout, spec = L && L.terrain ? L : null, big = !spec && !L;
   const F = spec ? mapgen.specFortresses(s, spec) : big ? mapgen.fortresses(s) : [L ? { x: L.fortress[0], y: L.fortress[1] } : { x: Math.round(4 * sc), y: Math.round(14 * sc) }]; if (!big) F.push(rot(F[0]));
   if (spec) mapgen.specLandscape(s, spec, F);
-  else if (big) mapgen.landscape(s, F);                                           // N players or a landscape asked for: terrain first, then symmetric nodes and points
+  else if (big) mapgen.islandLandscape(s, F);                                           // N players or a landscape asked for: terrain first, then symmetric nodes and points
   const taken = new Set(); const take = (p) => taken.add(ix(s, p.x, p.y));
   for (const f of F) for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) take({ x: f.x + dx, y: f.y + dy });
-  if (spec) mapgen.specPopulate(s, spec, taken);
-  else if (big) mapgen.populate(s, F, taken);
+  if (spec) { mapgen.specPopulate(s, spec, taken); mapgen.startRing(s, F, taken); }
+  else if (big) mapgen.islandPopulate(s, F, taken);
   else if (L) {                                                             // a hand-made layout: nodes and points for one half, mirrored by (x,y) -> (N-1-x, N-1-y)
     for (const q of L.points) for (const [x, y, kind] of [[q.node[0], q.node[1], q.kind], [rot({ x: q.node[0], y: q.node[1] }).x, rot({ x: q.node[0], y: q.node[1] }).y, q.kind]]) if (inb(s, x, y) && RES_CODE[kind]) s.res[ix(s, x, y)] = RES_CODE[kind];
     for (const q of L.points) for (const pt of [{ x: q.point[0], y: q.point[1] }, rot({ x: q.point[0], y: q.point[1] })]) if (inb(s, pt.x, pt.y) && !s.res[ix(s, pt.x, pt.y)] && !s.points.some((r) => r.x === pt.x && r.y === pt.y)) s.points.push(pt);
@@ -121,7 +122,7 @@ function scenario(s, terrainFlag) {
     const g = addUnit(s, 'infantry', o, f.x, f.y, 1); t.garrison = g;
     const near = []; for (let r = 1; r <= 4; r++) for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (Math.max(Math.abs(dx), Math.abs(dy)) === r) near.push({ x: f.x + dx, y: f.y + dy });
     near.sort((a, b) => (Math.abs(a.x - f.x) + Math.abs(a.y - f.y)) - (Math.abs(b.x - f.x) + Math.abs(b.y - f.y)) || a.y - b.y);
-    const army = ['infantry', 'infantry', 'infantry', 'cavalry', 'cavalry', 'archer', 'archer', 'siege'];     // rulebook: 4 infantry (1 is the garrison), 2 cavalry, 2 archers, 1 siege
+    const army = ['infantry', 'infantry', 'infantry', 'cavalry', 'cavalry', 'archer', 'archer', 'siege', 'monk'];     // 4 infantry (1 is the garrison), 2 cavalry, 2 archers, 1 siege and ONE MONK (the only unit that can work a Spirit node at the start)
     for (const type of army) { const c = near.find((p) => inb(s, p.x, p.y) && !s.ug[ix(s, p.x, p.y)] && !s.tg[ix(s, p.x, p.y)] && !s.res[ix(s, p.x, p.y)] && !blocked(s, p.x, p.y)); addUnit(s, type, o, c.x, c.y); }
   }
   s.events.length = 0;
@@ -174,17 +175,17 @@ export function spendUsage(pl, cost) {                                         /
 export const have = (pl, sub) => (pl[sub] || 0) + (pl[FAMILY_OF[sub]] || 0);  // how many of this subtype you could pay with
 export const canGather = (type, fam) => !ONLY_GATHERERS[fam] || ONLY_GATHERERS[fam].includes(type);   // Physical and Mana nodes: any unit. Spirit nodes: only spiritual units ...
 export const unitYield = (type, family) => ((DOUBLERS[family] || []).includes(type) ? YIELD.double : YIELD.unit);   // ... the specialist yields it twice
-export const upkeepOf = (s, o) => s.units.filter((u) => u.owner === o).reduce((a, u) => a + UNITS[u.type].upkeep, 0);
-export function incomeOf(s, o) {                          // the cards your nodes and towers give this year
+export const upkeepOf = (s, o) => Math.max(0, s.units.filter((u) => u.owner === o).reduce((a, u) => a + UNITS[u.type].upkeep, 0) - FREE_UPKEEP);   // the fortress feeds the first FREE_UPKEEP gold of army
+export function incomeOf(s, o) {                          // the cards your nodes and towers give this turn; a node nearer the centre is richer (s.mult: x1, x2, x3)
   const inc = Object.fromEntries(RES_ALL.map((k) => [k, 0]));
-  for (let y = 0; y < s.N; y++) for (let x = 0; x < s.N; x++) {
-    const c = s.res[ix(s, x, y)]; if (!c) continue;
-    const sub = RES_NAMES[c], fam = FAMILY_OF[sub], t = s.tg[ix(s, x, y)], u = s.ug[ix(s, x, y)];
+  for (const i of s.nodes) {
+    const x = i % s.N, y = (i - x) / s.N, m = (s.mult && s.mult[i]) || 1;
+    const sub = RES_NAMES[s.res[i]], fam = FAMILY_OF[sub], t = s.tg[i], u = s.ug[i];
     if (t) {
       if (t.owner !== o) continue;
-      if (!ONLY_GATHERERS[fam] || t.spec === 'arcane') inc[sub] += YIELD.tower;   // the tower yields by itself (a Spirit node: only an ARCANE tower can gather it)
-      const g = t.garrison; if (g && g.owner === o && canGather(g.type, fam)) inc[sub] += unitYield(g.type, fam);   // a garrison adds its part
-    } else if (u && u.owner === o && canGather(u.type, fam)) inc[sub] += unitYield(u.type, fam);                  // a unit on a bare node
+      if (!ONLY_GATHERERS[fam] || t.spec === 'arcane') inc[sub] += YIELD.tower * m;   // the tower yields by itself (a Spirit node: only an ARCANE tower can gather it)
+      const g = t.garrison; if (g && g.owner === o && canGather(g.type, fam)) inc[sub] += unitYield(g.type, fam) * m;   // a garrison adds its part
+    } else if (u && u.owner === o && canGather(u.type, fam)) inc[sub] += unitYield(u.type, fam) * m;                  // a unit on a bare node
   }
   for (const t of s.towers) if (t.owner === o && t.levels.length) { const py = PRIMARY_YIELD[t.fortress ? 'fortress' : t.spec]; if (py) for (const [k, n] of Object.entries(py)) inc[k] += n; }
   return inc;
@@ -350,6 +351,26 @@ export function resolveYear(s) {
   return s.events;
 }
 
+// ── sequential play: ONE player's turn. Their orders resolve at once, in the usual phases, against the board as it stands; then the next player moves. ──
+export function resolveTurn(s) {
+  if (s.winner !== null) return s.events;
+  s.events = []; const p = s.turn, order = [p];
+  phase(s, 'economy'); economy(s, order);
+  phase(s, 'recruitment'); recruitment(s, order);
+  phase(s, 'movement'); movement(s, order);
+  phase(s, 'combat'); combat(s, order);
+  phase(s, 'building'); building(s, order);
+  phase(s, 'control'); control(s);
+  const pl = s.pl[p]; s.stats.wasted[p] += RES_ALL.reduce((a, k) => a + (pl[k] || 0), 0); for (const k of RES_ALL) pl[k] = 0;      // unspent cards are LOST
+  for (const u of s.units) { u.moved = false; u.vH = false; u.vP = false; u.dmg = 0; }                                         // hits and voids count within one turn only
+  s.orders[p] = blankOrders();
+  let n = p; do { n = (n + 1) % s.np; } while (!s.alive[n] && n !== p);
+  s.turn = n; const wrapped = n <= p;
+  s.events.push({ t: 'turn', player: n, round: s.round });
+  if (wrapped) { phase(s, 'endyear'); endYear(s); } else refreshBudgetFor(s, n);
+  return s.events;
+}
+
 function economy(s, order) {
   for (const o of order) for (const uid of s.orders[o].disband || []) { const u = unitById(s, uid); if (u && u.owner === o) { killUnit(s, u, 'disbanded'); say(s, `P${o + 1} dismisses a ${UNITS[u.type].name}.`, o); } }
   // The year's budget was set when the previous year ended (refreshBudget): it is what your nodes yield, minus upkeep. Research is paid from it here.
@@ -359,9 +380,11 @@ function economy(s, order) {
   for (const o of playersOf(s)) s.events.push({ t: 'income', owner: o, now: Object.fromEntries(RES_ALL.map((k) => [k, s.pl[o][k]])) });
 }
 // A new year's budget: what the controlled nodes yield (+ the capital), minus the army's upkeep paid out of the gold. Nothing is carried over.
-export function refreshBudget(s, first = false) {
-  for (const o of playersOf(s)) {
-    if (!s.alive[o]) continue;
+export function refreshBudget(s, first = false) { for (const o of playersOf(s)) { if (first) s.pl[o].started = false; refreshBudgetFor(s, o); } }
+export function refreshBudgetFor(s, o) {                                   // the cards one player may spend this turn (sequential play) / year (simultaneous play)
+  {
+    if (!s.alive[o]) return;
+    const first = !s.pl[o].started; s.pl[o].started = true;
     const pl = s.pl[o], inc = incomeOf(s, o), up = upkeepOf(s, o);
     pl.unpaid = 0; for (const u of s.units) if (u.owner === o) u.idle = false;
     for (const k of RES_ALL) pl[k] = inc[k] + (first ? (START_RESOURCES[k] || 0) : 0);
@@ -576,7 +599,7 @@ function dropPlayer(s, p, why) {                                                
 }
 const teamName = (s, p) => (s.mode === 'teams' ? `Team ${s.team[p] + 1}` : `Player ${p + 1}`);
 function endYear(s) {
-  for (const o of playersOf(s)) { const pl = s.pl[o]; s.stats.wasted[o] += RES_ALL.reduce((a, k) => a + (pl[k] || 0), 0); }   // unspent budget is LOST
+  if (!s.seq) for (const o of playersOf(s)) { const pl = s.pl[o]; s.stats.wasted[o] += RES_ALL.reduce((a, k) => a + (pl[k] || 0), 0); }   // unspent budget is LOST
   // victory: (1) hold an enemy fortress through the next year -> its owner is out  (2) a side holds the strategic majority for POINTS_HOLD_YEARS years  (3) every other side is out
   const win = (w, why) => { if (s.winner === null) { s.winner = w; s.winTeam = s.team[w]; s.winReason = why; say(s, why); s.events.push({ t: 'win', winner: w, why }); } };
   for (const v of playersOf(s)) {
@@ -597,5 +620,5 @@ function endYear(s) {
   for (const u of s.units) { u.moved = false; u.vH = false; u.vP = false; u.dmg = 0; }                  // everything that survived is whole again
   s.orders = playersOf(s).map(() => blankOrders()); s.round++; s.first = (s.first + 1) % s.np; s.phase = 'plan';
   s.events.push({ t: 'year', round: s.round });
-  if (s.winner === null) refreshBudget(s, false);                              // next year's budget, planned against right away
+  if (s.winner === null) { if (s.seq) { while (!s.alive[s.turn]) s.turn = (s.turn + 1) % s.np; refreshBudgetFor(s, s.turn); } else refreshBudget(s, false); }   // the next budget, planned against right away
 }

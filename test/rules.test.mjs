@@ -1,12 +1,13 @@
 // Rules regression tests:  node test/rules.test.mjs
 import * as R from '../src/rules.js';
 import { RES_ALL } from '../src/balance.js';
+const NG = (o = {}) => R.newGame({ sequential: false, ...o });                  // these tests use the simultaneous year; sequential turns have their own section
 let ok = 0, bad = 0; const t = (n, c, x = '') => { (c ? ok++ : bad++); console.log((c ? '  ok   ' : '  FAIL ') + n + (x ? '  ' + x : '')); };
-const blank = (seed = 3) => { const g = R.newGame({ seed }); g.units.length = 0; g.towers.length = 0; g.ug.fill(null); g.tg.fill(null); g.res.fill(0); g.points.length = 0; g.fortress = [null, null]; g.winner = null; R.addTower(g, 0, 2, 2, 'outpost', ['normal']); R.addTower(g, 1, 72, 72, 'outpost', ['normal']); return g; };   // a far outpost each, so nobody is eliminated by the empty board
+const blank = (seed = 3) => { const g = NG({ seed }); g.units.length = 0; g.towers.length = 0; g.ug.fill(null); g.tg.fill(null); g.res.fill(0); g.nodes = []; g.mult = new Uint8Array(g.N * g.N).fill(1); g.points.length = 0; g.fortress = [null, null]; g.winner = null; R.addTower(g, 0, 2, 2, 'outpost', ['normal']); R.addTower(g, 1, 72, 72, 'outpost', ['normal']); return g; };   // a far outpost each, so nobody is eliminated by the empty board
 const tower = (g, o, x, y, spec, n, garrison) => { const w = R.addTower(g, o, x, y, spec, Array(n).fill('normal')); if (garrison) { const u = R.addUnit(g, garrison, o, x, y, 1); w.garrison = u; } return w; };
 const log = (g, re) => g.log.some((l) => re.test(l.msg));
 // ── map
-{ const s = R.newGame({ seed: 7 }); const kinds = {}; for (const c of s.res) if (c) kinds[R.RES_NAMES[c]] = 1;
+{ const s = NG({ seed: 7 }); const kinds = {}; for (const c of s.res) if (c) kinds[R.RES_NAMES[c]] = 1;
   t('75x75 map with all 6 node types', s.N === 75 && Object.keys(kinds).length === 6);
   t('strategic points are never on a resource square', s.points.every((p) => !s.res[R.ix(s, p.x, p.y)]));
   t('strategic points are always next to a resource square', s.points.every((p) => R.ORTH.some(([a, b]) => s.res[R.ix(s, p.x + a, p.y + b)])));
@@ -15,13 +16,13 @@ const log = (g, re) => g.log.some((l) => re.test(l.msg));
 { const pl = { gold: 1, iron: 0, aether: 0, ember: 1, faith: 0, soul: 0, physical: 2, mana: 0, spirit: 0 };
   t('wildcard pays a missing subtype', R.canAfford(pl, { gold: 2 })); t('family cost paid by any card of the family', R.canAfford(pl, { mana: 1 })); }
 // ── yields: spirit nodes are for spiritual units (or an Arcane Tower) only
-{ const g = blank(); const node = (x, y, k) => { g.res[R.ix(g, x, y)] = R.RES_CODE[k]; };
+{ const g = blank(); const node = (x, y, k) => { g.res[R.ix(g, x, y)] = R.RES_CODE[k]; g.nodes.push(R.ix(g, x, y)); };
   node(5, 5, 'aether'); node(7, 5, 'faith'); node(9, 5, 'gold'); node(11, 5, 'soul'); node(13, 5, 'ember');
   R.addUnit(g, 'infantry', 0, 5, 5); R.addUnit(g, 'infantry', 0, 7, 5); R.addUnit(g, 'monk', 0, 11, 5); R.addUnit(g, 'mage', 0, 9, 5); R.addUnit(g, 'mage', 0, 13, 5);
   const inc = R.incomeOf(g, 0);
   t('infantry on a Mana node yields 1', inc.aether === 1); t('infantry on a Spirit node yields NOTHING', inc.faith === 0);
   t('Monk on a Spirit node yields 2', inc.soul === 2); t('Mage on a Physical node yields 1', inc.gold === 1); t('Mage on a Mana node yields 2', inc.ember === 2); }
-{ const g = blank(); g.res[R.ix(g, 5, 5)] = R.RES_CODE.faith; g.res[R.ix(g, 8, 5)] = R.RES_CODE.faith;
+{ const g = blank(); g.res[R.ix(g, 5, 5)] = R.RES_CODE.faith; g.res[R.ix(g, 8, 5)] = R.RES_CODE.faith; g.nodes.push(R.ix(g, 5, 5), R.ix(g, 8, 5));
   tower(g, 0, 5, 5, 'outpost', 1); tower(g, 0, 8, 5, 'arcane', 1);
   const inc = R.incomeOf(g, 0); t('an ordinary tower does not gather a Spirit node', inc.faith === 1, 'only the arcane one: ' + inc.faith); }
 // ── hits
@@ -91,7 +92,7 @@ const RING = [[11, 10], [9, 10], [10, 11], [10, 9], [11, 11]];
 // ── large hand-made maps (ChatGPT sector specs): load, symmetric, connected, points beside nodes
 import fs from 'fs';
 for (const f of ['drowned-testament-4p', 'eight-crowns-8p']) {
-  const L = JSON.parse(fs.readFileSync(new URL(`../data/maps/large/${f}.json`, import.meta.url))), s = R.newGame({ layout: L, seed: 1 });
+  const L = JSON.parse(fs.readFileSync(new URL(`../data/maps/large/${f}.json`, import.meta.url))), s = NG({ layout: L, seed: 1 });
   const N = s.N, F = s.fortress.map((id) => R.towerById(s, id)), seen = new Uint8Array(N * N), q = [F[0].y * N + F[0].x]; seen[q[0]] = 1;
   for (let h = 0; h < q.length; h++) { const k = q[h], x = k % N, y = (k - x) / N; for (const [a, b] of R.ORTH) { const nx = x + a, ny = y + b; if (nx < 0 || ny < 0 || nx >= N || ny >= N) continue; const j = ny * N + nx; if (seen[j] || R.blocked(s, nx, ny)) continue; seen[j] = 1; q.push(j); } }
   t(`${L.name}: ${s.np} players on ${N}x${N}, ${F.length} fortresses`, s.np === L.players && N === L.boardSide && F.length === L.players);
@@ -99,6 +100,16 @@ for (const f of ['drowned-testament-4p', 'eight-crowns-8p']) {
   t(`${L.name}: points beside nodes, never on them`, s.points.every((p) => !s.res[R.ix(s, p.x, p.y)] && R.ORTH.some(([a, b]) => s.res[R.ix(s, p.x + a, p.y + b)])));
   t(`${L.name}: four free recruit squares at a fortress`, R.ORTH.filter(([a, b]) => !R.blocked(s, F[0].x + a, F[0].y + b)).length === 4);
 }
+// ── sequential turns (chess-like): one player at a time
+{ const g = R.newGame({ seed: 5, players: 3 }); t('sequential is the default and seat 0 starts', g.seq === true && g.turn === 0);
+  const cav = g.units.find((u) => u.owner === 0 && u.type === 'cavalry'), foe = g.units.find((u) => u.owner === 1 && u.type === 'cavalry'), fx = foe.x, fy = foe.y;
+  const dest = { x: cav.x + (g.fortress[0] != null && cav.x < g.N / 2 ? 3 : -3), y: cav.y };
+  const set = R.setMove(g, 0, cav.id, dest.x, dest.y); R.resolveTurn(g);
+  t('seat 0 orders resolve at once: its cavalry has moved', set && cav.x === dest.x && cav.y === dest.y);
+  t('...and only seat 0 acted: seat 1 stands where it was', foe.x === fx && foe.y === fy && g.turn === 1 && g.round === 1);
+  t('seat 0 budget was spent/lost at the end of its turn and seat 1 now has its own', RES_ALL.every((k) => g.pl[0][k] === 0) && RES_ALL.some((k) => g.pl[1][k] > 0));
+  R.resolveTurn(g); R.resolveTurn(g); t('after the last seat the round counter advances and seat 0 is up again', g.round === 2 && g.turn === 0); }
+{ const g = R.newGame({ seed: 6, players: 3 }); g.alive[1] = false; R.resolveTurn(g); t('a dropped seat is skipped', g.turn === 2); }
 // ── monk / disband
 { const g = blank(); const m = R.addUnit(g, 'monk', 1, 20, 10), v = R.addUnit(g, 'infantry', 0, 24, 10);
   const o = R.planAttack(g, 1, m.id, v.id); R.resolveYear(g); const a = g.units.find((u) => u.id === m.id);

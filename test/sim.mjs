@@ -9,7 +9,7 @@ const t0 = Date.now();
 for (let g = 0; g < games; g++) {
   const s = R.newGame({ size, seed: seed0 + g, layout: process.argv[6] ? JSON.parse(fs.readFileSync(`data/maps/${process.argv[6]}.json`)) : null });
   while (s.winner === null && s.round <= cap) {
-    planYear(s, 0); planYear(s, 1); R.resolveYear(s);
+    planYear(s, s.turn); R.resolveTurn(s);
     for (const u of s.units) { st.unitYears++; if (u.idle) st.idle++; }
     if (s.round % 20 === 0) st.armies.push(s.units.length);
   }

@@ -130,3 +130,76 @@ export function specPopulate(s, spec, taken) {
   }
   for (let k = 0; k < orderOf(s); k++) for (const sp of spots) { const q = rotk(s, sp, k); if (!ok(q.x, q.y) || s.res[ix(q.x, q.y)] || taken.has(ix(q.x, q.y)) || s.points.some((r) => r.x === q.x && r.y === q.y)) continue; if (s.ter[ix(q.x, q.y)] === 1 || s.ter[ix(q.x, q.y)] === 2) s.ter[ix(q.x, q.y)] = 0; s.points.push(q); }
 }
+
+// ═════════ the island map (the Lotus lesson): a central island ringed by a moat, reachable only over narrow bridges; sectors split by ridges with gates ═════════
+// Defence is legible: a bridge is a 1-wide choke, a gate is a 5-wide pass, the island rim is highland (towers one level higher), and richness grows toward the centre
+// (s.mult: yield multiplier of a node — 1 outer, 2 middle ring, 3 on the island).
+const START_PATTERN = [['gold', 4, -3], ['gold', 5, 3], ['gold', 7, 0], ['iron', 3, 5], ['iron', 3, -5], ['iron', 8, -3], ['faith', 6, -6], ['soul', 6, 6], ['aether', 9, 3], ['ember', 9, -4]];   // [kind, forward, sideways] in a frame facing the board centre
+export function startRing(s, F, taken) {                           // 10 nodes of all six kinds within ~10 squares of EVERY fortress, in front of it (towards the centre), so the first turns can build an economy
+  const N = s.N, C = centre(s), ix = (x, y) => y * N + x, free = (x, y) => x >= 1 && y >= 1 && x < N - 1 && y < N - 1 && !blockedT(s, x, y) && !s.res[ix(x, y)] && !s.points.some((p) => p.x === x && p.y === y);
+  for (const f of F) {
+    const a = Math.atan2(C - f.y, C - f.x), cs = Math.cos(a), sn = Math.sin(a);
+    for (const [kind, u, v] of START_PATTERN) {
+      const bx = Math.round(f.x + u * cs - v * sn), by = Math.round(f.y + u * sn + v * cs); let done = false;
+      for (let r = 0; r <= 3 && !done; r++) for (let dy = -r; dy <= r && !done; dy++) for (let dx = -r; dx <= r && !done; dx++) { const x = bx + dx, y = by + dy; if (Math.max(Math.abs(dx), Math.abs(dy)) !== r || !free(x, y)) continue; if (s.ter[ix(x, y)] === 5) s.ter[ix(x, y)] = 0; s.res[ix(x, y)] = RES_CODE[kind]; taken.add(ix(x, y)); done = true; }
+    }
+  }
+}
+const blockedT = (s, x, y) => s.ter[y * s.N + x] === 1 || s.ter[y * s.N + x] === 2;
+export function islandLandscape(s, F) {
+  const N = s.N, C = centre(s), ord = orderOf(s), seed = (s.seed | 0) % 100003, sc = 1 / (0.13 * N), put = (x, y, t) => { if (x >= 0 && y >= 0 && x < N && y < N) s.ter[y * N + x] = t; };
+  const Ri = Math.max(6, Math.round(0.085 * N)), Wm = Math.max(3, Math.round(0.04 * N)), R0 = Ri + Wm; s.island = { Ri, Wm, R0 };
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {                      // soft scenery: forests, highland knolls, marsh pockets (nothing impassable from noise)
+    const f = fold(s, x, y), nx = f.x * sc, ny = f.y * sc, wood = fbm(nx - 40.1, ny + 7.9, seed + 202), high = fbm(nx + 9.3, ny + 55.5, seed + 303), mar = fbm(nx + 31.7, ny - 12.3, seed + 101);
+    s.ter[y * N + x] = wood > 0.6 ? 3 : high > 0.66 ? 4 : mar > 0.71 ? 5 : 0;
+  }
+  const B = ord * Math.ceil(4 / ord), bridgeAng = Array.from({ length: B }, (_, j) => Math.PI + (TAU * j) / B);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const dx = x - C, dy = y - C, r = Math.hypot(dx, dy);
+    if (r <= Ri) s.ter[y * N + x] = r > Ri - 2 ? 4 : 0;                          // the island: plain inside, a highland rim (a tower on the rim is one level higher)
+    else if (r <= R0) {                                                          // the moat, with bridges one square wide
+      let bridge = false; for (const a of bridgeAng) { const along = dx * Math.cos(a) + dy * Math.sin(a), perp = Math.abs(-dx * Math.sin(a) + dy * Math.cos(a)); if (along > 0 && perp <= 0.55) bridge = true; }
+      s.ter[y * N + x] = bridge ? 0 : 2;
+    }
+  }
+  // ridges along the boundaries between neighbouring seats, each with two 5-wide gates
+  for (let k = 0; k < ord; k++) {
+    const phi = Math.PI + Math.PI / ord + (TAU * k) / ord, cp = Math.cos(phi), sp = Math.sin(phi), r0 = R0 + 3, r1 = 0.48 * N, g1 = r0 + 0.34 * (r1 - r0), g2 = r0 + 0.76 * (r1 - r0);
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+      const dx = x - C, dy = y - C, along = dx * cp + dy * sp, perp = Math.abs(-dx * sp + dy * cp);
+      if (along < r0 || along > r1 || perp > 1.6) continue;
+      if (Math.abs(along - g1) <= 2.6 || Math.abs(along - g2) <= 2.6) { s.ter[y * N + x] = 0; continue; }
+      s.ter[y * N + x] = 1;
+    }
+  }
+  const clearR = Math.max(5, Math.round(0.045 * N)); for (const f of F) for (let dy = -clearR; dy <= clearR; dy++) for (let dx = -clearR; dx <= clearR; dx++) if (dx * dx + dy * dy <= clearR * clearR) put(f.x + dx, f.y + dy, 0);
+}
+export function islandPopulate(s, F, taken) {
+  const N = s.N, np = s.np, ord = orderOf(s), C = centre(s), rng = s.rng, ix = (x, y) => y * N + x, { Ri, R0 } = s.island, f = (N * N / np) / 2812;
+  s.mult = new Uint8Array(N * N).fill(1);
+  const ok = (x, y) => x >= 1 && y >= 1 && x < N - 1 && y < N - 1 && !blockedT(s, x, y) && !s.res[ix(x, y)] && !taken.has(ix(x, y));
+  const copies = (pt) => Array.from({ length: ord }, (_, k) => rotk(s, pt, k));
+  const nearFort = (p, r) => F.some((q) => Math.abs(q.x - p.x) + Math.abs(q.y - p.y) <= r);
+  const polar = (rho, phi) => ({ x: Math.round(C + rho * Math.cos(phi)), y: Math.round(C + rho * Math.sin(phi)) });
+  const put = (kind, p, mult) => { const cs = copies(p); if (!cs.every((q) => ok(q.x, q.y)) || new Set(cs.map((q) => ix(q.x, q.y))).size !== ord) return false; for (const q of cs) { if (s.ter[ix(q.x, q.y)] === 5) s.ter[ix(q.x, q.y)] = 0; s.res[ix(q.x, q.y)] = RES_CODE[kind]; s.mult[ix(q.x, q.y)] = mult; taken.add(ix(q.x, q.y)); } return true; };
+  const wedge = () => Math.PI + (rng() - 0.5) * (TAU / ord);
+  const zone = (kinds, n, rlo, rhi, mult, avoidFort) => { let placed = 0, guard = 0; while (placed < n && guard++ < 4000) { const kind = kinds[placed % kinds.length]; if (put(kind, ((p) => (avoidFort && nearFort(p, 10) ? { x: -1, y: -1 } : p))(polar(rlo + rng() * (rhi - rlo), wedge())), mult)) placed++; } };
+  const nI = Math.max(4, Math.round(4 * Math.sqrt(f))), nM = Math.round(14 * Math.pow(f, 0.55)), nO = Math.round(18 * Math.pow(f, 0.6));
+  zone(['aether', 'ember', 'soul', 'faith', 'gold', 'iron'], nI, 2, Ri - 3, 3, false);                            // the island: richest (x3), mostly Mana and Spirit
+  zone(['gold', 'iron', 'faith', 'soul', 'aether', 'ember'], nM, R0 + 3, 0.31 * N, 2, true);                       // the middle ring (x2)
+  zone(['gold', 'iron', 'gold', 'iron', 'faith', 'soul'], nO, 0.31 * N, 0.47 * N, 1, true);                        // the outer fields (x1): the mines
+  // gate-houses: a node pair at each bridge head and gate, with a strategic point beside them, so every choke is worth holding
+  const pts = [];
+  for (let j = 0; j < Math.ceil(4 / ord) * ord; j++) {
+    const a = Math.PI + (TAU * j) / (ord * Math.ceil(4 / ord)); if (Math.abs(Math.atan2(Math.sin(a - Math.PI), Math.cos(a - Math.PI))) > Math.PI / ord + 1e-6) continue;       // bridges of the base sector only
+    for (const side of [-1, 1]) { const rho = R0 + 4, p = { x: Math.round(C + rho * Math.cos(a) - side * 3 * Math.sin(a)), y: Math.round(C + rho * Math.sin(a) + side * 3 * Math.cos(a)) }; if (put(side < 0 ? 'iron' : 'gold', p, 2)) pts.push({ x: p.x + Math.round(-Math.cos(a)), y: p.y + Math.round(-Math.sin(a)), force: true }); }
+  }
+  const pointsPP = Math.round(16 * Math.sqrt(f)), spacing = Math.max(5, Math.round(0.6 * Math.sqrt((N * N / np) / pointsPP))), adj = (q) => [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([a, b]) => q.x + a >= 0 && q.y + b >= 0 && q.x + a < N && q.y + b < N && s.res[ix(q.x + a, q.y + b)]);
+  const chosen = []; const okPt = (q) => q.x >= 1 && q.y >= 1 && q.x < N - 1 && q.y < N - 1 && !blockedT(s, q.x, q.y) && !s.res[ix(q.x, q.y)];
+  for (const p of pts) if (okPt(p) && adj(p) && copies(p).every((q) => okPt(q) && adj(q))) chosen.push(p);
+  const cand = []; for (let y = 1; y < N - 1; y++) for (let x = 1; x < N - 1; x++) { const p = { x, y }; if (okPt(p) && inSector(s, p) && adj(p)) cand.push(p); }
+  for (let i = cand.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [cand[i], cand[j]] = [cand[j], cand[i]]; }
+  for (const p of cand) { if (chosen.length >= pointsPP) break; if (nearFort(p, 6) || chosen.some((q) => Math.abs(q.x - p.x) + Math.abs(q.y - p.y) < spacing)) continue; if (copies(p).every((q) => okPt(q) && adj(q))) chosen.push(p); }
+  for (const p of chosen) for (const q of copies(p)) if (!s.points.some((r) => r.x === q.x && r.y === q.y)) s.points.push(q);
+  startRing(s, F, taken);                                                                                          // finally the starting ring at every fortress (placed last so nothing else crowds it; points already avoid fortress surroundings)
+}
