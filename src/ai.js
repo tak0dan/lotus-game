@@ -1,7 +1,7 @@
 // THE TOWER GAME — opponent. Plans a whole year of orders through the SAME planning API the UI uses (R.setMove, R.planAttack, ...),
 // without looking at the human's orders. Heuristic, objective-driven: economy first, then expansion, then coordinated strikes and sieges.
 import * as R from './rules.js';
-import { UNITS, TECHS, MAX_LEVELS } from './balance.js';
+import { UNITS, TECHS, GARRISON_HITS } from './balance.js';
 
 const WANT = { infantry: 5, archer: 2, cavalry: 2, heavy_infantry: 2, siege: 2, heavy_cavalry: 1, mage: 0, dragon: 0, monk: 0, priest: 0 };
 
@@ -27,17 +27,20 @@ export function planYear(s, p) {
   // ── 0. research (when rich enough and it would matter) ──
   if (!pl.tech.siegecraft && R.have(pl, 'iron') >= TECHS.siegecraft.cost.iron && s.units.some((u) => u.owner === p && u.type === 'siege')) R.setResearch(s, p, 'siegecraft');
 
-  // ── 1. strikes: coordinated attacks (ATK + 1 per other friend on the same target) ──
+  // ── 0b. Dragons: fly to the best enemy tower (landing crushes its garrison), else stay ──
+  for (const d of mine().filter((u) => UNITS[u.type].flying)) {
+    const land = enT().filter((t) => R.canLand(s, d, t) && t.garrison).sort((a, b) => (b.fortress ? 1 : 0) - (a.fortress ? 1 : 0) || R.manh(a, d) - R.manh(b, d))[0];
+    if (land && R.setFlight(s, p, d.id, land.id)) busy.add(d.id);
+  }
+  // ── 1. strikes: every striker lands ONE hit; gather as many as the target needs ──
   const attackers = mine().filter((u) => !UNITS[u.type].siege);
   const targets = foes().filter((t) => t.z === 0 || attackers.some((a) => UNITS[a.type].rng > 0));
-  const value = (t) => UNITS[t.type].atk + UNITS[t.type].def + (UNITS[t.type].siege ? 3 : 0);
+  const value = (t) => UNITS[t.type].hits * 2 + (UNITS[t.type].heavy ? 2 : 0) + (UNITS[t.type].siege ? 3 : 0);
   for (const t of targets.sort((a, b) => value(b) - value(a))) {
     const can = attackers.filter((a) => free(a) && canHit(s, a, t)); if (!can.length) continue;
-    can.sort((a, b) => UNITS[b.type].atk - UNITS[a.type].atk);
-    for (let n = 1; n <= can.length; n++) {                                 // smallest group that actually wins
-      const grp = can.slice(0, n), def = UNITS[t.type].def + (t.z === 1 && !grp.every((g) => UNITS[g.type].arcane) ? 2 : 0);
-      if (grp.every((g) => UNITS[g.type].atk + (n - 1) > def)) { for (const g of grp) if (R.planAttack(s, p, g.id, t.id)) busy.add(g.id); break; }
-    }
+    const need = UNITS[t.type].hits + (t.z === 1 && !UNITS[t.type].flying ? GARRISON_HITS : 0) + (UNITS[t.type].heavy ? 1 : 0);   // a Heavy unit shrugs off one hit
+    if (can.length < need) continue;
+    let sent = 0; for (const g of can) { if (sent >= need) break; if (R.planAttack(s, p, g.id, t.id)) { busy.add(g.id); sent++; } }
   }
   // ── 2. sieges ──
   for (const u of mine().filter((z) => UNITS[z.type].siege && free(z))) {
@@ -107,7 +110,7 @@ export function planYear(s, p) {
     if (best && R.setMove(s, p, u.id, best.x, best.y)) busy.add(u.id);
   }
   // ── 8. the army: advance when strong enough, otherwise hold the home ground ──
-  const str = (list) => list.reduce((a, u) => a + UNITS[u.type].atk + UNITS[u.type].def, 0);
+  const str = (list) => list.reduce((a, u) => a + UNITS[u.type].hits + 1 + (UNITS[u.type].heavy ? 1 : 0), 0);
   const army = mine().filter((u) => free(u) && !UNITS[u.type].builder || (free(u) && s.units.filter((z) => z.owner === p && z.type === 'infantry').length > 4 && !u.z));
   const armyPool = army.filter((u) => u.z === 0 && !(UNITS[u.type].siege && !enT().length));
   const aggressive = s.round >= 6 && str(armyPool) >= 0.5 * str(foes().filter((u) => UNITS[u.type].mov > 0));
@@ -122,7 +125,7 @@ export function planYear(s, p) {
   }
   return s.orders[p];
 }
-function canHit(s, a, t) { const d = UNITS[a.type]; if (d.siege) return false; const r = R.reach(s, a); if (R.canStrike(s, a, t)) return true; for (const [k, e] of r) { if (R.canStrike(s, a, t, { x: k % s.N, y: Math.floor(k / s.N), z: e.climb ? 1 : 0 })) return true; } return false; }
+function canHit(s, a, t) { const d = UNITS[a.type]; if (d.siege) return false; if (d.flying) return R.canStrike(s, a, t, R.plannedPos(s, a)); const r = R.reach(s, a); if (R.canStrike(s, a, t)) return true; for (const [k, e] of r) { if (R.canStrike(s, a, t, { x: k % s.N, y: Math.floor(k / s.N), z: e.climb ? 1 : 0 })) return true; } return false; }
 const isPoint = (s, t) => s.points.some((p) => p.x === t.x && p.y === t.y);
 function adjacentTo(s, u, c) {                                // free square next to c that u can reach (or stands on)
   let best = null;

@@ -1,8 +1,8 @@
 // Headless AI-vs-AI soak test + balance statistics for THE TOWER GAME.
-// usage: node test/sim.mjs [games=20] [yearCap=120] [startSeed=1] [boardSize=30]
+// usage: node test/sim.mjs [games=20] [yearCap=120] [startSeed=1] [boardSize=75]
 import * as R from '../src/rules.js';
 import { planYear } from '../src/ai.js';
-const games = +process.argv[2] || 20, cap = +process.argv[3] || 120, seed0 = +process.argv[4] || 1, size = +process.argv[5] || 30;
+const games = +process.argv[2] || 20, cap = +process.argv[3] || 120, seed0 = +process.argv[4] || 1, size = +process.argv[5] || 75;
 const st = { p0: 0, p1: 0, none: 0, why: { fortress: 0, points: 0, elimination: 0 }, years: [], kills: 0, levelsLost: 0, sieges: 0, towersBuilt: 0, idle: 0, unitYears: 0, recruits: 0, gold: [], armies: [] };
 const t0 = Date.now();
 for (let g = 0; g < games; g++) {

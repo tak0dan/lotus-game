@@ -36,7 +36,7 @@ export const ownerMat = (o, dark = false) => mat(dark ? OWNER_DARK[o] : OWNER_CO
 // A small square stone plinth every figurine stands on (as on the movie's table).
 const plinth = () => { const g = new THREE.Group(); g.name = 'plinth'; g.add(part(G.box(0.74, 0.07, 0.74), DSTONE, 0, 0.035, 0), part(G.box(0.66, 0.04, 0.66), STONE, 0, 0.09, 0)); return g; };
 
-export const TYPE_HEIGHT = { infantry: 1.15, heavy_infantry: 1.2, cavalry: 1.1, heavy_cavalry: 1.2, archer: 1.2, monk: 1.2, priest: 1.45, siege: 1.1, mage: 1.8, dragon: 1.35 };
+export const TYPE_HEIGHT = { infantry: 1.15, heavy_infantry: 1.2, cavalry: 1.1, heavy_cavalry: 1.2, archer: 1.2, monk: 1.2, priest: 1.45, siege: 1.1, mage: 1.8, dragon: 2.1 };
 
 // ── figurines (built facing +X, wrapped so the finished model faces +Z) ──
 function figure(type, o) {
@@ -96,18 +96,24 @@ function figure(type, o) {
           part(G.box(0.07, 0.5, 0.5), om, 0.0, Y + 0.7, 0), part(G.box(0.3, 0.9, 0.06), od, -0.2, Y + 0.6, 0));                                   // long sleeves, cloak
       { add(part(G.cyl(0.016, 0.016, 1.4, 4), DWOOD, 0.26, Y + 0.7, 0.16)); const orb = part(G.oct(0.09), glow(0x9db8ff, 1.2), 0.26, Y + 1.45, 0.16); orb.name = 'orb'; orb.userData.orb = true; add(orb); }
       break;
-    case 'dragon': {
-      const sk = od, hi = om;
-      add(part(G.box(0.8, 0.36, 0.42), sk, 0, Y + 0.42, 0), part(G.box(0.34, 0.3, 0.3), sk, 0.5, Y + 0.56, 0), part(G.cone(0.13, 0.36, 4), hi, 0.76, Y + 0.7, 0),
-          part(G.box(0.34, 0.12, 0.34), hi, 0.52, Y + 0.34, 0), part(G.cone(0.1, 0.9, 4), sk, -0.7, Y + 0.34, 0));
-      const nk = part(G.box(0.14, 0.5, 0.16), sk, 0.58, Y + 0.85, 0); nk.rotation.z = -0.35; add(nk);
-      for (let i = 0; i < 6; i++) add(part(G.cone(0.05, 0.16, 3), hi, -0.35 + i * 0.16, Y + 0.67, 0));                                           // back spikes
-      for (const dz of [0.17, -0.17]) for (const dx of [0.28, -0.3]) add(part(G.box(0.1, 0.24, 0.1), sk, dx, Y + 0.13, dz * 1.2));
-      const wingGeo = new THREE.BufferGeometry();
-      wingGeo.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, -0.6, 0.05, 0.08, 0.1, 0.4, 0.75, -0.5, 0.25, 0.95, -0.25, 0.1, 1.2, 0.35, 0.05, 0.55], 3));
-      wingGeo.setIndex([0, 1, 2, 1, 3, 2, 2, 3, 4, 0, 2, 5]); wingGeo.computeVertexNormals();
+    case 'dragon': {                                                         // a WYVERN: two legs, wings for arms, perched on a tower top (much bigger than any other unit)
+      const sk = od, hi = om, S = 1.0, P = (geo, m, x, y, z, rx = 0, ry = 0, rz = 0) => { const q = part(geo, m, x * S, y * S, z * S); q.scale.setScalar(S); q.rotation.set(rx, ry, rz); return q; };
+      add(P(G.box(0.62, 0.42, 0.4), sk, 0, 0.62, 0, 0, 0, 0.35));                                              // torso, leaning forward
+      add(P(G.box(0.34, 0.3, 0.34), sk, -0.3, 0.46, 0, 0, 0, 0.2));                                           // haunch
+      for (const dz of [0.17, -0.17]) {                                                                         // two hind legs gripping the stone
+        add(P(G.box(0.14, 0.34, 0.14), sk, -0.14, 0.28, dz, 0, 0, -0.25), P(G.box(0.1, 0.22, 0.1), sk, -0.05, 0.1, dz, 0, 0, 0.45));
+        for (const k of [-1, 0, 1]) add(P(G.cone(0.025, 0.14, 3), hi, 0.1, 0.03, dz + k * 0.05, 0, 0, -Math.PI / 2));   // talons
+      }
+      add(P(G.cone(0.13, 1.35, 4), sk, -0.95, 0.3, 0, 0, 0, Math.PI / 2 + 0.7));                                // long tail hanging down behind the tower
+      add(P(G.cone(0.06, 0.2, 3), hi, -1.5, 0.05, 0, 0, 0, Math.PI));                                          // tail barb
+      add(P(G.box(0.12, 0.5, 0.14), sk, 0.28, 0.98, 0, 0, 0, -0.25), P(G.box(0.1, 0.4, 0.12), sk, 0.4, 1.34, 0, 0, 0, 0.35));   // S-shaped neck
+      add(P(G.box(0.3, 0.14, 0.2), sk, 0.62, 1.55, 0, 0, 0, -0.1), P(G.cone(0.05, 0.3, 4), hi, 0.5, 1.7, 0.09, 0, 0, 2.0), P(G.cone(0.05, 0.3, 4), hi, 0.5, 1.7, -0.09, 0, 0, 2.0));   // head + two horns
+      for (let i = 0; i < 5; i++) add(P(G.cone(0.04, 0.14, 3), hi, -0.25 + i * 0.12, 0.88 - i * 0.02, 0));    // back spikes
+      const wingGeo = new THREE.BufferGeometry();                                                              // wing membrane: arm bone + three fingers
+      wingGeo.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, -0.2, 0.7, 0.3, 0.1, 1.05, 0.75, 0.15, 0.75, 1.25, 0.1, 0.2, 1.15, -0.3, 0.05, 0.6], 3));
+      wingGeo.setIndex([0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 5, 0, 5, 1]); wingGeo.computeVertexNormals();
       const wm = new THREE.MeshStandardMaterial({ name: 'owner', color: OWNER_COL[o], side: THREE.DoubleSide, flatShading: true, roughness: 0.92 });
-      for (const sgn of [1, -1]) { const w = new THREE.Group(); w.name = sgn > 0 ? 'wing_L' : 'wing_R'; w.position.set(0.05, Y + 0.62, 0.2 * sgn); const mesh = part(wingGeo, wm); mesh.scale.z = sgn; w.add(mesh); add(w); }
+      for (const sgn of [1, -1]) { const w = new THREE.Group(); w.name = sgn > 0 ? 'wing_L' : 'wing_R'; w.position.set(0.02 * S, 0.8 * S, 0.2 * sgn * S); const mesh = part(wingGeo, wm); mesh.scale.set(S, S, S * sgn); w.add(mesh); add(w); }
       break; }
   }
   g.name = type; g.userData.top = TYPE_HEIGHT[type];

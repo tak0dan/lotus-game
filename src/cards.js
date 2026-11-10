@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { UNITS, UNIT_ORDER, SPECS, COSTS, ACTIONS, ACTION_ORDER, LORE, ACTION_LORE, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, GARRISON_DEF, RES_NAME, RES_INFO, RES_ALL, SUBTYPES, FAMILIES, FAMILY_OF, PRIMARY_YIELD, DOUBLERS, PRIEST_RADIUS, YIELD, MAX_LEVELS } from './balance.js';
+import { UNITS, UNIT_ORDER, SPECS, COSTS, ACTIONS, ACTION_ORDER, LORE, ACTION_LORE, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, GARRISON_HITS, DRAGON, ATTACH_BONUS_MIN, ARCANE_CONVERT, ONLY_GATHERERS, RES_NAME, RES_INFO, RES_ALL, SUBTYPES, FAMILIES, FAMILY_OF, PRIMARY_YIELD, DOUBLERS, PRIEST_RADIUS, YIELD, MAX_LEVELS } from './balance.js';
 import { OWNER_COL, NAME, resourceMarker } from './models.js';
 import { makeModel, topOf, lib } from './modelLib.js';
 
@@ -51,11 +51,12 @@ const CLS = { Foot: '#8a6f4a', Mounted: '#7a5a3a', Ranged: '#4d6b4a', Siege: '#6
 function unitRules(t) {
   const u = UNITS[t], out = [];
   if (u.builder) out.push('<b>Builder.</b> Lays foundations, tends levels.');
-  out.push(u.climb ? '<b>Garrison.</b> May climb towers (+1 MOV).' : '<b>No climbing.</b> Cannot garrison.');
+  if (!u.flying) out.push(u.climb ? '<b>Garrison.</b> May climb towers (+1 MOV).' : '<b>No climbing.</b> Cannot garrison.');
+  if (u.hits > 1) out.push(`<b>${u.hits} hits to kill.</b> Hits do not carry over: a survivor is whole again next year.`);
   if (u.rng > 0 && !u.siege && !u.flying) out.push(`<b>Ranged ${u.rng}.</b> Needs a clear line; height shoots over.`);
-  if (u.arcane) out.push('<b>Arcane.</b> No line needed; ignores garrison +2.');
+  if (u.arcane) out.push(`<b>Arcane.</b> No line needed; ignores the garrison's extra hit.`);
   if (u.siege) out.push('<b>Siege.</b> Only unit that breaks towers: 1 damage/yr, if it did not move.');
-  if (u.flying) out.push('<b>Flying.</b> Ignores obstacles and towers.');
+  if (u.flying) out.push(`<b>Wyvern.</b> Lives on top of a tower of height ${DRAGON.minHeight}+ (never an Arcane Tower) and flies from tower to tower. Landing on an enemy tower <b>kills the unit inside</b>. Strikes within ${DRAGON.radius} squares, +1 for each level above ${DRAGON.minHeight}. A hatchling with no free tower to perch on dies.`);
   if (u.heavy) out.push(`<b>Heavy.</b> Voids ONE lethal hit a year — only from ${UNITS[u.light].name} or from a distance.`);
   if (u.hitrun) out.push('<b>Strike and return.</b> Moves to the target, strikes, then moves back exactly as far as it came.');
   if (u.priest) out.push(`<b>Ward.</b> Each friend within ${PRIEST_RADIUS} squares voids ONE lethal hit a year.`);
@@ -78,13 +79,15 @@ export function unitCardHTML(t, owner = 0) {
   const u = UNITS[t], L = LORE[t];
   return frame({ cls: u.class, name: u.name, cost: pips(u.cost), art: `<img alt="${u.name}" src="${artFor(t, owner)}">`, type: `Unit — ${u.class}`, typeRight: `${SPECS[u.at].name}${u.minLevel > 1 ? ' ' + u.minLevel + '+' : ''}`,
     rules: unitRules(t), lore: L.quote, loreTitle: L.title, isNew: L.isNew, owner,
-    upkeep: `Upkeep <span class="pip s" style="--c:${RES_INFO.gold.color}">${u.upkeep}<i>G</i></span>/yr`, stats: stat('MOV', u.mov) + stat('ATK', u.atk) + stat('DEF', u.def) + stat('RNG', u.rng || '–'), foot: `THE TOWER GAME · UNIT · ${NAME[owner].toUpperCase()}` });
+    upkeep: `Upkeep <span class="pip s" style="--c:${RES_INFO.gold.color}">${u.upkeep}<i>G</i></span>/yr`, stats: (u.flying ? stat('FLIES', 'tower→tower') : stat('MOV', u.mov)) + stat('HITS', u.hits) + stat('RNG', u.flying ? DRAGON.radius + '+' : u.rng || '–'), foot: `THE TOWER GAME · UNIT · ${NAME[owner].toUpperCase()}` });
 }
 export function towerCardHTML(owner = 0) {
   const L = LORE.tower, c = COSTS;
   return frame({ cls: 'Structure', name: 'Tower', cost: pips(c.foundation), art: `<img alt="Tower" src="${artFor('tower', owner, { garrison: 'archer' })}">`, type: 'Structure — Stone', typeRight: `up to ${MAX_LEVELS} levels`,
     rules: [`<b>Levels.</b> Foundation ${FOUNDATION_HP}; normal ${NORMAL_HP} ${pips(c.normal)}; reinforced ${REINFORCED_HP} ${pips(c.reinforced)}. One a year.`,
-      `<b>Garrison.</b> +${GARRISON_DEF} DEF, only ranged can hit it, adds its yield to the node.`,
+      `<b>Garrison.</b> One extra hit to kill (+${GARRISON_HITS}); only ranged can hit it; adds its yield to the node. Spirit nodes: only an Arcane Tower gathers them.`,
+      `<b>Height.</b> At most ${MAX_LEVELS} — or more with ${ATTACH_BONUS_MIN} attached towers: +1 for each level they all share. A Dragon needs ${DRAGON.minHeight}+.`,
+      `<b>Arcane.</b> Pour ${Object.entries(ARCANE_CONVERT).map(([k, v]) => v + ' ' + RES_NAME[k]).join(' + ')} into a finished tower to make it an Arcane Tower.`,
       '<b>Siege-only.</b> Only siege engines damage it; broken levels leave the model.'],
     lore: L.quote, loreTitle: L.title, owner, upkeep: 'No upkeep', stats: stat('FOUND', FOUNDATION_HP) + stat('LVL', NORMAL_HP + '/' + REINFORCED_HP), foot: `THE TOWER GAME · STRUCTURE · ${NAME[owner].toUpperCase()}` });
 }
@@ -108,7 +111,7 @@ export function resourceCardHTML(key) {
   } else {
     const dbl = DOUBLERS[I.family] || [];
     rules.push(`<b>Node.</b> A unit on the node: <b>${YIELD.unit}</b>. A tower on it: <b>${YIELD.tower}</b>, and its garrison adds its own part.`);
-    rules.push(dbl.length ? `<b>Doubled</b> (${YIELD.double}) when worked by ${dbl.map((t) => UNITS[t].name).join(' or ')}. Any other unit works it for ${YIELD.unit}.` : '<b>Any unit</b> can work it; there is no specialist.');
+    rules.push(ONLY_GATHERERS[I.family] ? `<b>Only ${ONLY_GATHERERS[I.family].map((t) => UNITS[t].name).join(' or ')}</b> can gather it (${YIELD.double} a year), or an <b>Arcane Tower</b> built on the node (${YIELD.tower}). An ordinary tower or unit gets nothing.` : dbl.length ? `<b>Doubled</b> (${YIELD.double}) when worked by ${dbl.map((t) => UNITS[t].name).join(' or ')}. Any other unit works it for ${YIELD.unit}.` : '<b>Any unit</b> can work it; there is no specialist.');
     rules.push(`<b>Stands in:</b> a ${fam.name} primary card can be spent as ${RES_NAME[key]}.`);
   }
   rules.push('<b>Use it or lose it.</b> Unspent cards vanish at the end of the year.');

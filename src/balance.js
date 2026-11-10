@@ -31,30 +31,34 @@ export const RES_INFO = {                                                       
 };
 
 // ── Units ───────────────────────────────────────────────────────────────────────────────────────────
-// mov: squares per year (orthogonal, 1 each) · atk/def: deterministic (ATK > DEF kills; equal = both live) · rng: 0 = melee
+// mov: squares per year (orthogonal, 1 each) · hits: how many hits it takes to kill it THIS YEAR (a unit that survives is whole again next year) · rng: 0 = melee
+// There are NO attack/defence numbers: every strike is exactly one hit. A Heavy unit also voids one hit a year from its light version or from a distance; a Priest wards its friends.
 // upkeep: gold per year (RB) · cost: paid when ordered · time: years to recruit · at: building spec that can recruit it · minLevel: tower levels needed
 export const UNITS = {
-  infantry:       { name: 'Infantry',        class: 'Foot',     mov: 3, atk: 2, def: 2, rng: 0, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'barracks',  minLevel: 1, climb: true,  builder: true },
-  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, atk: 3, def: 4, rng: 0, upkeep: 2, cost: { gold: 3, iron: 2 },        time: 2, at: 'barracks',  minLevel: 2, climb: true,  heavy: true, light: 'infantry' },
-  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, atk: 3, def: 2, rng: 0, upkeep: 2, cost: { gold: 3 },                 time: 1, at: 'stable',    minLevel: 1, climb: false },
-  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, atk: 4, def: 3, rng: 0, upkeep: 3, cost: { gold: 4, iron: 2 },        time: 2, at: 'stable',    minLevel: 2, climb: false, heavy: true, light: 'cavalry' },
-  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, atk: 2, def: 1, rng: 3, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'range',     minLevel: 1, climb: true },
-  monk:           { name: 'Monk',            class: 'Spirit',   mov: 6, atk: 3, def: 1, rng: 0, upkeep: 1, cost: { gold: 2, faith: 1 },       time: 1, at: 'monastery', minLevel: 1, climb: true,  hitrun: true },
-  priest:         { name: 'Priest',          class: 'Spirit',   mov: 3, atk: 1, def: 2, rng: 0, upkeep: 2, cost: { gold: 2, spirit: 2 },      time: 2, at: 'monastery', minLevel: 2, climb: true,  priest: true },
-  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, atk: 4, def: 1, rng: 5, upkeep: 2, cost: { gold: 3, iron: 3 },        time: 2, at: 'workshop',  minLevel: 1, climb: false, siege: true },
-  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, atk: 2, def: 1, rng: 3, upkeep: 2, cost: { gold: 3, mana: 2 },        time: 2, at: 'arcane',    minLevel: 1, climb: true,  arcane: true },
-  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, atk: 7, def: 5, rng: 2, upkeep: 5, cost: { gold: 6, mana: 3 },        time: 4, at: 'lair',      minLevel: 2, climb: false, flying: true, tech: 'dragonlore' },
+  infantry:       { name: 'Infantry',        class: 'Foot',     mov: 3, hits: 1, rng: 0, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'barracks',  minLevel: 1, climb: true,  builder: true },
+  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, hits: 1, rng: 0, upkeep: 2, cost: { gold: 3, iron: 2 },        time: 2, at: 'barracks',  minLevel: 2, climb: true,  heavy: true, light: 'infantry' },
+  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, hits: 1, rng: 0, upkeep: 2, cost: { gold: 3 },                 time: 1, at: 'stable',    minLevel: 1, climb: false },
+  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, hits: 1, rng: 0, upkeep: 3, cost: { gold: 4, iron: 2 },        time: 2, at: 'stable',    minLevel: 2, climb: false, heavy: true, light: 'cavalry' },
+  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, hits: 1, rng: 3, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'range',     minLevel: 1, climb: true },
+  monk:           { name: 'Monk',            class: 'Spirit',   mov: 6, hits: 1, rng: 0, upkeep: 1, cost: { gold: 2, faith: 1 },       time: 1, at: 'monastery', minLevel: 1, climb: true,  hitrun: true },
+  priest:         { name: 'Priest',          class: 'Spirit',   mov: 3, hits: 1, rng: 0, upkeep: 2, cost: { gold: 2, spirit: 2 },      time: 2, at: 'monastery', minLevel: 2, climb: true,  priest: true },
+  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, hits: 1, rng: 5, upkeep: 2, cost: { gold: 3, iron: 3 },        time: 2, at: 'workshop',  minLevel: 1, climb: false, siege: true },
+  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, hits: 1, rng: 3, upkeep: 2, cost: { gold: 3, mana: 2 },        time: 2, at: 'arcane',    minLevel: 1, climb: true,  arcane: true },
+  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, hits: 5, rng: 2, upkeep: 5, cost: { gold: 6, mana: 3 },        time: 4, at: 'lair',      minLevel: 3, climb: false, flying: true, tech: 'dragonlore' },
 };
 export const UNIT_ORDER = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'monk', 'priest', 'siege', 'mage', 'dragon'];
 
 // ── Towers ──────────────────────────────────────────────────────────────────────────────────────────
-export const FOUNDATION_HP = 6, NORMAL_HP = 3, REINFORCED_HP = 5, MAX_LEVELS = 4;          // (RB) structural durability; max height is open in RB -> 4
-export const GARRISON_DEF = 2;                                                                // (RB) +2 DEF defending on a tower
+export const FOUNDATION_HP = 6, NORMAL_HP = 3, REINFORCED_HP = 5, MAX_LEVELS = 5;          // (RB) structural durability; a tower is at most 5 high ...
+export const GARRISON_HITS = 1;                                                               // a unit inside a tower needs one more hit to kill (the Dragon excepted — it already sits on top)
+export const ATTACH_BONUS_MIN = 3;                                                            // ... unless 3 towers are ATTACHED (orthogonal neighbours): then +1 height for every level they ALL share (the lowest of them)
+export const DRAGON = { minHeight: 3, radius: 5 };                                              // a Dragon perches only on towers of height >= 3; it strikes within radius 5, +1 for each level above 3
+export const ARCANE_CONVERT = { soul: 2, aether: 2, ember: 2 };                              // pour this into a finished tower and it becomes an Arcane Tower
 export const COSTS = {
   foundation: { gold: 1, iron: 2 },
   normal:     { iron: 2 },
   reinforced: { gold: 1, iron: 4 },
-  spec: { outpost: {}, barracks: { gold: 1 }, stable: { gold: 1 }, range: { gold: 1 }, workshop: { iron: 2 }, arcane: { mana: 2 }, lair: { mana: 2, gold: 2 }, monastery: { spirit: 1 } },   // surcharge when the foundation is laid
+  spec: { outpost: {}, barracks: { gold: 1 }, stable: { gold: 1 }, range: { gold: 1 }, workshop: { iron: 2 }, lair: { mana: 2, gold: 2 }, monastery: { spirit: 1 } },   // surcharge when the foundation is laid
 };
 // A tower's specialisation is chosen when its foundation is laid. The main fortress has the first three.
 export const SPECS = {
@@ -63,9 +67,9 @@ export const SPECS = {
   stable:   { name: 'Stable',   text: 'Recruits Cavalry; Heavy Cavalry from level 2.' },
   range:    { name: 'Archery Yard', text: 'Recruits Archers.' },
   workshop: { name: 'Workshop', text: 'Builds Siege Engines — the only way to break a tower.' },
-  arcane:   { name: 'Arcane Tower', text: 'Recruits Mages. Yields 1 Mana card a year.' },
+  arcane:   { name: 'Arcane Tower', text: 'Made by pouring 2 Soul + 2 Aether + 2 Ember into a finished tower. Recruits Mages, yields 1 Mana card a year, and — alone among towers — gathers a Spirit node it stands on. Dragons will not land on it.', convertOnly: true },
   monastery: { name: 'Monastery', text: 'Recruits Monks; Priests from level 2. Yields 1 Spirit card a year.' },
-  lair:     { name: 'Dragon Lair', text: 'Needs Dragonlore. Raises Dragons over several years.' },
+  lair:     { name: 'Dragon Lair', text: 'Needs Dragonlore. Raises Dragons over several years; the hatchling must find a free tower of height 3+ to perch on, or it dies.' },
 };
 export const FORTRESS_SPECS = ['barracks', 'stable', 'range'];
 export const FORTRESS = { levels: ['reinforced', 'reinforced'], queueSlots: 2 };               // start-state of each main fortress
@@ -79,6 +83,7 @@ export const QUEUE_SLOTS = 1;                                                   
 //   + a garrison in that tower ..... + the unit's part (1, or 2 for the specialist) — so a node yields up to 2, or 3 with a specialist garrison
 export const YIELD = { tower: T.YT ?? 1, unit: T.YU ?? 1, double: 2 };
 export const DOUBLERS = { mana: ['mage'], spirit: ['monk', 'priest'] };
+export const ONLY_GATHERERS = { spirit: ['monk', 'priest'] };                                   // Spirit nodes can be worked ONLY by spiritual units — or by an Arcane Tower built on the node
 // Towers also yield a PRIMARY (family) card each year if they have at least one level — the three families have a home:
 export const PRIMARY_YIELD = { fortress: { physical: T.CAPITAL ?? 12 }, arcane: { mana: 1 }, monastery: { spirit: 1 } };   // [DECISION] fortress >= the starting army's upkeep, so the start is not a trap
 export const PRIEST_RADIUS = 2;                                                            // squares (Chebyshev) around a Priest whose friends may void one hit a year
@@ -98,8 +103,8 @@ export const POINTS_HOLD_YEARS = 2;        // [DECISION] hold a strategic majori
 // phase = when it resolves in the year.  cost is what the order spends (gold/iron/mana) — shown on the card.
 export const ACTIONS = {
   advance:    { name: 'Advance',        phase: 'Movement', cost: {},                       art: 'arrow',   text: 'Move up to your MOV, one square at a time, orthogonally. Friends and enemies block the way; a tower base can only be entered by climbing it.' },
-  strike:     { name: 'Strike',         phase: 'Combat',   cost: {},                       art: 'swords',  text: 'Attack an enemy in reach after movement. Effective ATK = ATK + 1 for every other friend striking the same target. ATK above DEF destroys it; equal changes nothing.' },
-  garrison:   { name: 'Garrison',       phase: 'Movement', cost: {},                       art: 'tower',   text: 'Climb an own (or empty enemy) tower: costs 1 extra MOV. The garrison defends with +2 DEF, can only be hit by ranged units, and doubles the tower\'s yield. Cavalry, dragons and siege engines cannot climb.' },
+  strike:     { name: 'Strike',         phase: 'Combat',   cost: {},                       art: 'swords',  text: 'Attack an enemy in reach after movement. Every striker lands exactly one hit; a unit falls when it has taken as many hits as it needs this year (most need one). Survivors are whole again next year.' },
+  garrison:   { name: 'Garrison',       phase: 'Movement', cost: {},                       art: 'tower',   text: 'Climb an own (or empty enemy) tower: costs 1 extra MOV. The garrison needs one extra hit to kill, can only be hit by ranged units, and adds its part to the node under the tower. Cavalry, dragons and siege engines cannot climb.' },
   found:      { name: 'Lay a Foundation', phase: 'Building', cost: COSTS.foundation,       art: 'base',    text: 'An Infantry beside a free square raises a tower foundation (6 structural). Pick its specialisation now. Levels come in later years.' },
   raise:      { name: 'Raise a Level',  phase: 'Building', cost: COSTS.normal,             art: 'level',   text: 'Add one normal level (3 structural) to a tower you garrison or tend. One level per tower per year.' },
   reinforce:  { name: 'Reinforce a Level', phase: 'Building', cost: COSTS.reinforced,      art: 'wall',    text: 'Add one reinforced level (5 structural). Heavier to break, slower to pay for.' },

@@ -14,6 +14,8 @@ const help = `tg <command>
   level <towerId> [reinforced]   add a tower level
   recruit <towerId> <unitType>   recruit a unit
   research <dragonlore|siegecraft>
+  fly <dragonId> <towerId>       a Dragon flies to another tower (height 3+, not Arcane); landing kills the garrison
+  convert <towerId>              pour 2 soul + 2 aether + 2 ember into a tower: it becomes an Arcane Tower
   disband <unitId>               dismiss a unit for good (it stops costing upkeep from next year — the way out of a poverty trap)
   clear [unitId]                 cancel orders (one unit, or all)
   orders                         list your orders so far

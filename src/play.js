@@ -1,10 +1,10 @@
 // THE TOWER GAME — 2D playable prototype (human = player 0 vs the built-in AI). Uses the real rules engine; the 3D client is not built yet.
 import * as R from './rules.js';
 import { planYear } from './ai.js';
-import { UNITS, UNIT_ORDER, SPECS, COSTS, TECHS, RES_ALL, SUBTYPES, FAMILY_LIST, RES_NAME, RES_INFO } from './balance.js';
+import { UNITS, UNIT_ORDER, SPECS, COSTS, TECHS, RES_ALL, SUBTYPES, FAMILY_LIST, RES_NAME, RES_INFO, ARCANE_CONVERT } from './balance.js';
 
 const rich = new URLSearchParams(location.search).get('rich') === '1';
-const s = R.newGame({ size: 30, res: rich ? Object.fromEntries(SUBTYPES.map((k) => [k, 500])) : null });
+const s = R.newGame({ res: rich ? Object.fromEntries(SUBTYPES.map((k) => [k, 500])) : null });
 const N = s.N, K = Math.floor(720 / N), cv = document.getElementById('c'); cv.width = cv.height = N * K;
 const g = cv.getContext('2d');
 const $ = (id) => document.getElementById(id);
@@ -97,12 +97,13 @@ function renderSel() {
   const el = $('sel'), u = selUnit(), t = selTower();
   if (u) {
     const d = UNITS[u.type], mine = u.owner === 0;
-    el.innerHTML = `<h2><span class="p${u.owner}">${d.name}</span> #${u.id}${mine ? '' : ' (enemy)'}</h2><small>MOV ${d.mov} · ATK ${d.atk} · DEF ${d.def} · RNG ${d.rng || '–'} · upkeep ${d.upkeep}g · at (${u.x},${u.y})${u.z ? ' · GARRISON' : ''}${u.idle ? ' · <b style="color:#ff8d7a">IDLE</b>' : ''}</small>` +
-      (mine ? `<div class="row" style="margin-top:6px"><button data-act="clearunit">Clear its orders</button><button data-act="disband" title="Release this unit at the start of the year (stops its upkeep)">Disband</button>${d.builder ? `<select id="spec">${Object.keys(SPECS).map((k) => `<option value="${k}">${SPECS[k].name} (${cost(R.addCost(COSTS.foundation, COSTS.spec[k]))})</option>`).join('')}</select><button data-act="found">Lay foundation…</button>` : ''}</div><small>${d.siege ? 'Siege: click an enemy tower in the orange ring (the engine must not move). ' : ''}Blue = move · green = climb a tower · red ring = strike.</small>` : '');
+    el.innerHTML = `<h2><span class="p${u.owner}">${d.name}</span> #${u.id}${mine ? '' : ' (enemy)'}</h2><small>${d.flying ? `flies tower to tower · strikes within ${R.dragonRadius(R.towerAt(s, u.x, u.y) || { levels: [] })} squares` : `MOV ${d.mov} · RNG ${d.rng || '–'}`} · ${d.hits} hit${d.hits > 1 ? 's' : ''} to kill${d.heavy ? ' (+ voids one hit from its light version or ranged)' : ''} · upkeep ${d.upkeep}g · at (${u.x},${u.y})${u.z ? ' · GARRISON' : ''}${u.idle ? ' · <b style="color:#ff8d7a">IDLE</b>' : ''}</small>` +
+      (mine ? `<div class="row" style="margin-top:6px"><button data-act="clearunit">Clear its orders</button><button data-act="disband" title="Release this unit at the start of the year (stops its upkeep)">Disband</button>${d.builder ? `<select id="spec">${Object.keys(SPECS).filter((k) => !SPECS[k].convertOnly).map((k) => `<option value="${k}">${SPECS[k].name} (${cost(R.addCost(COSTS.foundation, COSTS.spec[k] || {}))})</option>`).join('')}</select><button data-act="found">Lay foundation…</button>` : ''}</div><small>${d.siege ? 'Siege: click an enemy tower in the orange ring (the engine must not move). ' : ''}Blue = move · green = climb a tower · red ring = strike.</small>` : '');
   } else if (t) {
     const mine = t.owner === 0, qs = R.queueSlots(t);
-    el.innerHTML = `<h2><span class="p${t.owner}">${t.fortress ? 'Fortress' : SPECS[t.spec].name}</span> #${t.id}${mine ? '' : ' (enemy)'}</h2><small>(${t.x},${t.y}) · foundation ${t.fHp}/6 · levels [${t.levels.map((l) => (l.kind === 'reinforced' ? 'R' : 'N') + l.hp).join(' ') || 'none'}] · garrison ${t.garrison ? '#' + t.garrison.id + ' ' + t.garrison.type : 'none'} · queue ${t.queue.map((q) => q.type + ':' + q.left + 'y').join(', ') || 'empty'} (${qs} slot${qs > 1 ? 's' : ''})</small>` +
-      (mine && t.queue.some((q) => q.left <= 0) ? `<div style="color:#ff8d7a;margin:6px 0"><b>Recruits are blocked:</b> every square next to this tower is occupied. A finished unit appears only on a free orthogonal neighbour — move a unit away.</div>` : '') + (mine ? `<div class="row" style="margin-top:6px"><button data-act="level" data-r="0" ${t.levels.length >= 4 ? 'disabled' : ''}>+ Level (${cost(COSTS.normal)})</button><button data-act="level" data-r="1" ${t.levels.length >= 4 ? 'disabled' : ''}>+ Reinforced (${cost(COSTS.reinforced)})</button>${t.garrison ? `<button data-act="selgar">Select garrison</button>` : ''}</div>
+    const conv = mine && !t.fortress && t.spec !== 'arcane' && t.spec !== 'lair' ? `<div class="row" style="margin-top:6px"><button data-act="convert" title="Soul, Aether and Ember poured into the stone">Make Arcane (${cost(ARCANE_CONVERT)})</button></div>` : '';
+    el.innerHTML = conv + `<h2><span class="p${t.owner}">${t.fortress ? 'Fortress' : SPECS[t.spec].name}</span> #${t.id}${mine ? '' : ' (enemy)'}</h2><small>(${t.x},${t.y}) · foundation ${t.fHp}/6 · levels [${t.levels.map((l) => (l.kind === 'reinforced' ? 'R' : 'N') + l.hp).join(' ') || 'none'}] · garrison ${t.garrison ? '#' + t.garrison.id + ' ' + t.garrison.type : 'none'} · queue ${t.queue.map((q) => q.type + ':' + q.left + 'y').join(', ') || 'empty'} (${qs} slot${qs > 1 ? 's' : ''})</small>` +
+      (mine && t.queue.some((q) => q.left <= 0) ? `<div style="color:#ff8d7a;margin:6px 0"><b>Recruits are blocked:</b> every square next to this tower is occupied. A finished unit appears only on a free orthogonal neighbour — move a unit away.</div>` : '') + (mine ? `<div class="row" style="margin-top:6px"><button data-act="level" data-r="0" ${t.levels.length >= R.maxLevels(s, t) ? 'disabled' : ''}>+ Level (${cost(COSTS.normal)})</button><button data-act="level" data-r="1" ${t.levels.length >= R.maxLevels(s, t) ? 'disabled' : ''}>+ Reinforced (${cost(COSTS.reinforced)})</button>${t.garrison ? `<button data-act="selgar">Select garrison</button>` : ''}</div>
       <div class="row" style="margin-top:6px">${UNIT_ORDER.filter((ty) => R.recruitable(s, t, ty)).map((ty) => `<button data-act="recruit" data-type="${ty}" title="${UNITS[ty].time} year(s)" ${R.canAfford(s.pl[0], R.addCost(R.committed(s, 0), UNITS[ty].cost)) ? '' : 'disabled'}>${UNITS[ty].name} (${cost(UNITS[ty].cost)})</button>`).join('') || '<small>Nothing can be recruited here yet (needs a level, or the right specialisation).</small>'}</div>` : '');
   } else el.innerHTML = '<small>Click one of your units or towers (blue = yours). Click an enemy to inspect it.</small>';
 }
@@ -112,6 +113,8 @@ function renderOrders() {
   o.attacks.forEach((a, i) => rows.push([`strike #${a.unitId} → #${a.targetId}`, `data-act="cancel" data-kind="attacks" data-i="${i}"`]));
   o.siege.forEach((a, i) => rows.push([`siege #${a.unitId} → tower #${a.targetId}`, `data-act="cancel" data-kind="siege" data-i="${i}"`]));
   o.builds.forEach((b, i) => rows.push([b.kind === 'foundation' ? `found ${b.spec} at (${b.x},${b.y})` : `${b.reinforced ? 'reinforced ' : ''}level on tower #${b.towerId}`, `data-act="cancel" data-kind="builds" data-i="${i}"`]));
+  for (const f of o.flights || []) rows.push([`fly #${f.unitId} → tower #${f.towerId}`, `data-act="cancel" data-kind="flights" data-i="${o.flights.indexOf(f)}"`]);
+  for (const id of o.convert || []) rows.push([`make tower #${id} Arcane`, `data-act="cancel" data-kind="convert" data-i="${o.convert.indexOf(id)}"`]);
   for (const uid of (o.disband || [])) rows.push([`disband #${uid}`, `data-act="undisband" data-uid="${uid}"`]);
   o.recruits.forEach((r, i) => rows.push([`recruit ${UNITS[r.type].name} at #${r.towerId}`, `data-act="cancel" data-kind="recruits" data-i="${i}"`]));
   o.research.forEach((r, i) => rows.push([`research ${TECHS[r.tech].name}`, `data-act="cancel" data-kind="research" data-i="${i}"`]));
@@ -138,6 +141,7 @@ cv.addEventListener('click', (e) => {
     const ok = R.setBuildFoundation(s, 0, mode.builderId, x, y, mode.spec); mode = null;
     say(ok ? `Foundation ordered at (${x},${y}).` : 'Rejected: the builder must end next to a free square, and you must afford it (a lair needs Dragonlore).', !ok); return render();
   }
+  if (me && me.owner === 0 && UNITS[me.type].flying && t && !u) { const ok = R.setFlight(s, 0, me.id, t.id); say(ok ? `Dragon #${me.id} will fly to the tower at (${x},${y}).${t.garrison ? ' The unit inside will be crushed.' : ''}` : 'The Dragon cannot land there: the tower needs height 3+, must not be Arcane, and must not hold a friend or another Dragon.', !ok); return render(); }
   if (me && me.owner === 0) {                                      // order the selected unit
     if (u && u.owner !== 0) { const ok = R.planAttack(s, 0, me.id, u.id, false); say(ok ? `#${me.id} will strike #${u.id}.` : `#${me.id} cannot get #${u.id} into reach this year (melee: adjacent and not a tower garrison; ranged: range and a clear line).`, !ok); return render(); }
     if (t && t.owner !== 0) {
@@ -158,7 +162,8 @@ document.addEventListener('click', (e) => {
   if (a === 'disband' && u) { R.setDisband(s, 0, u.id); say(`#${u.id} will be disbanded at the start of the year.`); }
   else if (a === 'clearunit' && u) { R.clearUnitOrders(s, 0, u.id); say('Orders cleared.'); }
   else if (a === 'found' && u) { mode = { type: 'found', builderId: u.id, spec: $('spec').value }; return say(`Click a free square next to #${u.id} (or next to where it is ordered to move) to lay the ${mode.spec} foundation.`); }
-  else if (a === 'level' && t) { const ok = R.setBuildLevel(s, 0, t.id, b.dataset.r === '1'); say(ok ? 'Level ordered.' : 'Rejected: affordable? one order per tower per year; max 4 levels.', !ok); }
+  else if (a === 'level' && t) { const ok = R.setBuildLevel(s, 0, t.id, b.dataset.r === '1'); say(ok ? 'Level ordered.' : 'Rejected: affordable? one order per tower per year; max 5 levels (more with 3 attached towers).', !ok); }
+  else if (a === 'convert' && t) { const ok = R.setConvert(s, 0, t.id); say(ok ? 'Conversion to an Arcane Tower ordered.' : 'Rejected: needs 2 Soul + 2 Aether + 2 Ember, a finished (non-fortress, non-lair) tower with no recruit in progress.', !ok); }
   else if (a === 'recruit' && t) { const ok = R.setRecruit(s, 0, t.id, b.dataset.type); say(ok ? `${UNITS[b.dataset.type].name} ordered.` : 'Rejected: queue full or unaffordable.', !ok); }
   else if (a === 'selgar' && t && t.garrison) return select({ kind: 'unit', id: t.garrison.id });
   else if (a === 'research') { const ok = R.setResearch(s, 0, b.dataset.tech); say(ok ? 'Research ordered.' : 'Rejected.', !ok); }
