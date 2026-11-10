@@ -8,23 +8,44 @@
 
 // Tuning hook for the simulator:  TG_TUNE='{"CAPITAL_GOLD":8}' node test/sim.mjs   (ignored in the browser)
 const T = (typeof process !== 'undefined' && process.env && process.env.TG_TUNE) ? JSON.parse(process.env.TG_TUNE) : {};
-export const RESOURCES = ['gold', 'iron', 'mana'];
-export const RES_NAME = { gold: 'Gold', iron: 'Iron', mana: 'Mana' };
+// ── Resources: 3 FAMILIES (primary types), each with 2 SUBTYPES = 6 node types on the map ──────────────────────────────────────────
+// A PRIMARY (family) card can be spent as either of its subtypes. A cost written with a family name ("mana: 2") is paid by any card of that family.
+// [DECISION] Names of the Mana and Spirit subtypes are placeholders — rename them here, nothing else needs to change.
+export const FAMILIES = { physical: { name: 'Physical', subs: ['gold', 'iron'] }, mana: { name: 'Mana', subs: ['aether', 'ember'] }, spirit: { name: 'Spirit', subs: ['faith', 'soul'] } };
+export const FAMILY_LIST = ['physical', 'mana', 'spirit'];
+export const SUBTYPES = ['gold', 'iron', 'aether', 'ember', 'faith', 'soul'];            // index+1 = the node code on the map
+export const FAMILY_OF = { gold: 'physical', iron: 'physical', aether: 'mana', ember: 'mana', faith: 'spirit', soul: 'spirit' };
+export const RES_ALL = [...SUBTYPES, ...FAMILY_LIST];                                      // every kind of card a player can hold
+export const RESOURCES = RES_ALL;
+export const RES_NAME = { gold: 'Gold', iron: 'Iron', aether: 'Aether', ember: 'Ember', faith: 'Faith', soul: 'Soul', physical: 'Physical', mana: 'Mana', spirit: 'Spirit' };
+export const RES_INFO = {                                                                 // used by the resource cards
+  gold:   { family: 'physical', color: '#e0b94f', title: 'Coin of the Last Kingdoms', lore: 'Everything in Aurelia has a price. Most of it is paid by someone else.' },
+  iron:   { family: 'physical', color: '#a2abb6', title: 'Scrap and Ore',             lore: 'Dismantled cathedrals make good walls.' },
+  aether: { family: 'mana',     color: '#7ea9ff', title: 'Aether',                    lore: 'The Architects of Silence call it a variable. Everyone else calls it a miracle.' },
+  ember:  { family: 'mana',     color: '#ff8a4a', title: 'Ember',                     lore: 'What remains when a miracle has been spent.' },
+  faith:  { family: 'spirit',   color: '#f2e9c8', title: 'Faith',                     lore: 'Faith is obedience. It is also the only currency that never runs short of buyers.' },
+  soul:   { family: 'spirit',   color: '#b99cff', title: 'Soul',                      lore: 'Some say it cannot be gathered. The monks gather it anyway.' },
+  physical: { family: 'physical', color: '#c9ad73', title: 'The Material World', lore: 'Whatever can be weighed, lifted, forged or counted.', primary: true },
+  mana:     { family: 'mana',     color: '#8f8cff', title: 'The Unseen Current', lore: 'Whatever the scholars cannot weigh and the soldiers cannot stop.', primary: true },
+  spirit:   { family: 'spirit',   color: '#e9d9ff', title: 'The Quiet Tithe',    lore: 'Whatever is given, and cannot be taken back.', primary: true },
+};
 
 // ── Units ───────────────────────────────────────────────────────────────────────────────────────────
 // mov: squares per year (orthogonal, 1 each) · atk/def: deterministic (ATK > DEF kills; equal = both live) · rng: 0 = melee
 // upkeep: gold per year (RB) · cost: paid when ordered · time: years to recruit · at: building spec that can recruit it · minLevel: tower levels needed
 export const UNITS = {
-  infantry:       { name: 'Infantry',        class: 'Foot',     mov: 3, atk: 2, def: 2, rng: 0, upkeep: 1, cost: { gold: 2 },            time: 1, at: 'barracks', minLevel: 1, climb: true,  builder: true },
-  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, atk: 3, def: 4, rng: 0, upkeep: 2, cost: { gold: 3, iron: 2 },   time: 2, at: 'barracks', minLevel: 2, climb: true },
-  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, atk: 3, def: 2, rng: 0, upkeep: 2, cost: { gold: 3 },            time: 1, at: 'stable',   minLevel: 1, climb: false },
-  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, atk: 4, def: 3, rng: 0, upkeep: 3, cost: { gold: 4, iron: 2 },   time: 2, at: 'stable',   minLevel: 2, climb: false },
-  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, atk: 2, def: 1, rng: 3, upkeep: 1, cost: { gold: 2 },            time: 1, at: 'range',    minLevel: 1, climb: true },
-  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, atk: 4, def: 1, rng: 5, upkeep: 2, cost: { gold: 3, iron: 3 },   time: 2, at: 'workshop', minLevel: 1, climb: false, siege: true },
-  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, atk: 2, def: 1, rng: 3, upkeep: 2, cost: { gold: 3, mana: 2 },   time: 2, at: 'arcane',   minLevel: 1, climb: true,  arcane: true },
-  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, atk: 7, def: 5, rng: 2, upkeep: 5, cost: { gold: 6, mana: 3 },   time: 4, at: 'lair',     minLevel: 2, climb: false, flying: true, tech: 'dragonlore' },
+  infantry:       { name: 'Infantry',        class: 'Foot',     mov: 3, atk: 2, def: 2, rng: 0, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'barracks',  minLevel: 1, climb: true,  builder: true },
+  heavy_infantry: { name: 'Heavy Infantry',  class: 'Foot',     mov: 2, atk: 3, def: 4, rng: 0, upkeep: 2, cost: { gold: 3, iron: 2 },        time: 2, at: 'barracks',  minLevel: 2, climb: true,  heavy: true, light: 'infantry' },
+  cavalry:        { name: 'Cavalry',         class: 'Mounted',  mov: 7, atk: 3, def: 2, rng: 0, upkeep: 2, cost: { gold: 3 },                 time: 1, at: 'stable',    minLevel: 1, climb: false },
+  heavy_cavalry:  { name: 'Heavy Cavalry',   class: 'Mounted',  mov: 5, atk: 4, def: 3, rng: 0, upkeep: 3, cost: { gold: 4, iron: 2 },        time: 2, at: 'stable',    minLevel: 2, climb: false, heavy: true, light: 'cavalry' },
+  archer:         { name: 'Archers',         class: 'Ranged',   mov: 3, atk: 2, def: 1, rng: 3, upkeep: 1, cost: { gold: 2 },                 time: 1, at: 'range',     minLevel: 1, climb: true },
+  monk:           { name: 'Monk',            class: 'Spirit',   mov: 6, atk: 3, def: 1, rng: 0, upkeep: 1, cost: { gold: 2, faith: 1 },       time: 1, at: 'monastery', minLevel: 1, climb: true,  hitrun: true },
+  priest:         { name: 'Priest',          class: 'Spirit',   mov: 3, atk: 1, def: 2, rng: 0, upkeep: 2, cost: { gold: 2, spirit: 2 },      time: 2, at: 'monastery', minLevel: 2, climb: true,  priest: true },
+  siege:          { name: 'Siege Engine',    class: 'Siege',    mov: 1, atk: 4, def: 1, rng: 5, upkeep: 2, cost: { gold: 3, iron: 3 },        time: 2, at: 'workshop',  minLevel: 1, climb: false, siege: true },
+  mage:           { name: 'Mage',            class: 'Arcane',   mov: 2, atk: 2, def: 1, rng: 3, upkeep: 2, cost: { gold: 3, mana: 2 },        time: 2, at: 'arcane',    minLevel: 1, climb: true,  arcane: true },
+  dragon:         { name: 'Dragon',          class: 'Dragon',   mov: 7, atk: 7, def: 5, rng: 2, upkeep: 5, cost: { gold: 6, mana: 3 },        time: 4, at: 'lair',      minLevel: 2, climb: false, flying: true, tech: 'dragonlore' },
 };
-export const UNIT_ORDER = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'siege', 'mage', 'dragon'];
+export const UNIT_ORDER = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'monk', 'priest', 'siege', 'mage', 'dragon'];
 
 // ── Towers ──────────────────────────────────────────────────────────────────────────────────────────
 export const FOUNDATION_HP = 6, NORMAL_HP = 3, REINFORCED_HP = 5, MAX_LEVELS = 4;          // (RB) structural durability; max height is open in RB -> 4
@@ -33,7 +54,7 @@ export const COSTS = {
   foundation: { gold: 1, iron: 2 },
   normal:     { iron: 2 },
   reinforced: { gold: 1, iron: 4 },
-  spec: { outpost: {}, barracks: { gold: 1 }, stable: { gold: 1 }, range: { gold: 1 }, workshop: { iron: 2 }, arcane: { mana: 2 }, lair: { mana: 2, gold: 2 } },   // surcharge when the foundation is laid
+  spec: { outpost: {}, barracks: { gold: 1 }, stable: { gold: 1 }, range: { gold: 1 }, workshop: { iron: 2 }, arcane: { mana: 2 }, lair: { mana: 2, gold: 2 }, monastery: { spirit: 1 } },   // surcharge when the foundation is laid
 };
 // A tower's specialisation is chosen when its foundation is laid. The main fortress has the first three.
 export const SPECS = {
@@ -42,7 +63,8 @@ export const SPECS = {
   stable:   { name: 'Stable',   text: 'Recruits Cavalry; Heavy Cavalry from level 2.' },
   range:    { name: 'Archery Yard', text: 'Recruits Archers.' },
   workshop: { name: 'Workshop', text: 'Builds Siege Engines — the only way to break a tower.' },
-  arcane:   { name: 'Arcane Tower', text: 'Recruits Mages.' },
+  arcane:   { name: 'Arcane Tower', text: 'Recruits Mages. Yields 1 Mana card a year.' },
+  monastery: { name: 'Monastery', text: 'Recruits Monks; Priests from level 2. Yields 1 Spirit card a year.' },
   lair:     { name: 'Dragon Lair', text: 'Needs Dragonlore. Raises Dragons over several years.' },
 };
 export const FORTRESS_SPECS = ['barracks', 'stable', 'range'];
@@ -50,11 +72,19 @@ export const FORTRESS = { levels: ['reinforced', 'reinforced'], queueSlots: 2 };
 export const QUEUE_SLOTS = 1;                                                                  // recruits in progress per ordinary tower
 
 // ── Economy ─────────────────────────────────────────────────────────────────────────────────────────
-export const YIELD = { unit: T.YU ?? 1, tower: T.YT ?? 1, garrisoned: T.YG ?? 2 };                                     // (RB, test values) per resource cell per year
-export const CAPITAL_GOLD = T.CAPITAL_GOLD ?? 10;                                                                 // [DECISION] the home province pays gold even without a cell
-// Resources are a per-YEAR BUDGET (designer's ruling, like tapping lands in MTG): your controlled nodes give this much this year, unspent is lost.
-// START_RESOURCES is a one-time OPENING budget added to year 1 only, so the first year is not empty of iron and mana.
-export const START_RESOURCES = { gold: T.START_GOLD ?? 14, iron: T.START_IRON ?? 6, mana: 2 };
+// How a resource NODE (a marked square) pays, per year  [designer's rules, 2026-11-10]:
+//   a unit standing on it .......... 1 card of that node's type — ANY unit can work ANY node
+//   ... but the family's specialist DOUBLES it (yielded twice): a Mage on a Mana node, a Monk or Priest on a Spirit node: 2
+//   a tower built on it ............ 1 card by itself            (no unit needed)
+//   + a garrison in that tower ..... + the unit's part (1, or 2 for the specialist) — so a node yields up to 2, or 3 with a specialist garrison
+export const YIELD = { tower: T.YT ?? 1, unit: T.YU ?? 1, double: 2 };
+export const DOUBLERS = { mana: ['mage'], spirit: ['monk', 'priest'] };
+// Towers also yield a PRIMARY (family) card each year if they have at least one level — the three families have a home:
+export const PRIMARY_YIELD = { fortress: { physical: T.CAPITAL ?? 12 }, arcane: { mana: 1 }, monastery: { spirit: 1 } };   // [DECISION] fortress >= the starting army's upkeep, so the start is not a trap
+export const PRIEST_RADIUS = 2;                                                            // squares (Chebyshev) around a Priest whose friends may void one hit a year
+// Resources are a per-YEAR BUDGET (designer's ruling, like tapping lands in MTG): your nodes give this much this year, unspent is lost.
+// START_RESOURCES is a one-time OPENING budget added to year 1 only, so the first year is not empty of the rarer cards.
+export const START_RESOURCES = { gold: T.START_GOLD ?? 6, iron: T.START_IRON ?? 6, aether: 1, ember: 1, faith: 1, soul: 1 };
 export const TECHS = {
   dragonlore: { name: 'Dragonlore', cost: { mana: 3, gold: 4 }, text: 'Unlocks Dragon Lairs and Dragons.' },
   siegecraft: { name: 'Siegecraft', cost: { iron: 6 },          text: 'Siege Engines deal 2 structural damage per hit instead of 1.' },
@@ -87,6 +117,8 @@ export const LORE = {
   cavalry:        { title: 'The Iron Pilgrims',     quote: 'A soldier who stops moving has already surrendered.' },
   heavy_cavalry:  { title: 'The Long Road',         quote: 'They do not charge the line. They charge the idea that there was one.', isNew: true },
   archer:         { title: 'The Children of the Last Watch', quote: 'They are not taught whose lives matter.' },
+  monk:           { title: 'The Walkers of the Mist', quote: 'They arrive, strike once, and are already on their way home.', isNew: true },
+  priest:         { title: 'The Keepers of the Last Prayer', quote: 'What they cannot spare you, they will carry for you.', isNew: true },
   siege:          { title: 'The Patient Engine',    quote: 'A wall is only a question. This is the answer, delivered slowly.', isNew: true },
   mage:           { title: 'The Architects of Silence', quote: 'It began as an attempt to preserve civilization. It ended with the discovery that civilization was merely another variable.' },
   dragon:         { title: 'The Exiled Heaven',     quote: 'It is simply trying to remember the way home.' },

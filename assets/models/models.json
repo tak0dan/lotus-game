@@ -50,6 +50,14 @@
     "tower_level_reinforced": {
       "file": "tower_level_reinforced.glb",
       "top": 0.6
+    },
+    "monk": {
+      "file": "monk.glb",
+      "top": 1.2
+    },
+    "priest": {
+      "file": "priest.glb",
+      "top": 1.45
     }
   }
 }

@@ -36,7 +36,7 @@ export const ownerMat = (o, dark = false) => mat(dark ? OWNER_DARK[o] : OWNER_CO
 // A small square stone plinth every figurine stands on (as on the movie's table).
 const plinth = () => { const g = new THREE.Group(); g.name = 'plinth'; g.add(part(G.box(0.74, 0.07, 0.74), DSTONE, 0, 0.035, 0), part(G.box(0.66, 0.04, 0.66), STONE, 0, 0.09, 0)); return g; };
 
-export const TYPE_HEIGHT = { infantry: 1.15, heavy_infantry: 1.2, cavalry: 1.1, heavy_cavalry: 1.2, archer: 1.2, siege: 1.1, mage: 1.8, dragon: 1.35 };
+export const TYPE_HEIGHT = { infantry: 1.15, heavy_infantry: 1.2, cavalry: 1.1, heavy_cavalry: 1.2, archer: 1.2, monk: 1.2, priest: 1.45, siege: 1.1, mage: 1.8, dragon: 1.35 };
 
 // ── figurines (built facing +X, wrapped so the finished model faces +Z) ──
 function figure(type, o) {
@@ -74,6 +74,16 @@ function figure(type, o) {
       add(part(G.cone(0.19, 0.55, 5), om, 0, Y + 0.95 * s, 0), head(0, Y + 1.3 * s, 0, 0.09), part(G.cone(0.1, 0.17, 5), hv ? IRON : od, 0, Y + 1.43 * s, 0),
           part(G.box(0.3, 0.5, 0.05), od, -0.22, Y + 0.95 * s, 0), part(G.cyl(0.016, 0.016, 1.15 * s, 4), DWOOD, 0.45 * s, Y + 0.98 * s, -0.17), part(G.cone(0.04, 0.16, 4), IRON, 0.45 * s, Y + 1.6 * s, -0.17));
       break; }
+    case 'monk':                                                                                       // lean, hooded, barefoot; a staff held low — made to run in and out
+      add(part(G.cone(0.23, 0.82, 6), om, 0, Y + 0.41, 0), part(G.box(0.34, 0.07, 0.2), od, 0, Y + 0.52, 0), head(0, Y + 0.93, 0, 0.1), part(G.cone(0.15, 0.2, 6), od, -0.03, Y + 1.04, 0),
+          part(G.box(0.07, 0.4, 0.4), om, 0.08, Y + 0.6, 0), part(G.box(0.26, 0.55, 0.05), od, -0.2, Y + 0.5, 0));
+      { const st = part(G.cyl(0.016, 0.016, 1.15, 4), DWOOD, 0.22, Y + 0.58, 0.18); st.rotation.x = -0.18; add(st); add(part(G.sph(0.045, 5, 4), IRON, 0.22, Y + 1.15, 0.13)); }
+      break;
+    case 'priest':                                                                                     // long robe, tall mitre, a stole, and a censer on a chain
+      add(part(G.cone(0.31, 1.05, 7), om, 0, Y + 0.52, 0), part(G.cone(0.34, 0.2, 7), od, 0, Y + 0.1, 0), part(G.box(0.1, 0.8, 0.34), od, 0.05, Y + 0.62, 0), head(0, Y + 1.15, 0, 0.1),
+          part(G.cone(0.14, 0.34, 4), od, 0, Y + 1.42, 0), part(G.box(0.3, 0.05, 0.22), LSTONE, 0, Y + 1.27, 0), part(G.box(0.3, 0.9, 0.05), od, -0.2, Y + 0.6, 0));
+      { add(part(G.cyl(0.008, 0.008, 0.42, 3), BONE, 0.24, Y + 0.72, 0.2)); add(part(G.sph(0.075, 6, 5), IRON, 0.24, Y + 0.48, 0.2)); }
+      break;
     case 'siege':
       add(part(G.box(0.9, 0.1, 0.5), DWOOD, 0, Y + 0.18, 0), part(G.box(0.1, 0.7, 0.07), DWOOD, -0.1, Y + 0.55, 0.2), part(G.box(0.1, 0.7, 0.07), DWOOD, -0.1, Y + 0.55, -0.2), part(G.box(0.08, 0.08, 0.5), DWOOD, -0.1, Y + 0.9, 0));
       for (const dz of [0.3, -0.3]) for (const dx of [-0.32, 0.32]) { const w = part(G.cyl(0.14, 0.14, 0.07, 8), DWOOD, dx, Y + 0.14, dz); w.rotation.x = Math.PI / 2; add(w); }
@@ -125,7 +135,7 @@ export function towerLevel(kind, o) {                    // open frame: 4 corner
   g.userData.height = LEVEL_H; return g;
 }
 export const MODULES = ['tower_foundation', 'tower_level', 'tower_level_reinforced'];
-export const TYPE_LIST = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'siege', 'mage', 'dragon', ...MODULES];
+export const TYPE_LIST = ['infantry', 'heavy_infantry', 'cavalry', 'heavy_cavalry', 'archer', 'monk', 'priest', 'siege', 'mage', 'dragon', ...MODULES];
 export const TOPH = { ...TYPE_HEIGHT, tower_foundation: FOUNDATION_H, tower_level: LEVEL_H, tower_level_reinforced: LEVEL_H };
 export function buildModel(type, o) {
   if (type === 'tower_foundation') return towerFoundation(o);
@@ -135,11 +145,23 @@ export function buildModel(type, o) {
 }
 export const GLOW = { mage: { color: 0x9db8ff, size: 1.0, y: 1.6 } };
 
-// ── resource markers (gold coins, iron ore, mana crystal) ──
+// ── resource markers: one per node type (6) and one per family (3 primaries) ──
 export function resourceMarker(kind) {
-  const g = new THREE.Group();
-  if (kind === 'gold') { for (let i = 0; i < 4; i++) g.add(part(G.cyl(0.2 - i * 0.02, 0.2 - i * 0.02, 0.05, 10), mat(0xd9b24a, { metalness: 0.4, roughness: 0.5 }), (i % 2) * 0.03, 0.03 + i * 0.05, (i % 2) * -0.03)); }
-  else if (kind === 'iron') { const rk = mat(0x5a5e66); g.add(part(G.oct(0.22), rk, 0, 0.18, 0), part(G.oct(0.14), mat(0x6b6f78), 0.18, 0.1, 0.08), part(G.oct(0.1), mat(0xa8633a), -0.12, 0.2, 0.12)); }
-  else { const c = glow(0x7aa8ff, 0.8); g.add(part(G.cone(0.1, 0.5, 5), c, 0, 0.27, 0), part(G.cone(0.07, 0.32, 5), c, 0.14, 0.17, 0.05), part(G.cone(0.06, 0.26, 5), c, -0.12, 0.14, -0.08)); }
+  const g = new THREE.Group(), add = (...o) => g.add(...o);
+  const coins = () => { for (let i = 0; i < 4; i++) add(part(G.cyl(0.2 - i * 0.02, 0.2 - i * 0.02, 0.05, 10), mat(0xd9b24a, { metalness: 0.4, roughness: 0.5 }), (i % 2) * 0.03, 0.03 + i * 0.05, (i % 2) * -0.03)); };
+  const ore = (x = 0, z = 0) => { const rk = mat(0x5a5e66); add(part(G.oct(0.22), rk, x, 0.18, z), part(G.oct(0.14), mat(0x6b6f78), x + 0.18, 0.1, z + 0.08), part(G.oct(0.1), mat(0xa8633a), x - 0.12, 0.2, z + 0.12)); };
+  const crystal = (col, x = 0, z = 0, s = 1) => { const c = glow(col, 0.8); add(part(G.cone(0.1 * s, 0.5 * s, 5), c, x, 0.27 * s, z), part(G.cone(0.07 * s, 0.32 * s, 5), c, x + 0.14 * s, 0.17 * s, z + 0.05), part(G.cone(0.06 * s, 0.26 * s, 5), c, x - 0.12 * s, 0.14 * s, z - 0.08)); };
+  const ember = (x = 0, z = 0) => { const c = glow(0xff7a3a, 1.1); add(part(G.oct(0.16), c, x, 0.16, z), part(G.oct(0.1), glow(0xffb36a, 1.2), x + 0.15, 0.1, z + 0.06), part(G.oct(0.08), c, x - 0.1, 0.1, z - 0.1)); };
+  const faith = (x = 0, z = 0) => { add(part(G.cyl(0.07, 0.09, 0.42, 8), mat(0xe8dfc2), x, 0.21, z), part(G.sph(0.06, 6, 5), glow(0xffe9a8, 1.6), x, 0.5, z)); const r = part(G.tor(0.16, 0.012, Math.PI * 2, 16), glow(0xffe9a8, 1.2), x, 0.62, z); r.rotation.x = Math.PI / 2; add(r); };
+  const soul = (x = 0, z = 0) => { add(part(G.sph(0.12, 8, 6), glow(0xb99cff, 1.3), x, 0.38, z), part(G.cone(0.08, 0.3, 5), glow(0x8f6bff, 0.9), x, 0.17, z)); };
+  const pair = (A, B) => { A(-0.17, 0); B(0.17, 0); };
+  switch (kind) {
+    case 'gold': coins(); break;                       case 'iron': ore(); break;
+    case 'aether': case 'mana-old': crystal(0x7ea9ff); break;   case 'ember': ember(); break;
+    case 'faith': faith(); break;                      case 'soul': soul(); break;
+    case 'physical': { g.add(Object.assign(new THREE.Group(), {})); const c = new THREE.Group(); coins(); g.children.forEach((o) => { o.position.x -= 0.2; }); ore(0.22, 0); break; }
+    case 'mana': crystal(0x7ea9ff, -0.2, 0, 0.8); ember(0.22, 0); break;
+    case 'spirit': faith(-0.2, 0); soul(0.22, 0); break;
+  }
   g.name = 'res_' + kind; return g;
 }

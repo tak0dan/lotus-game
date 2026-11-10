@@ -9,11 +9,11 @@
 // Each year the nodes you control give you a fixed amount of gold/iron/mana to spend; it does NOT accumulate — unspent resources are lost.
 // Upkeep is paid first, out of the year's gold. The first year also gets a one-time opening budget (balance.js START_RESOURCES).
 
-import { UNITS, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, MAX_LEVELS, GARRISON_DEF, COSTS, FORTRESS_SPECS, FORTRESS, QUEUE_SLOTS, YIELD, CAPITAL_GOLD,
-  START_RESOURCES, TECHS, FORTRESS_HOLD_YEARS, POINTS_HOLD_YEARS, RESOURCES } from './balance.js';
+import { UNITS, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, MAX_LEVELS, GARRISON_DEF, COSTS, FORTRESS_SPECS, FORTRESS, QUEUE_SLOTS, YIELD, DOUBLERS, PRIMARY_YIELD, PRIEST_RADIUS,
+  START_RESOURCES, TECHS, FORTRESS_HOLD_YEARS, POINTS_HOLD_YEARS, FAMILIES, FAMILY_LIST, SUBTYPES, FAMILY_OF, RES_ALL } from './balance.js';
 
 export const ORTH = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-export const RES_CODE = { gold: 1, iron: 2, mana: 3 }; export const RES_NAMES = [null, 'gold', 'iron', 'mana'];
+export const RES_NAMES = [null, ...SUBTYPES]; export const RES_CODE = Object.fromEntries(SUBTYPES.map((k, i) => [k, i + 1]));
 export const PHASES = ['economy', 'recruitment', 'movement', 'combat', 'building', 'control', 'endyear'];
 export const inb = (s, x, y) => x >= 0 && y >= 0 && x < s.N && y < s.N;
 export const ix = (s, x, y) => y * s.N + x;
@@ -25,18 +25,18 @@ export function newGame({ size = 30, seed = (Math.random() * 1e9) | 0, res = nul
   const s = {
     N: size, seed, rng: mulberry32(seed), round: 1, first: 0, phase: 'plan', uid: 1, winner: null, winReason: '',
     res: new Uint8Array(size * size), points: [], units: [], towers: [], ug: new Array(size * size).fill(null), tg: new Array(size * size).fill(null),
-    pl: [0, 1].map(() => ({ gold: 0, iron: 0, mana: 0, tech: { dragonlore: false, siegecraft: false }, unpaid: 0 })), floor: res,
+    pl: [0, 1].map(() => ({ ...Object.fromEntries(RES_ALL.map((k) => [k, 0])), tech: { dragonlore: false, siegecraft: false }, unpaid: 0 })), floor: res,
     orders: [blankOrders(), blankOrders()], clashes: [], log: [], events: [], fortress: [null, null], held: [0, 0], pointsHeld: [0, 0], stats: { kills: [0, 0], lost: [0, 0], levelsLost: 0, sieges: 0, wasted: [0, 0] },
   };
   scenario(s);
   refreshBudget(s, true);
   return s;
 }
-const blankOrders = () => ({ moves: {}, attacks: [], siege: [], builds: [], recruits: [], research: [] });
+const blankOrders = () => ({ moves: {}, attacks: [], siege: [], builds: [], recruits: [], research: [], disband: [] });
 export const say = (s, msg, owner = -1) => { s.log.push({ msg, owner, round: s.round }); s.events.push({ t: 'log', msg, owner }); };
 
 export function addUnit(s, type, owner, x, y, z = 0) {
-  const u = { id: s.uid++, type, owner, x, y, z, moved: false, idle: false };
+  const u = { id: s.uid++, type, owner, x, y, z, moved: false, idle: false, vH: false, vP: false };
   s.units.push(u); if (z === 0) s.ug[ix(s, x, y)] = u;
   s.events.push({ t: 'spawn', unit: snapU(u) });
   return u;
@@ -60,11 +60,11 @@ function scenario(s) {
   const taken = new Set(); const take = (p) => taken.add(ix(s, p.x, p.y));
   for (const f of F) for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) take({ x: f.x + dx, y: f.y + dy });
   // resource cells, mirrored
-  const k = Math.max(1, Math.round(sc * sc / 2.2)), want = [['gold', 4 * k], ['iron', 4 * k], ['mana', 2 * k]];
+  const k = Math.max(1, Math.round(sc * sc / 2.2)), want = [['gold', 3 * k], ['iron', 3 * k], ['aether', k], ['ember', k], ['faith', k], ['soul', k]];
   for (const [kind, n] of want) {
     let placed = 0, guard = 0;
     while (placed < n && guard++ < 4000) {
-      const lo = kind === 'mana' ? 0.34 : 0.04, hi = kind === 'mana' ? 0.49 : 0.46;     // mana sits in the neutral middle
+      const mid = FAMILY_OF[kind] !== 'physical', lo = mid ? 0.34 : 0.04, hi = mid ? 0.49 : 0.46;     // Mana and Spirit nodes sit in the neutral middle
       const p = { x: Math.floor((lo + s.rng() * (hi - lo)) * N), y: Math.floor((0.06 + s.rng() * 0.88) * N) }, q = rot(p);
       if (!inb(s, p.x, p.y) || taken.has(ix(s, p.x, p.y)) || taken.has(ix(s, q.x, q.y)) || (p.x === q.x && p.y === q.y)) continue;
       s.res[ix(s, p.x, p.y)] = s.res[ix(s, q.x, q.y)] = RES_CODE[kind]; take(p); take(q); placed++;
@@ -100,18 +100,46 @@ export function recruitable(s, t, type) {                 // can this tower buil
   return true;
 }
 export const queueSlots = (t) => (t.fortress ? FORTRESS.queueSlots : QUEUE_SLOTS);
-export const canAfford = (p, cost) => RESOURCES.every((r) => (p[r] || 0) >= (cost[r] || 0));
-export const addCost = (a, b) => { const o = { ...a }; for (const r of RESOURCES) o[r] = (o[r] || 0) + (b[r] || 0); return o; };
+export const addCost = (a, b) => { const o = { ...a }; for (const k of Object.keys(b)) o[k] = (o[k] || 0) + b[k]; return o; };
+// Cards: a player holds `pl[sub]` of each subtype and `pl[family]` PRIMARY cards, which can stand in for either subtype of that family.
+// A cost key may be a subtype ("faith: 1": that subtype or a primary of its family) or a family ("spirit: 2": any two Spirit cards).
+export function canAfford(pl, cost) {
+  for (const f of FAMILY_LIST) {
+    const [a, b] = FAMILIES[f].subs, na = cost[a] || 0, nb = cost[b] || 0, any = cost[f] || 0;
+    if (!na && !nb && !any) continue;
+    const sa = pl[a] || 0, sb = pl[b] || 0, w = pl[f] || 0;
+    if (Math.max(0, na - sa) + Math.max(0, nb - sb) > w) return false;       // wildcards needed for the shortfall of a specific subtype
+    if (na + nb + any > sa + sb + w) return false;                           // and enough cards in the family overall
+  }
+  return true;
+}
+export function spend(pl, cost) {                                              // taps the cards: exact subtype first, primaries last
+  for (const f of FAMILY_LIST) {
+    const [a, b] = FAMILIES[f].subs;
+    for (const [k, n] of [[a, cost[a] || 0], [b, cost[b] || 0]]) { const t = Math.min(pl[k] || 0, n); pl[k] = (pl[k] || 0) - t; pl[f] = (pl[f] || 0) - (n - t); }
+    let any = cost[f] || 0;
+    for (const k of [a, b, f]) { const t = Math.min(pl[k] || 0, any); pl[k] = (pl[k] || 0) - t; any -= t; }
+  }
+}
+export function spendUsage(pl, cost) {                                         // which cards a cost would tap (for the desk display)
+  const c = { ...pl }; spend(c, cost); const u = {}; for (const k of RES_ALL) if ((pl[k] || 0) - (c[k] || 0) > 0) u[k] = (pl[k] || 0) - (c[k] || 0); return u;
+}
+export const have = (pl, sub) => (pl[sub] || 0) + (pl[FAMILY_OF[sub]] || 0);  // how many of this subtype you could pay with
+export const canGather = () => true;                                           // any unit can work any node ...
+export const unitYield = (type, family) => ((DOUBLERS[family] || []).includes(type) ? YIELD.double : YIELD.unit);   // ... the specialist yields it twice
 export const upkeepOf = (s, o) => s.units.filter((u) => u.owner === o).reduce((a, u) => a + UNITS[u.type].upkeep, 0);
-export function incomeOf(s, o) {                          // what the economy phase would pay right now
-  const inc = { gold: 0, iron: 0, mana: 0 };
+export function incomeOf(s, o) {                          // the cards your nodes and towers give this year
+  const inc = Object.fromEntries(RES_ALL.map((k) => [k, 0]));
   for (let y = 0; y < s.N; y++) for (let x = 0; x < s.N; x++) {
     const c = s.res[ix(s, x, y)]; if (!c) continue;
-    const t = s.tg[ix(s, x, y)], u = s.ug[ix(s, x, y)];
-    if (t) { if (t.owner === o) inc[RES_NAMES[c]] += t.garrison ? YIELD.garrisoned : YIELD.tower; }
-    else if (u && u.owner === o) inc[RES_NAMES[c]] += YIELD.unit;
+    const sub = RES_NAMES[c], fam = FAMILY_OF[sub], t = s.tg[ix(s, x, y)], u = s.ug[ix(s, x, y)];
+    if (t) {
+      if (t.owner !== o) continue;
+      inc[sub] += YIELD.tower;                                                // the tower yields by itself
+      const g = t.garrison; if (g && g.owner === o && canGather(g.type, fam)) inc[sub] += unitYield(g.type, fam);   // a garrison adds its part
+    } else if (u && u.owner === o && canGather(u.type, fam)) inc[sub] += unitYield(u.type, fam);                  // a unit on a bare node
   }
-  if (towerById(s, s.fortress[0]) && s.towers.some((t) => t.fortress && t.owner === o)) inc.gold += CAPITAL_GOLD * s.towers.filter((t) => t.fortress && t.owner === o).length;
+  for (const t of s.towers) if (t.owner === o && t.levels.length) { const py = PRIMARY_YIELD[t.fortress ? 'fortress' : t.spec]; if (py) for (const [k, n] of Object.entries(py)) inc[k] += n; }
   return inc;
 }
 export function committed(s, o) {                         // resources already promised by planned orders
@@ -196,7 +224,7 @@ export function setMove(s, p, uid, x, y) {
   s.orders[p].moves[uid] = { path: pt.path, climb: pt.climb, fly: pt.fly };
   return true;
 }
-export const clearUnitOrders = (s, p, uid) => { const o = s.orders[p]; delete o.moves[uid]; o.attacks = o.attacks.filter((a) => a.unitId !== uid); o.siege = o.siege.filter((a) => a.unitId !== uid); o.builds = o.builds.filter((b) => b.builderId !== uid); };
+export const clearUnitOrders = (s, p, uid) => { const o = s.orders[p]; delete o.moves[uid]; o.attacks = o.attacks.filter((a) => a.unitId !== uid); o.siege = o.siege.filter((a) => a.unitId !== uid); o.disband = (o.disband || []).filter((x) => x !== uid); o.builds = o.builds.filter((b) => b.builderId !== uid); };
 export const clearOrders = (s, p) => { s.orders[p] = blankOrders(); };
 export const plannedPos = (s, u) => { const m = s.orders[u.owner].moves[u.id]; if (!m || !m.path.length) return { x: u.x, y: u.y, z: u.z }; const e = m.path[m.path.length - 1]; return { x: e.x, y: e.y, z: m.climb ? 1 : 0 }; };
 
@@ -206,16 +234,17 @@ export function planAttack(s, p, uid, targetId, isTower = false) {
   const d = UNITS[u.type], tgt = isTower ? towerById(s, targetId) : unitById(s, targetId); if (!tgt || tgt.owner === p) return false;
   const here = { x: u.x, y: u.y, z: u.z };
   const ok = (pos) => (isTower ? (d.siege && canSiege(s, u, tgt, pos, true)) : canStrike(s, u, tgt, pos));
+  const maxOut = d.hitrun ? Math.floor(d.mov / 2) : Infinity;                // a Monk must be able to come back the same distance
   let best = null;
   if (ok(here)) best = { x: u.x, y: u.y, cost: 0 };
   if (!(isTower && d.siege)) {                                    // siege engines may not move and fire
     const r = reach(s, u);
-    for (const [k, e] of r) { const pos = { x: k % s.N, y: Math.floor(k / s.N), z: e.climb ? 1 : 0 }; if ((!best || e.cost < best.cost) && ok(pos)) best = { x: pos.x, y: pos.y, cost: e.cost }; }
+    for (const [k, e] of r) { const pos = { x: k % s.N, y: Math.floor(k / s.N), z: e.climb ? 1 : 0 }; if (e.cost <= maxOut && (!best || e.cost < best.cost) && ok(pos)) best = { x: pos.x, y: pos.y, cost: e.cost }; }
   }
   if (!best) return false;
   clearUnitOrders(s, p, uid);
-  if (best.cost > 0) setMove(s, p, uid, best.x, best.y);
-  (isTower ? s.orders[p].siege : s.orders[p].attacks).push({ unitId: uid, targetId });
+  let steps = 0; if (best.cost > 0) { setMove(s, p, uid, best.x, best.y); steps = (s.orders[p].moves[uid]?.path || []).length; }
+  (isTower ? s.orders[p].siege : s.orders[p].attacks).push(d.hitrun && !isTower ? { unitId: uid, targetId, retreat: steps } : { unitId: uid, targetId });
   return true;
 }
 export function setRecruit(s, p, towerId, type) {
@@ -243,6 +272,8 @@ export function setResearch(s, p, tech) {
   s.orders[p].research.push({ tech }); return true;
 }
 export const cancelOrder = (s, p, kind, i) => { s.orders[p][kind].splice(i, 1); };
+// Disband: dismiss a unit for good (it stops costing upkeep from next year). The way out of a poverty trap — rulebook 20: "disband part of the army".
+export function setDisband(s, p, uid) { const u = unitById(s, uid); if (!u || u.owner !== p || s.orders[p].disband.includes(uid)) return false; clearUnitOrders(s, p, uid); s.orders[p].disband.push(uid); return true; }
 
 // ───────────────────────── the year ─────────────────────────
 function phase(s, name) { s.phase = name; s.events.push({ t: 'phase', name, round: s.round }); }
@@ -261,26 +292,28 @@ export function resolveYear(s) {
 }
 
 function economy(s, order) {
+  for (const o of order) for (const uid of s.orders[o].disband || []) { const u = unitById(s, uid); if (u && u.owner === o) { killUnit(s, u, 'disbanded'); say(s, `P${o + 1} dismisses a ${UNITS[u.type].name}.`, o); } }
   // The year's budget was set when the previous year ended (refreshBudget): it is what your nodes yield, minus upkeep. Research is paid from it here.
   for (const o of order) {
-    for (const r of s.orders[o].research) { const T = TECHS[r.tech], pl = s.pl[o]; if (!pl.tech[r.tech] && canAfford(pl, T.cost)) { for (const k of RESOURCES) pl[k] -= T.cost[k] || 0; pl.tech[r.tech] = true; say(s, `P${o + 1} completes ${T.name}.`, o); s.events.push({ t: 'tech', owner: o, tech: r.tech }); } }
+    for (const r of s.orders[o].research) { const T = TECHS[r.tech], pl = s.pl[o]; if (!pl.tech[r.tech] && canAfford(pl, T.cost)) { spend(pl, T.cost); pl.tech[r.tech] = true; say(s, `P${o + 1} completes ${T.name}.`, o); s.events.push({ t: 'tech', owner: o, tech: r.tech }); } }
   }
-  for (const o of [0, 1]) s.events.push({ t: 'income', owner: o, now: { gold: s.pl[o].gold, iron: s.pl[o].iron, mana: s.pl[o].mana } });
+  for (const o of [0, 1]) s.events.push({ t: 'income', owner: o, now: Object.fromEntries(RES_ALL.map((k) => [k, s.pl[o][k]])) });
 }
 // A new year's budget: what the controlled nodes yield (+ the capital), minus the army's upkeep paid out of the gold. Nothing is carried over.
 export function refreshBudget(s, first = false) {
   for (const o of [0, 1]) {
     const pl = s.pl[o], inc = incomeOf(s, o), up = upkeepOf(s, o);
     pl.unpaid = 0; for (const u of s.units) if (u.owner === o) u.idle = false;
-    for (const k of RESOURCES) pl[k] = inc[k] + (first ? (START_RESOURCES[k] || 0) : 0);
-    if (pl.gold >= up) pl.gold -= up;
+    for (const k of RES_ALL) pl[k] = inc[k] + (first ? (START_RESOURCES[k] || 0) : 0);
+    const avail = pl.gold + pl.physical;                                      // upkeep is paid in Gold, and a Physical card may stand in for it
+    if (avail >= up) { const g = Math.min(pl.gold, up); pl.gold -= g; pl.physical -= up - g; }
     else {                                                                    // cannot cover the upkeep: the most expensive units stand idle this year
-      let short = up - pl.gold; pl.gold = 0;
+      let short = up - avail; pl.gold = 0; pl.physical = 0;
       for (const u of s.units.filter((z) => z.owner === o).sort((a, b) => UNITS[b.type].upkeep - UNITS[a.type].upkeep || a.id - b.id)) { if (short <= 0) break; u.idle = true; short -= UNITS[u.type].upkeep; pl.unpaid++; }
-      say(s, `P${o + 1} cannot cover its upkeep (${up} gold vs ${inc.gold} income): ${pl.unpaid} unit${pl.unpaid > 1 ? 's' : ''} stand idle this year.`, o);
+      say(s, `P${o + 1} cannot cover its upkeep (${up} gold vs ${avail} available): ${pl.unpaid} unit${pl.unpaid > 1 ? 's' : ''} stand idle this year.`, o);
     }
-    if (s.floor) for (const k of RESOURCES) pl[k] = Math.max(pl[k], s.floor[k] || 0);
-    s.events.push({ t: 'budget', owner: o, budget: { gold: pl.gold, iron: pl.iron, mana: pl.mana }, upkeep: up, unpaid: pl.unpaid });
+    if (s.floor) for (const k of RES_ALL) pl[k] = Math.max(pl[k], s.floor[k] || 0);
+    s.events.push({ t: 'budget', owner: o, budget: Object.fromEntries(RES_ALL.map((k) => [k, pl[k]])), upkeep: up, unpaid: pl.unpaid });
   }
 }
 
@@ -295,7 +328,7 @@ function recruitment(s, order) {
       const t = towerById(s, r.towerId), pl = s.pl[o]; if (!t || t.owner !== o || !recruitable(s, t, r.type) || t.queue.length >= queueSlots(t)) continue;
       if (pl.unpaid > 0) { say(s, `P${o + 1} cannot recruit: unpaid upkeep.`, o); continue; }
       const cost = UNITS[r.type].cost; if (!canAfford(pl, cost)) continue;
-      for (const k of RESOURCES) pl[k] -= cost[k] || 0;
+      spend(pl, cost);
       t.queue.push({ type: r.type, left: UNITS[r.type].time }); s.events.push({ t: 'recruit', tower: t.id, type: r.type });
       say(s, `P${o + 1} orders ${UNITS[r.type].name} at (${t.x},${t.y}).`, o);
     }
@@ -304,7 +337,7 @@ function recruitment(s, order) {
 
 function movement(s, order) {
   s.clashes = [];
-  for (const u of s.units) u.moved = false;
+  for (const u of s.units) { u.moved = false; u.origin = { x: u.x, y: u.y }; }
   const movers = [];
   for (const o of order) for (const u of s.units.filter((z) => z.owner === o)) { const m = s.orders[o].moves[u.id]; if (m && m.path.length && !u.idle) movers.push({ u, path: m.path, climb: m.climb, fly: m.fly, i: 0, stop: false, first: true }); }
   const maxLen = movers.reduce((a, m) => Math.max(a, m.path.length), 0);
@@ -362,13 +395,20 @@ function combat(s, order) {
   const byTarget = new Map(); for (const st of strikes) (byTarget.get(st.t.id) || byTarget.set(st.t.id, []).get(st.t.id)).push(st);
   const dead = new Set();
   for (const [tid, list] of byTarget) {
-    const t = unitById(s, tid);
-    for (const st of list) {                                                    // coordinated attack: +1 ATK per other friend striking the same target
-      const eatk = UNITS[st.u.type].atk + (list.length - 1);
-      const win = eatk > effDef(s, t, st.u);
-      s.events.push({ t: 'attack', a: st.u.id, target: t.id, killed: win, eatk, edef: effDef(s, t, st.u) });
-      if (win) dead.add(t.id);
+    const t = unitById(s, tid), td = UNITS[t.type], wins = [];
+    for (const st of list) {                                                  // coordinated attack: +1 ATK per other friend striking the same target
+      st.eatk = UNITS[st.u.type].atk + (list.length - 1); st.edef = effDef(s, t, st.u); st.win = st.eatk > st.edef; if (st.win) wins.push(st);
     }
+    let left = wins.length; const notes = [];
+    if (left && td.heavy && !t.vH) {                                          // a HEAVY unit voids one hit a year — only from its light version, or from a distance
+      const i = wins.findIndex((st) => st.u.type === td.light || UNITS[st.u.type].rng > 0);
+      if (i >= 0) { wins.splice(i, 1); left--; t.vH = true; notes.push('its heavy armour'); }
+    }
+    if (left && !t.vP && priestNear(s, t)) { wins.shift(); left--; t.vP = true; notes.push('a Priest'); }   // a PRIEST's ward: one hit a year for each friend within its radius
+    const killed = left > 0;
+    for (const st of list) s.events.push({ t: 'attack', a: st.u.id, target: t.id, killed: killed && st.win, eatk: st.eatk, edef: st.edef });
+    if (killed) dead.add(t.id);
+    else if (notes.length) { s.events.push({ t: 'void', id: t.id }); say(s, `P${t.owner + 1} ${td.name} #${t.id} voids a lethal blow (${notes.join(' and ')}).`, t.owner); }
   }
   for (const id of dead) { const t = unitById(s, id); if (t) killUnit(s, t, 'slain'); }
   for (const o of order) {                                                    // siege on towers (sequential: structural damage accumulates)
@@ -379,11 +419,23 @@ function combat(s, order) {
       damageTower(s, tw, dmg);
     }
   }
+  for (const o of order) for (const a of s.orders[o].attacks) {               // a Monk strikes and then moves back EXACTLY as many squares as it came (not more, not less)
+    if (!a.retreat) continue;
+    const u = unitById(s, a.unitId); if (!u || u.idle || u.z || !u.origin) continue;
+    let best = null;
+    for (const [k, e] of reach(s, u)) { if (e.fly || e.climb || e.cost !== a.retreat) continue; const x = k % s.N, y = Math.floor(k / s.N), d = Math.abs(x - u.origin.x) + Math.abs(y - u.origin.y); if (!best || d < best.d) best = { x, y, d }; }
+    if (!best) continue;
+    const from = { x: u.x, y: u.y, z: 0 }; s.ug[ix(s, u.x, u.y)] = null; u.x = best.x; u.y = best.y; s.ug[ix(s, u.x, u.y)] = u;
+    s.events.push({ t: 'move', id: u.id, from, to: { x: u.x, y: u.y, z: 0 } }); say(s, `P${o + 1} Monk #${u.id} withdraws ${a.retreat} square${a.retreat > 1 ? 's' : ''}.`, o);
+  }
 }
+const priestNear = (s, t) => s.units.some((p) => p.owner === t.owner && UNITS[p.type].priest && p !== t && !p.idle && Math.max(Math.abs(p.x - t.x), Math.abs(p.y - t.y)) <= PRIEST_RADIUS);
 function killUnit(s, u, why) {
   if (u.z === 1) { const t = s.tg[ix(s, u.x, u.y)]; if (t) { t.garrison = null; s.events.push({ t: 'towerGarrison', id: t.id, unit: null }); } } else s.ug[ix(s, u.x, u.y)] = null;
-  s.units.splice(s.units.indexOf(u), 1); s.stats.lost[u.owner]++; s.stats.kills[1 - u.owner]++;
-  s.events.push({ t: 'remove', id: u.id, why }); say(s, `P${u.owner + 1} ${UNITS[u.type].name} is destroyed at (${u.x},${u.y}).`, 1 - u.owner);
+  s.units.splice(s.units.indexOf(u), 1); s.events.push({ t: 'remove', id: u.id, why });
+  if (why === 'disbanded') return;                                            // dismissed, not killed: no loss, no message here
+  s.stats.lost[u.owner]++; s.stats.kills[1 - u.owner]++;
+  say(s, `P${u.owner + 1} ${UNITS[u.type].name} is destroyed at (${u.x},${u.y}).`, 1 - u.owner);
 }
 function damageTower(s, t, dmg) {
   while (dmg > 0 && s.towers.includes(t)) {
@@ -415,13 +467,13 @@ function building(s, order) {
       if (b.kind === 'foundation') {
         const u = unitById(s, b.builderId); if (!u || u.owner !== o || u.z !== 0 || !UNITS[u.type].builder || Math.abs(u.x - b.x) + Math.abs(u.y - b.y) !== 1) continue;
         if (s.ug[ix(s, b.x, b.y)] || s.tg[ix(s, b.x, b.y)] || (b.spec === 'lair' && !pl.tech.dragonlore)) continue;
-        for (const k of RESOURCES) pl[k] -= cost[k] || 0;
+        spend(pl, cost);
         const t = addTower(s, o, b.x, b.y, b.spec, []); t.builtRound = s.round; say(s, `P${o + 1} lays a ${b.spec} foundation at (${b.x},${b.y}).`, o);
       } else {
         const t = towerById(s, b.towerId); if (!t || t.owner !== o || towerHeight(t) >= MAX_LEVELS || t.builtRound === s.round) continue;
         const tended = (t.garrison && t.garrison.owner === o) || ORTH.some(([dx, dy]) => { const u = inb(s, t.x + dx, t.y + dy) && s.ug[ix(s, t.x + dx, t.y + dy)]; return u && u.owner === o && UNITS[u.type].builder; });
         if (!tended) continue;
-        for (const k of RESOURCES) pl[k] -= cost[k] || 0;
+        spend(pl, cost);
         t.levels.push({ kind: b.reinforced ? 'reinforced' : 'normal', hp: b.reinforced ? REINFORCED_HP : NORMAL_HP }); t.builtRound = s.round;
         s.events.push({ t: 'towerSet', tower: snapT(t) }); say(s, `P${o + 1} raises a ${b.reinforced ? 'reinforced ' : ''}level at (${t.x},${t.y}) — now ${t.levels.length}.`, o);
       }
@@ -435,7 +487,7 @@ function control(s) { s.events.push({ t: 'control', points: s.points.map((p) => 
 
 export const eliminated = (s, o) => !s.towers.some((t) => t.owner === o) && !s.units.some((u) => u.owner === o && UNITS[u.type].builder);
 function endYear(s) {
-  for (const o of [0, 1]) { const pl = s.pl[o]; s.stats.wasted[o] += (pl.gold || 0) + (pl.iron || 0) + (pl.mana || 0); }   // unspent budget is LOST
+  for (const o of [0, 1]) { const pl = s.pl[o]; s.stats.wasted[o] += RES_ALL.reduce((a, k) => a + (pl[k] || 0), 0); }   // unspent budget is LOST
   // victory: (1) hold the enemy fortress through the next year  (2) strategic majority for POINTS_HOLD_YEARS years  (3) elimination
   for (const o of [0, 1]) {
     const F = towerById(s, s.fortress[1 - o]);
@@ -449,7 +501,7 @@ function endYear(s) {
     else if (s.pointsHeld[o] >= POINTS_HOLD_YEARS) win(o, `Player ${o + 1} has held the strategic majority for ${POINTS_HOLD_YEARS} years and wins.`);
   }
   for (const o of [0, 1]) if (eliminated(s, o)) win(1 - o, `Player ${o + 1} has no towers and no builders left. Player ${2 - o} wins.`);
-  for (const u of s.units) u.moved = false;
+  for (const u of s.units) { u.moved = false; u.vH = false; u.vP = false; }
   s.orders = [blankOrders(), blankOrders()]; s.round++; s.first = 1 - s.first; s.phase = 'plan';
   s.events.push({ t: 'year', round: s.round });
   if (s.winner === null) refreshBudget(s, false);                              // next year's budget, planned against right away

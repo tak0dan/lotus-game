@@ -16,10 +16,11 @@
 <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 <script type="module">
 import { loadLibrary } from './src/modelLib.js';
-import { injectCardCSS, unitCardHTML, towerCardHTML, actionCardHTML, UNIT_ORDER, ACTION_ORDER } from './src/cards.js';
+import { injectCardCSS, unitCardHTML, towerCardHTML, actionCardHTML, resourceCardHTML, UNIT_ORDER, ACTION_ORDER } from './src/cards.js';
+import { SUBTYPES, FAMILY_LIST } from './src/balance.js';
 injectCardCSS(); await loadLibrary();
 let owner = 0; const m = document.getElementById('m');
-const draw = () => { m.innerHTML = '<h2>Units</h2>' + UNIT_ORDER.map((t) => unitCardHTML(t, owner)).join('') + '<h2>Structure</h2>' + towerCardHTML(owner) + '<h2>Orders</h2>' + ACTION_ORDER.map(actionCardHTML).join(''); };
+const draw = () => { m.innerHTML = '<h2>Units</h2>' + UNIT_ORDER.map((t) => unitCardHTML(t, owner)).join('') + '<h2>Resources — six node types and three primaries</h2>' + [...SUBTYPES, ...FAMILY_LIST].map(resourceCardHTML).join('') + '<h2>Structure</h2>' + towerCardHTML(owner) + '<h2>Orders</h2>' + ACTION_ORDER.map(actionCardHTML).join(''); };
 document.getElementById('own').onclick = (e) => { owner = 1 - owner; e.target.textContent = 'Palette: ' + (owner ? 'Rust' : 'Slate'); draw(); };
 draw(); window.__cardsReady = true;
 </script></html>

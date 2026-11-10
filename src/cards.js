@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { UNITS, UNIT_ORDER, SPECS, COSTS, ACTIONS, ACTION_ORDER, LORE, ACTION_LORE, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, GARRISON_DEF, RES_NAME, YIELD, MAX_LEVELS } from './balance.js';
-import { OWNER_COL, NAME } from './models.js';
+import { UNITS, UNIT_ORDER, SPECS, COSTS, ACTIONS, ACTION_ORDER, LORE, ACTION_LORE, FOUNDATION_HP, NORMAL_HP, REINFORCED_HP, GARRISON_DEF, RES_NAME, RES_INFO, RES_ALL, SUBTYPES, FAMILIES, FAMILY_OF, PRIMARY_YIELD, DOUBLERS, PRIEST_RADIUS, YIELD, MAX_LEVELS } from './balance.js';
+import { OWNER_COL, NAME, resourceMarker } from './models.js';
 import { makeModel, topOf, lib } from './modelLib.js';
 
 // MTG-style cards for units, the tower and orders. Art for units is RENDERED from the same 3D models the game uses.
@@ -32,7 +32,8 @@ export function artFor(kind, owner = 0, opts = {}) {
     let y = 0; for (const k of ['tower_foundation', ...(opts.levels || ['tower_level', 'tower_level_reinforced', 'tower_level'])]) { const m = makeModel(k, owner); m.position.y = y; y += topOf(k); sub.add(m); }
     h = y;
     if (opts.garrison) { const f = makeModel(opts.garrison, owner); f.position.y = y; f.scale.setScalar(0.85); sub.add(f); h += 1; }
-  } else { const m = makeModel(kind, owner); sub.add(m); h = topOf(kind) || 1; }
+  } else if (kind.startsWith('res:')) { const m = resourceMarker(kind.slice(4)); m.scale.setScalar(2.6); sub.add(m); h = 1.15; }
+  else { const m = makeModel(kind, owner); sub.add(m); h = topOf(kind) || 1; }
   sub.rotation.y = kind === 'tower' ? 0.6 : 0.55; scene.add(sub);
   const cam = new THREE.PerspectiveCamera(28, 2, 0.1, 50), d = Math.max(3.0, h * 3.0 + 0.6);
   cam.position.set(d * 0.5, h * 0.6 + 0.5, d * 0.86); cam.lookAt(0, h * 0.5, 0);
@@ -43,9 +44,9 @@ export function artFor(kind, owner = 0, opts = {}) {
 }
 
 // ───────────────────────── cards ─────────────────────────
-const PIP = { gold: '#e0b94f', iron: '#a2abb6', mana: '#7ea9ff' };
-export const pips = (cost) => { const e = Object.entries(cost || {}).filter(([, v]) => v > 0); return e.length ? e.map(([k, v]) => `<span class="pip" style="--c:${PIP[k]}" title="${v} ${RES_NAME[k]}">${v}<i>${k[0].toUpperCase()}</i></span>`).join('') : '<span class="pip free" title="No cost">–</span>'; };
-const CLS = { Foot: '#8a6f4a', Mounted: '#7a5a3a', Ranged: '#4d6b4a', Siege: '#6b5b4a', Arcane: '#5b4f8a', Dragon: '#3a3a52', Structure: '#6a6d75', Order: '#6a5a3a' };
+const pipBg = (k) => { const I = RES_INFO[k]; if (!I) return '#aaa'; if (!I.primary) return I.color; const [x, y] = FAMILIES[k].subs; return `linear-gradient(135deg, ${RES_INFO[x].color} 50%, ${RES_INFO[y].color} 50%)`; };
+export const pips = (cost) => { const e = Object.entries(cost || {}).filter(([, v]) => v > 0); return e.length ? e.map(([k, v]) => `<span class="pip" style="--c:${RES_INFO[k] ? RES_INFO[k].color : '#aaa'};background:radial-gradient(circle at 35% 30%,#fff9,transparent 45%),${pipBg(k)}" title="${v} ${RES_NAME[k] || k}${RES_INFO[k] && RES_INFO[k].primary ? ' (any of its two kinds)' : ''}">${v}<i>${(RES_NAME[k] || k).slice(0, 2)}</i></span>`).join('') : '<span class="pip free" title="No cost">–</span>'; };
+const CLS = { Foot: '#8a6f4a', Mounted: '#7a5a3a', Ranged: '#4d6b4a', Siege: '#6b5b4a', Arcane: '#5b4f8a', Dragon: '#3a3a52', Structure: '#6a6d75', Order: '#6a5a3a', Spirit: '#8a7fb0', Physical: '#9a8a5a', Mana: '#5f63b8', Resource: '#7a7a82' };
 
 function unitRules(t) {
   const u = UNITS[t], out = [];
@@ -55,6 +56,10 @@ function unitRules(t) {
   if (u.arcane) out.push('<b>Arcane.</b> No line needed; ignores garrison +2.');
   if (u.siege) out.push('<b>Siege.</b> Only unit that breaks towers: 1 damage/yr, if it did not move.');
   if (u.flying) out.push('<b>Flying.</b> Ignores obstacles and towers.');
+  if (u.heavy) out.push(`<b>Heavy.</b> Voids ONE lethal hit a year — only from ${UNITS[u.light].name} or from a distance.`);
+  if (u.hitrun) out.push('<b>Strike and return.</b> Moves to the target, strikes, then moves back exactly as far as it came.');
+  if (u.priest) out.push(`<b>Ward.</b> Each friend within ${PRIEST_RADIUS} squares voids ONE lethal hit a year.`);
+  for (const [fam, who] of Object.entries(DOUBLERS)) if (who.includes(t)) out.push(`<b>Doubles ${FAMILIES[fam].name}.</b> On a ${FAMILIES[fam].name} node it yields ${YIELD.double}, not ${YIELD.unit}.`);
   out.push(`<b>Recruit:</b> ${SPECS[u.at].name}${u.minLevel > 1 ? ` lvl ${u.minLevel}+` : ''}, ${u.time} yr${u.time > 1 ? 's' : ''}${u.tech ? ' · Dragonlore' : ''}.`);
   return out;
 }
@@ -73,13 +78,13 @@ export function unitCardHTML(t, owner = 0) {
   const u = UNITS[t], L = LORE[t];
   return frame({ cls: u.class, name: u.name, cost: pips(u.cost), art: `<img alt="${u.name}" src="${artFor(t, owner)}">`, type: `Unit — ${u.class}`, typeRight: `${SPECS[u.at].name}${u.minLevel > 1 ? ' ' + u.minLevel + '+' : ''}`,
     rules: unitRules(t), lore: L.quote, loreTitle: L.title, isNew: L.isNew, owner,
-    upkeep: `Upkeep <span class="pip s" style="--c:${PIP.gold}">${u.upkeep}<i>G</i></span>/yr`, stats: stat('MOV', u.mov) + stat('ATK', u.atk) + stat('DEF', u.def) + stat('RNG', u.rng || '–'), foot: `THE TOWER GAME · UNIT · ${NAME[owner].toUpperCase()}` });
+    upkeep: `Upkeep <span class="pip s" style="--c:${RES_INFO.gold.color}">${u.upkeep}<i>G</i></span>/yr`, stats: stat('MOV', u.mov) + stat('ATK', u.atk) + stat('DEF', u.def) + stat('RNG', u.rng || '–'), foot: `THE TOWER GAME · UNIT · ${NAME[owner].toUpperCase()}` });
 }
 export function towerCardHTML(owner = 0) {
   const L = LORE.tower, c = COSTS;
   return frame({ cls: 'Structure', name: 'Tower', cost: pips(c.foundation), art: `<img alt="Tower" src="${artFor('tower', owner, { garrison: 'archer' })}">`, type: 'Structure — Stone', typeRight: `up to ${MAX_LEVELS} levels`,
     rules: [`<b>Levels.</b> Foundation ${FOUNDATION_HP}; normal ${NORMAL_HP} ${pips(c.normal)}; reinforced ${REINFORCED_HP} ${pips(c.reinforced)}. One a year.`,
-      `<b>Garrison.</b> +${GARRISON_DEF} DEF, only ranged can hit it, yield ${YIELD.tower}→${YIELD.garrisoned}.`,
+      `<b>Garrison.</b> +${GARRISON_DEF} DEF, only ranged can hit it, adds its yield to the node.`,
       '<b>Siege-only.</b> Only siege engines damage it; broken levels leave the model.'],
     lore: L.quote, loreTitle: L.title, owner, upkeep: 'No upkeep', stats: stat('FOUND', FOUNDATION_HP) + stat('LVL', NORMAL_HP + '/' + REINFORCED_HP), foot: `THE TOWER GAME · STRUCTURE · ${NAME[owner].toUpperCase()}` });
 }
@@ -93,6 +98,23 @@ export function actionCardHTML(id) {
   const a = ACTIONS[id];
   const art = `<svg viewBox="0 0 100 100" class="icon">${ICON[a.art] || ''}</svg>`;
   return frame({ cls: 'Order', name: a.name, cost: pips(a.cost), art, type: `Order — ${a.phase} phase`, typeRight: '', rules: [a.text], lore: ACTION_LORE[id], loreTitle: '', owner: 0, upkeep: '', stats: '', foot: 'THE TOWER GAME · ORDER' });
+}
+
+export function resourceCardHTML(key) {
+  const I = RES_INFO[key], fam = FAMILIES[I.family], primary = !!I.primary, rules = [];
+  if (primary) {
+    const src = Object.entries(PRIMARY_YIELD).filter(([, v]) => v[key]).map(([k, v]) => `${k === 'fortress' ? 'Fortress' : SPECS[k].name} ${v[key]}`).join(' · ');
+    rules.push(`<b>Wild.</b> Spend it as ${fam.subs.map((k) => RES_NAME[k]).join(' or ')} — whichever you need.`, `<b>Produced by</b> ${src} each year (the tower needs a level).`);
+  } else {
+    const dbl = DOUBLERS[I.family] || [];
+    rules.push(`<b>Node.</b> A unit on the node: <b>${YIELD.unit}</b>. A tower on it: <b>${YIELD.tower}</b>, and its garrison adds its own part.`);
+    rules.push(dbl.length ? `<b>Doubled</b> (${YIELD.double}) when worked by ${dbl.map((t) => UNITS[t].name).join(' or ')}. Any other unit works it for ${YIELD.unit}.` : '<b>Any unit</b> can work it; there is no specialist.');
+    rules.push(`<b>Stands in:</b> a ${fam.name} primary card can be spent as ${RES_NAME[key]}.`);
+  }
+  rules.push('<b>Use it or lose it.</b> Unspent cards vanish at the end of the year.');
+  const stats = primary ? stat('PER YEAR', Object.values(PRIMARY_YIELD).map((v) => v[key]).filter(Boolean).join('/')) : stat('UNIT', YIELD.unit) + stat('TOWER', YIELD.tower) + stat('SPEC.', (DOUBLERS[I.family] || []).length ? YIELD.double : '–');
+  return frame({ cls: fam.name, name: RES_NAME[key], cost: pips({ [key]: 1 }), art: `<img alt="${RES_NAME[key]}" src="${artFor('res:' + key, 0)}">`, type: primary ? `Primary Resource — ${fam.name}` : `Resource — ${fam.name}`, typeRight: primary ? 'any kind' : RES_NAME[key],
+    rules, lore: I.lore, loreTitle: I.title, isNew: true, owner: 0, upkeep: '', stats, foot: `THE TOWER GAME · RESOURCE · ${fam.name.toUpperCase()}` });
 }
 
 export const CARD_CSS = `

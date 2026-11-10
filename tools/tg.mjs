@@ -14,6 +14,7 @@ const help = `tg <command>
   level <towerId> [reinforced]   add a tower level
   recruit <towerId> <unitType>   recruit a unit
   research <dragonlore|siegecraft>
+  disband <unitId>               dismiss a unit for good (it stops costing upkeep from next year — the way out of a poverty trap)
   clear [unitId]                 cancel orders (one unit, or all)
   orders                         list your orders so far
   ready                          finish planning; the year resolves when both sides are ready

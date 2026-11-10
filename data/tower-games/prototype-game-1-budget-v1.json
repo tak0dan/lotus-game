@@ -1,0 +1,2700 @@
+{
+ "_note": "Tower Game 2D prototype (play.html), human = P1 (Slate) vs AI = P2 (Rust), normal start, budget economy v1 (gold/iron/mana, per-year budget). In-page log pasted by the designer from __tg.s.log. Winner: none (game still running at year 369).",
+ "log": [
+  {
+   "msg": "P1 completes Siegecraft.",
+   "owner": 0,
+   "round": 1
+  },
+  {
+   "msg": "P2 orders Heavy Infantry at (25,15).",
+   "owner": 1,
+   "round": 1
+  },
+  {
+   "msg": "P2 orders Infantry at (25,15).",
+   "owner": 1,
+   "round": 1
+  },
+  {
+   "msg": "P2 lays a workshop foundation at (27,15).",
+   "owner": 1,
+   "round": 1
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 5
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 6
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 7
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 8
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 8
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 9
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 9
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 10
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 10
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 11
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 11
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 12
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 12
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 13
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 13
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 14
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 14
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 15
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 15
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 16
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 16
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 17
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 17
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 18
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 18
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 19
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 19
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 20
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 20
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 21
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 21
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 22
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 22
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 23
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 23
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 24
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 24
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 25
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 25
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 26
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 26
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 27
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 27
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 28
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 28
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 29
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 29
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 30
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 30
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 31
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 31
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 32
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 32
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 33
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 33
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 34
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 34
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 35
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 35
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 36
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 36
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 37
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 37
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 38
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 38
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 39
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 39
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 40
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 40
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 41
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 41
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 42
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 42
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 43
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 43
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 44
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 44
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 45
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 45
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 46
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 46
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 47
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 47
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 48
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 48
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 49
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 49
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 50
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 50
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 51
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 51
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 52
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 52
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 53
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 53
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 54
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 54
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 55
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 55
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 56
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 56
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 57
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 57
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 58
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 58
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 59
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 59
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 60
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 60
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 61
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 61
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 62
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 62
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 63
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 63
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 64
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 64
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 65
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 65
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 66
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 66
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 67
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 67
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 68
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 68
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 69
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 69
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 70
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 70
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 71
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 71
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 72
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 72
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 73
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 73
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 74
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 74
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 75
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 75
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 76
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 76
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 77
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 77
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 78
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 78
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 79
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 79
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 80
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 80
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 81
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 81
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 82
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 82
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 83
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 83
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 84
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 84
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 85
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 85
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 86
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 86
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 87
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 87
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 88
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 88
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 89
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 89
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 90
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 90
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 91
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 91
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 92
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 92
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 93
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 93
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 94
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 94
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 95
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 95
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 96
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 96
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 97
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 97
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 98
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 98
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 99
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 99
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 100
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 100
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 101
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 101
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 102
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 102
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 103
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 103
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 104
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 104
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 105
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 105
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 106
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 106
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 107
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 107
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 108
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 108
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 109
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 109
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 110
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 110
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 111
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 111
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 112
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 112
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 113
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 113
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 114
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 114
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 115
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 115
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 116
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 116
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 117
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 117
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 118
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 118
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 119
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 119
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 120
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 120
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 121
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 121
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 122
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 122
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 123
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 123
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 124
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 124
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 125
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 125
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 126
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 126
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 127
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 127
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 128
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 128
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 129
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 129
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 130
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 130
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 131
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 131
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 132
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 132
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 133
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 133
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 134
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 134
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 135
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 135
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 136
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 136
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 137
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 137
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 138
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 138
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 139
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 139
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 140
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 140
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 141
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 141
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 142
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 142
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 143
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 143
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 144
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 144
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 145
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 145
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 146
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 146
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 147
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 147
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 148
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 148
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 149
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 149
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 150
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 150
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 151
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 151
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 152
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 152
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 153
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 153
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 154
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 154
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 155
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 155
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 156
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 156
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 157
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 157
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 158
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 158
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 159
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 159
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 160
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 160
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 161
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 161
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 162
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 162
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 163
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 163
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 164
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 164
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 165
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 165
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 166
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 166
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 167
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 167
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 168
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 168
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 169
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 169
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 170
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 170
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 171
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 171
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 172
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 172
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 173
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 173
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 174
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 174
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 175
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 175
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 176
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 176
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 177
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 177
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 178
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 178
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 179
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 179
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 180
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 180
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 181
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 181
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 182
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 182
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 183
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 183
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 184
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 184
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 185
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 185
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 186
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 186
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 187
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 187
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 188
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 188
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 189
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 189
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 190
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 190
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 191
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 191
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 192
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 192
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 193
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 193
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 194
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 194
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 195
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 195
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 196
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 196
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 197
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 197
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 198
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 198
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 199
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 199
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 200
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 200
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 201
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 201
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 202
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 202
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 203
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 203
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 204
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 204
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 205
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 205
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 206
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 206
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 207
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 207
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 208
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 208
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 209
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 209
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 210
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 210
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 211
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 211
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 212
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 212
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 213
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 213
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 214
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 214
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 215
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 215
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 216
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 216
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 217
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 217
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 218
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 218
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 219
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 219
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 220
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 220
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 221
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 221
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 222
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 222
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 223
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 223
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 224
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 224
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 225
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 225
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 226
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 226
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 227
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 227
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 228
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 228
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 229
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 229
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 230
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 230
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 231
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 231
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 232
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 232
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 233
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 233
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 234
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 234
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 235
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 235
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 236
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 236
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 237
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 237
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 238
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 238
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 239
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 239
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 240
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 240
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 241
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 241
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 242
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 242
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 243
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 243
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 244
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 244
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 245
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 245
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 246
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 246
+  },
+  {
+   "msg": "P2 Infantry is destroyed at (24,15).",
+   "owner": 0,
+   "round": 247
+  },
+  {
+   "msg": "P1 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 0,
+   "round": 247
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 247
+  },
+  {
+   "msg": "P2 Heavy Infantry musters at (24,15).",
+   "owner": 1,
+   "round": 248
+  },
+  {
+   "msg": "P1 Cavalry is destroyed at (24,16).",
+   "owner": 1,
+   "round": 248
+  },
+  {
+   "msg": "P1 Archers is destroyed at (19,15).",
+   "owner": 1,
+   "round": 248
+  },
+  {
+   "msg": "P2 Cavalry is destroyed at (25,16).",
+   "owner": 0,
+   "round": 248
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 248
+  },
+  {
+   "msg": "P2 Infantry musters at (25,16).",
+   "owner": 1,
+   "round": 249
+  },
+  {
+   "msg": "P2 Archers is destroyed at (21,14).",
+   "owner": 0,
+   "round": 249
+  },
+  {
+   "msg": "P1 Infantry is destroyed at (21,15).",
+   "owner": 1,
+   "round": 249
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 249
+  },
+  {
+   "msg": "P1 Cavalry is destroyed at (11,19).",
+   "owner": 1,
+   "round": 252
+  },
+  {
+   "msg": "P1 Infantry is destroyed at (9,22).",
+   "owner": 1,
+   "round": 253
+  },
+  {
+   "msg": "P1 Siege Engine is destroyed at (5,15).",
+   "owner": 1,
+   "round": 255
+  },
+  {
+   "msg": "P1 orders Heavy Infantry at (4,14).",
+   "owner": 0,
+   "round": 346
+  },
+  {
+   "msg": "P1 orders Heavy Infantry at (4,14).",
+   "owner": 0,
+   "round": 346
+  },
+  {
+   "msg": "P1 Heavy Infantry musters at (3,14).",
+   "owner": 0,
+   "round": 348
+  },
+  {
+   "msg": "P1 Heavy Infantry musters at (4,13).",
+   "owner": 0,
+   "round": 348
+  },
+  {
+   "msg": "P2 Cavalry is destroyed at (4,15).",
+   "owner": 0,
+   "round": 350
+  },
+  {
+   "msg": "P1 lays a outpost foundation at (22,11).",
+   "owner": 0,
+   "round": 350
+  },
+  {
+   "msg": "P1 completes Dragonlore.",
+   "owner": 0,
+   "round": 351
+  },
+  {
+   "msg": "P2 orders Cavalry at (25,15).",
+   "owner": 1,
+   "round": 351
+  },
+  {
+   "msg": "P1 Archers is destroyed at (24,19).",
+   "owner": 1,
+   "round": 351
+  },
+  {
+   "msg": "P2 Cavalry musters at (24,15).",
+   "owner": 1,
+   "round": 352
+  },
+  {
+   "msg": "P2 orders Archers at (25,15).",
+   "owner": 1,
+   "round": 352
+  },
+  {
+   "msg": "P1 lays a lair foundation at (24,12).",
+   "owner": 0,
+   "round": 352
+  },
+  {
+   "msg": "P2 Archers musters at (25,16).",
+   "owner": 1,
+   "round": 353
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 353
+  },
+  {
+   "msg": "P1 Infantry is destroyed at (25,11).",
+   "owner": 1,
+   "round": 354
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 354
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 355
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 356
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 357
+  },
+  {
+   "msg": "P1 orders Heavy Infantry at (4,14).",
+   "owner": 0,
+   "round": 358
+  },
+  {
+   "msg": "P1 orders Heavy Infantry at (4,14).",
+   "owner": 0,
+   "round": 358
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 358
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 359
+  },
+  {
+   "msg": "P1 Heavy Infantry musters at (3,14).",
+   "owner": 0,
+   "round": 360
+  },
+  {
+   "msg": "P1 Heavy Infantry musters at (4,15).",
+   "owner": 0,
+   "round": 360
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 360
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 361
+  },
+  {
+   "msg": "P1 orders Heavy Infantry at (4,14).",
+   "owner": 0,
+   "round": 362
+  },
+  {
+   "msg": "P1 orders Heavy Infantry at (4,14).",
+   "owner": 0,
+   "round": 362
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 362
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 363
+  },
+  {
+   "msg": "P1 Heavy Infantry musters at (5,14).",
+   "owner": 0,
+   "round": 364
+  },
+  {
+   "msg": "P1 Heavy Infantry musters at (3,14).",
+   "owner": 0,
+   "round": 364
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 364
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 365
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 366
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 367
+  },
+  {
+   "msg": "P2 cannot pay upkeep: 1 unit stand idle next year.",
+   "owner": 1,
+   "round": 368
+  },
+  {
+   "msg": "P2 Heavy Infantry is destroyed at (11,14).",
+   "owner": 0,
+   "round": 369
+  }
+ ]
+}

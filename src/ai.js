@@ -3,7 +3,7 @@
 import * as R from './rules.js';
 import { UNITS, TECHS, MAX_LEVELS } from './balance.js';
 
-const WANT = { infantry: 5, archer: 2, cavalry: 2, heavy_infantry: 2, siege: 2, heavy_cavalry: 1, mage: 0, dragon: 0 };
+const WANT = { infantry: 5, archer: 2, cavalry: 2, heavy_infantry: 2, siege: 2, heavy_cavalry: 1, mage: 0, dragon: 0, monk: 0, priest: 0 };
 
 function field(s, goals) {                                   // BFS path distance over squares not blocked by tower bases
   const N = s.N, dist = new Int16Array(N * N).fill(-1), q = [];
@@ -25,7 +25,7 @@ export function planYear(s, p) {
   const nearest = (list, from) => list.reduce((b, x) => (!b || R.manh(x, from) < R.manh(b, from) ? x : b), null);
 
   // ── 0. research (when rich enough and it would matter) ──
-  if (!pl.tech.siegecraft && pl.iron >= TECHS.siegecraft.cost.iron && s.units.some((u) => u.owner === p && u.type === 'siege')) R.setResearch(s, p, 'siegecraft');
+  if (!pl.tech.siegecraft && R.have(pl, 'iron') >= TECHS.siegecraft.cost.iron && s.units.some((u) => u.owner === p && u.type === 'siege')) R.setResearch(s, p, 'siegecraft');
 
   // ── 1. strikes: coordinated attacks (ATK + 1 per other friend on the same target) ──
   const attackers = mine().filter((u) => !UNITS[u.type].siege);
@@ -55,14 +55,14 @@ export function planYear(s, p) {
     if (t.levels.length >= want || t.builtRound === s.round) continue;
     let tended = t.garrison && t.garrison.owner === p;
     if (!tended) { const b = nearest(mine().filter((u) => free(u) && UNITS[u.type].builder), t); if (b) { const adj = adjacentTo(s, b, t); if (adj && R.setMove(s, p, b.id, adj.x, adj.y)) { busy.add(b.id); tended = true; } } }
-    if (tended) R.setBuildLevel(s, p, t.id, pl.iron >= 10) || R.setBuildLevel(s, p, t.id, false);   // spend spare iron on reinforced levels
+    if (tended) R.setBuildLevel(s, p, t.id, R.have(pl, 'iron') >= 10) || R.setBuildLevel(s, p, t.id, false);   // spend spare iron on reinforced levels
   }
   // ── 5. new foundations: strategic points first, then resource cells, plus one workshop by the fortress ──
   let founded = 0;
   const cells = [];
   for (const pt of s.points) if (!s.tg[R.ix(s, pt.x, pt.y)]) cells.push({ ...pt, w: 6, spec: 'outpost' });
   for (let y = 0; y < s.N; y++) for (let x = 0; x < s.N; x++) { const c = s.res[R.ix(s, x, y)]; if (c && !s.tg[R.ix(s, x, y)]) cells.push({ x, y, w: c === 2 ? 4 : c === 1 ? 3 : 2, spec: 'outpost' }); }
-  if (myF && !myT().some((t) => t.spec === 'workshop') && pl.iron >= 5) { const c = nearFree(s, myF, 2, 4); if (c) cells.push({ ...c, w: 5, spec: 'workshop' }); }
+  if (myF && !myT().some((t) => t.spec === 'workshop') && R.have(pl, 'iron') >= 5) { const c = nearFree(s, myF, 2, 4); if (c) cells.push({ ...c, w: 5, spec: 'workshop' }); }
   const hasEnemyNear = (c) => foes().some((f) => R.manh(f, c) <= 4);
   cells.sort((a, b) => (b.w - R.manh(b, myF) * 0.12) - (a.w - R.manh(a, myF) * 0.12));
   for (const c of cells) {
@@ -76,14 +76,14 @@ export function planYear(s, p) {
   // ── 6. recruiting: stay solvent ──
   const counts = {}; for (const u of s.units) if (u.owner === p) counts[u.type] = (counts[u.type] || 0) + 1;
   for (const t of myT()) for (const q of t.queue) counts[q.type] = (counts[q.type] || 0) + 1;
-  const inc = R.incomeOf(s, p).gold, up = R.upkeepOf(s, p);
+  const incAll = R.incomeOf(s, p), inc = incAll.gold + incAll.physical, up = R.upkeepOf(s, p), haveGold = R.have(pl, 'gold');
   for (const t of myT()) {
     for (let slot = 0; slot < R.queueSlots(t) - t.queue.length; slot++) {
       const options = Object.keys(UNITS).filter((ty) => R.recruitable(s, t, ty) && (counts[ty] || 0) < (WANT[ty] ?? 0) + (enT().length ? 2 : 0));
       options.sort((a, b) => ((counts[a] || 0) / (WANT[a] || 1)) - ((counts[b] || 0) / (WANT[b] || 1)));
       for (const ty of options) {
-        const gAfter = pl.gold - (R.committed(s, p).gold + UNITS[ty].cost.gold || 0), net = inc - up - UNITS[ty].upkeep;
-        if (net < -4 && pl.gold < 12) continue;                                 // not sustainable
+        const gAfter = haveGold - (R.committed(s, p).gold || 0) - (UNITS[ty].cost.gold || 0), net = inc - up - UNITS[ty].upkeep;
+        if (net < -4 && haveGold < 12) continue;                                 // not sustainable
         if (gAfter + 2 * Math.min(0, net) < 0) continue;
         if (R.setRecruit(s, p, t.id, ty)) { counts[ty] = (counts[ty] || 0) + 1; break; }
       }
@@ -97,6 +97,15 @@ export function planYear(s, p) {
   for (const c of squat) { if (sent >= 6) break;
     const u = nearest(mine().filter((z) => free(z) && (z.type === 'infantry' || z.type === 'archer') && !z.z && R.manh(z, c) <= UNITS[z.type].mov + 2 && !foes().some((f) => R.manh(f, c) <= 3)), c);
     if (u && R.setMove(s, p, u.id, c.x, c.y)) { busy.add(u.id); sent++; } }
+  // ── 7b. escape the poverty trap: units that cannot be paid for stand idle forever — dismiss them so the upkeep drops ──
+  if (pl.unpaid > 0) for (const u of s.units.filter((z) => z.owner === p && z.idle && !z.z && !busy.has(z.id))) { if (R.setDisband(s, p, u.id)) busy.add(u.id); }
+  // ── 7c. keep the squares around towers that are recruiting free: a finished unit needs an empty orthogonal neighbour ──
+  for (const t of myT().filter((z) => z.queue.length)) for (const [dx, dy] of R.ORTH) {
+    const u = R.inb(s, t.x + dx, t.y + dy) && R.unitAt(s, t.x + dx, t.y + dy);
+    if (!u || u.owner !== p || !free(u) || u.z) continue;
+    let best = null; for (const [k, e] of R.reach(s, u)) { const x = k % s.N, y = Math.floor(k / s.N); if (myT().some((tt) => R.manh(tt, { x, y }) <= 1)) continue; if (!best || e.cost < best.cost) best = { x, y, cost: e.cost }; }
+    if (best && R.setMove(s, p, u.id, best.x, best.y)) busy.add(u.id);
+  }
   // ── 8. the army: advance when strong enough, otherwise hold the home ground ──
   const str = (list) => list.reduce((a, u) => a + UNITS[u.type].atk + UNITS[u.type].def, 0);
   const army = mine().filter((u) => free(u) && !UNITS[u.type].builder || (free(u) && s.units.filter((z) => z.owner === p && z.type === 'infantry').length > 4 && !u.z));

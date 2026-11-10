@@ -1,15 +1,15 @@
 // THE TOWER GAME — 2D playable prototype (human = player 0 vs the built-in AI). Uses the real rules engine; the 3D client is not built yet.
 import * as R from './rules.js';
 import { planYear } from './ai.js';
-import { UNITS, UNIT_ORDER, SPECS, COSTS, TECHS, RESOURCES } from './balance.js';
+import { UNITS, UNIT_ORDER, SPECS, COSTS, TECHS, RES_ALL, SUBTYPES, FAMILY_LIST, RES_NAME, RES_INFO } from './balance.js';
 
 const rich = new URLSearchParams(location.search).get('rich') === '1';
-const s = R.newGame({ size: 30, res: rich ? { gold: 500, iron: 500, mana: 500 } : null });
+const s = R.newGame({ size: 30, res: rich ? Object.fromEntries(SUBTYPES.map((k) => [k, 500])) : null });
 const N = s.N, K = Math.floor(720 / N), cv = document.getElementById('c'); cv.width = cv.height = N * K;
 const g = cv.getContext('2d');
 const $ = (id) => document.getElementById(id);
-const COL = ['#46587a', '#b0552f'], TXT = ['#7f95c9', '#d9794e'], RC = ['', '#e0b94f', '#a2abb6', '#7ea9ff'];
-const LET = { infantry: 'i', heavy_infantry: 'H', cavalry: 'c', heavy_cavalry: 'C', archer: 'a', siege: 'S', mage: 'm', dragon: 'D' };
+const COL = ['#46587a', '#b0552f'], TXT = ['#7f95c9', '#d9794e'], RC = ['', ...SUBTYPES.map((k) => RES_INFO[k].color)];
+const LET = { infantry: 'i', heavy_infantry: 'H', cavalry: 'c', heavy_cavalry: 'C', archer: 'a', siege: 'S', mage: 'm', dragon: 'D', monk: 'k', priest: 'p' };
 const rec = { id: Date.now(), seed: s.seed, started: new Date().toISOString(), rich, years: [] };      // saved to this browser after every year
 const HKEY = 'tower.games';
 const readAll = () => { try { return JSON.parse(localStorage.getItem(HKEY) || '[]'); } catch (e) { return []; } };
@@ -19,7 +19,7 @@ function persist() {
 }
 function downloadLog() { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(readAll(), null, 2)], { type: 'application/json' })); a.download = `tower-game-log-${new Date().toISOString().slice(0, 16).replace(':', '')}.json`; a.click(); }
 let sel = null, mode = null, info = null, cardsApi = null;            // sel = {kind:'unit'|'tower', id}; mode = {type:'found', builderId, spec}
-const cost = (c) => Object.entries(c || {}).filter(([, v]) => v).map(([k, v]) => `${v}${k[0]}`).join('+') || 'free';
+const cost = (c) => Object.entries(c || {}).filter(([, v]) => v).map(([k, v]) => `${v} ${RES_NAME[k] || k}`).join(' + ') || 'free';
 const say = (t, bad) => { $('msg').textContent = t; $('msg').style.color = bad ? '#ff8d7a' : 'var(--gold)'; };
 
 // ───────── selection helpers ─────────
@@ -80,9 +80,12 @@ function render() {
   draw();
   const pl = s.pl[0], inc = R.incomeOf(s, 0), up = R.upkeepOf(s, 0), com = R.committed(s, 0), mh = R.pointsHeld(s, 0), eh = R.pointsHeld(s, 1);
   const ef = R.towerById(s, s.fortress[1]);
-  const nodes = { gold: 0, iron: 0, mana: 0 }; for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) { const c = s.res[R.ix(s, x, y)]; if (!c) continue; const t = s.tg[R.ix(s, x, y)], u = s.ug[R.ix(s, x, y)]; if ((t && t.owner === 0) || (!t && u && u.owner === 0)) nodes[['', 'gold', 'iron', 'mana'][c]]++; }
-  const nextG = inc.gold - up;
-  $('status').innerHTML = `<h2>Year ${s.round} — budget</h2><div class="res"><span class="g"><b>${pl.gold}</b>gold</span> <span class="i"><b>${pl.iron}</b>iron</span> <span class="m"><b>${pl.mana}</b>mana</span> <small>to spend this year — <b>unspent is lost</b></small><br><small>already planned: ${cost(com)} · nodes you hold: ${nodes.gold} gold, ${nodes.iron} iron, ${nodes.mana} mana (+ capital ${inc.gold - nodes.gold} gold) · army upkeep ${up}g is taken from the gold first${pl.unpaid ? ` · <b style="color:#ff8d7a">${pl.unpaid} unit(s) idle: could not pay</b>` : ''}<br>next year if nothing changes: ${Math.max(0, nextG)}g ${inc.iron}i ${inc.mana}m</small></div>
+  const nodes = Object.fromEntries(SUBTYPES.map((k) => [k, 0])); for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) { const cc = s.res[R.ix(s, x, y)]; if (!cc) continue; const t = s.tg[R.ix(s, x, y)], u = s.ug[R.ix(s, x, y)]; if ((t && t.owner === 0) || (!t && u && u.owner === 0)) nodes[R.RES_NAMES[cc]]++; }
+  const used = R.spendUsage(pl, com);
+  const desk = RES_ALL.filter((k) => pl[k] > 0).map((k) => { const I = RES_INFO[k], n = pl[k], t = used[k] || 0; return `<span class="dc${I.primary ? ' prim' : ''}" style="--c:${I.color}" title="${RES_NAME[k]}${I.primary ? ' (wild: any of its two kinds)' : ''}: ${n} this year, ${t} tapped by your orders">${Array.from({ length: Math.min(n, 12) }, (_, i) => `<i class="${i < t ? 'tap' : ''}"></i>`).join('')}<b>${n - t}</b>${RES_NAME[k]}</span>`; }).join('') || '<small>no cards this year</small>';
+  const held = SUBTYPES.filter((k) => nodes[k]).map((k) => `${nodes[k]} ${RES_NAME[k]}`).join(', ') || 'none';
+  const nxt = RES_ALL.filter((k) => inc[k]).map((k) => `${inc[k]} ${RES_NAME[k]}`).join(', ') || 'nothing';
+  $('status').innerHTML = `<h2>Year ${s.round} — your desk</h2><div class="desk">${desk}</div><small>Cards are tapped by your planned orders (${cost(com)}); <b>unspent cards are lost</b> at year end. A primary card (Physical/Mana/Spirit) is wild for its two kinds.<br>Nodes worked by you: ${held} · army upkeep ${up} Gold (gold first, then Physical)${pl.unpaid ? ` · <b style="color:#ff8d7a">${pl.unpaid} unit(s) idle: could not pay</b>` : ''}<br>Next year if nothing changes: ${nxt}</small>
     <div style="margin-top:6px"><small>Strategic points: you <b class="p0">${mh}</b> · AI <b class="p1">${eh}</b> (need ${Math.floor(s.points.length / 2) + 1}, held ${s.pointsHeld[0]}/2 years) · enemy fortress held by you for ${s.held[0]} year(s)${ef ? '' : ' (gone)'}</small></div>
     <div class="row" style="margin-top:6px">${Object.entries(TECHS).map(([k, T]) => `<button data-act="research" data-tech="${k}" ${s.pl[0].tech[k] || s.orders[0].research.some((r) => r.tech === k) || !R.canAfford(pl, R.addCost(com, T.cost)) ? 'disabled' : ''} title="${T.text}">${T.name} (${cost(T.cost)})${s.pl[0].tech[k] ? ' ✓' : ''}</button>`).join('')}</div>`;
   renderSel(); renderOrders();
@@ -95,11 +98,11 @@ function renderSel() {
   if (u) {
     const d = UNITS[u.type], mine = u.owner === 0;
     el.innerHTML = `<h2><span class="p${u.owner}">${d.name}</span> #${u.id}${mine ? '' : ' (enemy)'}</h2><small>MOV ${d.mov} · ATK ${d.atk} · DEF ${d.def} · RNG ${d.rng || '–'} · upkeep ${d.upkeep}g · at (${u.x},${u.y})${u.z ? ' · GARRISON' : ''}${u.idle ? ' · <b style="color:#ff8d7a">IDLE</b>' : ''}</small>` +
-      (mine ? `<div class="row" style="margin-top:6px"><button data-act="clearunit">Clear its orders</button>${d.builder ? `<select id="spec">${Object.keys(SPECS).map((k) => `<option value="${k}">${SPECS[k].name} (${cost(R.addCost(COSTS.foundation, COSTS.spec[k]))})</option>`).join('')}</select><button data-act="found">Lay foundation…</button>` : ''}</div><small>${d.siege ? 'Siege: click an enemy tower in the orange ring (the engine must not move). ' : ''}Blue = move · green = climb a tower · red ring = strike.</small>` : '');
+      (mine ? `<div class="row" style="margin-top:6px"><button data-act="clearunit">Clear its orders</button><button data-act="disband" title="Release this unit at the start of the year (stops its upkeep)">Disband</button>${d.builder ? `<select id="spec">${Object.keys(SPECS).map((k) => `<option value="${k}">${SPECS[k].name} (${cost(R.addCost(COSTS.foundation, COSTS.spec[k]))})</option>`).join('')}</select><button data-act="found">Lay foundation…</button>` : ''}</div><small>${d.siege ? 'Siege: click an enemy tower in the orange ring (the engine must not move). ' : ''}Blue = move · green = climb a tower · red ring = strike.</small>` : '');
   } else if (t) {
     const mine = t.owner === 0, qs = R.queueSlots(t);
     el.innerHTML = `<h2><span class="p${t.owner}">${t.fortress ? 'Fortress' : SPECS[t.spec].name}</span> #${t.id}${mine ? '' : ' (enemy)'}</h2><small>(${t.x},${t.y}) · foundation ${t.fHp}/6 · levels [${t.levels.map((l) => (l.kind === 'reinforced' ? 'R' : 'N') + l.hp).join(' ') || 'none'}] · garrison ${t.garrison ? '#' + t.garrison.id + ' ' + t.garrison.type : 'none'} · queue ${t.queue.map((q) => q.type + ':' + q.left + 'y').join(', ') || 'empty'} (${qs} slot${qs > 1 ? 's' : ''})</small>` +
-      (mine ? `<div class="row" style="margin-top:6px"><button data-act="level" data-r="0" ${t.levels.length >= 4 ? 'disabled' : ''}>+ Level (${cost(COSTS.normal)})</button><button data-act="level" data-r="1" ${t.levels.length >= 4 ? 'disabled' : ''}>+ Reinforced (${cost(COSTS.reinforced)})</button>${t.garrison ? `<button data-act="selgar">Select garrison</button>` : ''}</div>
+      (mine && t.queue.some((q) => q.left <= 0) ? `<div style="color:#ff8d7a;margin:6px 0"><b>Recruits are blocked:</b> every square next to this tower is occupied. A finished unit appears only on a free orthogonal neighbour — move a unit away.</div>` : '') + (mine ? `<div class="row" style="margin-top:6px"><button data-act="level" data-r="0" ${t.levels.length >= 4 ? 'disabled' : ''}>+ Level (${cost(COSTS.normal)})</button><button data-act="level" data-r="1" ${t.levels.length >= 4 ? 'disabled' : ''}>+ Reinforced (${cost(COSTS.reinforced)})</button>${t.garrison ? `<button data-act="selgar">Select garrison</button>` : ''}</div>
       <div class="row" style="margin-top:6px">${UNIT_ORDER.filter((ty) => R.recruitable(s, t, ty)).map((ty) => `<button data-act="recruit" data-type="${ty}" title="${UNITS[ty].time} year(s)" ${R.canAfford(s.pl[0], R.addCost(R.committed(s, 0), UNITS[ty].cost)) ? '' : 'disabled'}>${UNITS[ty].name} (${cost(UNITS[ty].cost)})</button>`).join('') || '<small>Nothing can be recruited here yet (needs a level, or the right specialisation).</small>'}</div>` : '');
   } else el.innerHTML = '<small>Click one of your units or towers (blue = yours). Click an enemy to inspect it.</small>';
 }
@@ -109,6 +112,7 @@ function renderOrders() {
   o.attacks.forEach((a, i) => rows.push([`strike #${a.unitId} → #${a.targetId}`, `data-act="cancel" data-kind="attacks" data-i="${i}"`]));
   o.siege.forEach((a, i) => rows.push([`siege #${a.unitId} → tower #${a.targetId}`, `data-act="cancel" data-kind="siege" data-i="${i}"`]));
   o.builds.forEach((b, i) => rows.push([b.kind === 'foundation' ? `found ${b.spec} at (${b.x},${b.y})` : `${b.reinforced ? 'reinforced ' : ''}level on tower #${b.towerId}`, `data-act="cancel" data-kind="builds" data-i="${i}"`]));
+  for (const uid of (o.disband || [])) rows.push([`disband #${uid}`, `data-act="undisband" data-uid="${uid}"`]);
   o.recruits.forEach((r, i) => rows.push([`recruit ${UNITS[r.type].name} at #${r.towerId}`, `data-act="cancel" data-kind="recruits" data-i="${i}"`]));
   o.research.forEach((r, i) => rows.push([`research ${TECHS[r.tech].name}`, `data-act="cancel" data-kind="research" data-i="${i}"`]));
   $('orders').innerHTML = rows.length ? rows.map(([t, a]) => `<div><span>${t}</span><button ${a}>✕</button></div>`).join('') : '<small>No orders yet. Units without orders stay where they are.</small>';
@@ -124,7 +128,7 @@ const cellOf = (e) => { const r = cv.getBoundingClientRect(), f = cv.width / r.w
 cv.addEventListener('mousemove', (e) => {
   const { x, y } = cellOf(e); if (!R.inb(s, x, y)) return;
   const c = s.res[R.ix(s, x, y)], u = R.unitAt(s, x, y), t = R.towerAt(s, x, y), pt = s.points.some((p) => p.x === x && p.y === y);
-  $('hover').textContent = `(${x},${y})${c ? ' · ' + ['', 'gold', 'iron', 'mana'][c] + ' cell' : ''}${pt ? ' · strategic point' : ''}${t ? ` · P${t.owner + 1} ${t.fortress ? 'fortress' : t.spec} (${t.levels.length} lvl)` : ''}${u ? ` · P${u.owner + 1} ${u.type} #${u.id}` : ''}`;
+  $('hover').textContent = `(${x},${y})${c ? ' · ' + RES_NAME[R.RES_NAMES[c]] + ' node' : ''}${pt ? ' · strategic point' : ''}${t ? ` · P${t.owner + 1} ${t.fortress ? 'fortress' : t.spec} (${t.levels.length} lvl)` : ''}${u ? ` · P${u.owner + 1} ${u.type} #${u.id}` : ''}`;
 });
 cv.addEventListener('click', (e) => {
   if (s.winner !== null) return;
@@ -151,13 +155,15 @@ cv.addEventListener('click', (e) => {
 document.addEventListener('click', (e) => {
   const b = e.target.closest('button[data-act]'); if (!b) return;
   const a = b.dataset.act, t = selTower(), u = selUnit();
-  if (a === 'clearunit' && u) { R.clearUnitOrders(s, 0, u.id); say('Orders cleared.'); }
+  if (a === 'disband' && u) { R.setDisband(s, 0, u.id); say(`#${u.id} will be disbanded at the start of the year.`); }
+  else if (a === 'clearunit' && u) { R.clearUnitOrders(s, 0, u.id); say('Orders cleared.'); }
   else if (a === 'found' && u) { mode = { type: 'found', builderId: u.id, spec: $('spec').value }; return say(`Click a free square next to #${u.id} (or next to where it is ordered to move) to lay the ${mode.spec} foundation.`); }
   else if (a === 'level' && t) { const ok = R.setBuildLevel(s, 0, t.id, b.dataset.r === '1'); say(ok ? 'Level ordered.' : 'Rejected: affordable? one order per tower per year; max 4 levels.', !ok); }
   else if (a === 'recruit' && t) { const ok = R.setRecruit(s, 0, t.id, b.dataset.type); say(ok ? `${UNITS[b.dataset.type].name} ordered.` : 'Rejected: queue full or unaffordable.', !ok); }
   else if (a === 'selgar' && t && t.garrison) return select({ kind: 'unit', id: t.garrison.id });
   else if (a === 'research') { const ok = R.setResearch(s, 0, b.dataset.tech); say(ok ? 'Research ordered.' : 'Rejected.', !ok); }
   else if (a === 'cancel') R.cancelOrder(s, 0, b.dataset.kind, +b.dataset.i);
+  else if (a === 'undisband') s.orders[0].disband = s.orders[0].disband.filter((x) => x !== +b.dataset.uid);
   else if (a === 'cancelmove') delete s.orders[0].moves[b.dataset.uid];
   render();
 });
@@ -165,8 +171,9 @@ $('dl').onclick = downloadLog;
 $('clearall').onclick = () => { R.clearOrders(s, 0); say('All orders cleared.'); render(); };
 function endYear() {
   if (s.winner !== null) return;
+  document.activeElement && document.activeElement.blur && document.activeElement.blur();   // so a held Enter cannot re-click the button
   planYear(s, 1);                                                  // the AI plans in secret
-  const yr = { year: s.round, budget: [0, 1].map((o) => ({ gold: s.pl[o].gold, iron: s.pl[o].iron, mana: s.pl[o].mana })), orders: JSON.parse(JSON.stringify(s.orders)) };
+  const yr = { year: s.round, budget: [0, 1].map((o) => Object.fromEntries(RES_ALL.map((k) => [k, s.pl[o][k]]))), orders: JSON.parse(JSON.stringify(s.orders)) };
   const before = s.log.length; R.resolveYear(s);
   yr.events = s.log.slice(before).map((l) => l.msg); rec.years.push(yr); persist();
   sel = null; info = null; mode = null;
@@ -174,7 +181,11 @@ function endYear() {
   render();
 }
 $('end').onclick = endYear;
-addEventListener('keydown', (e) => { if (e.key === 'Enter') endYear(); if (e.key === 'Escape') { sel = null; info = null; mode = null; render(); } });
+addEventListener('keydown', (e) => {
+  // Enter ends the year ONCE: ignore key auto-repeat, and let a focused button/select handle its own Enter (it used to fire twice per press)
+  if (e.key === 'Enter') { if (e.repeat || ['BUTTON', 'SELECT', 'INPUT'].includes(document.activeElement.tagName)) return; e.preventDefault(); endYear(); }
+  if (e.key === 'Escape') { sel = null; info = null; mode = null; render(); }
+});
 
 persist(); render();
 // card art needs the 3D models; load in the background and degrade silently if WebGL or a model is unavailable
