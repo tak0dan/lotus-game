@@ -16,3 +16,11 @@ Looked through the three newest tabletop chats ("Tabletop Game Search", "Game Me
 
 ## Not found
 - No generated pictures of individual units in these three chats. If they are in a different chat, tell me which one, or drop the files into `assets/More/`.
+
+## Found: the War Priest / Inquisitor images ("Vol'jin tabletop games" chat, Jan 13 2025)
+A series of generated images of the **War Priest** (the Priest/Inquisitor unit), with the designer's directions in order:
+1. "Similar to the War Priests from Warhammer 40k. Mechanic cyber armour decorated in the style of the gothic cathedrals. Old prayer book in hand, a banner in the other hand." -> blue-black power armour with copper gothic cathedral filigree, a spired cathedral crown behind the head, open prayer book.
+2. "Keep the armour but make it more Fantasy-like, delete the helmet, Inquisitors keep their heads open. Face of a middle-aged fantasy priest, white hair in a bun." -> pale vestments over plate with a mechanical gauntlet holding the book.
+3. "Erase the cross, make the armour sharper and gothic, open the prayer book. Make it 3D character." -> silver-haired bearded priest, halo-like ring, ornate sharp pauldrons.
+4. "Close this head with the helmet. Make the armour more dark fantasy and techno." -> spiked, dark filigreed plate, closed helm, large open grimoire with a pentagram seal.
+Two of them are saved in `assets/More/priest-refs/` (screen captures at original size). Design language to carry into the Priest miniature: cathedral architecture worn as armour, an open book, sharp gothic spikes; Inquisitor variant keeps the head open, white hair in a bun.
