@@ -1,18 +1,15 @@
 {
   "name": "lotus-game",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
+  "description": "The Tower Game \u2014 tabletop-first strategy game; this repository is the browser prototype and design record",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "python3 tools/serve.py"
   },
   "keywords": [],
   "type": "module",
   "dependencies": {
     "three": "^0.187.0"
   },
-  "license": "SEE LICENSE IN LICENSE"
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true
 }

@@ -3,6 +3,17 @@
 Current base: **The Tower Game** (rulebook v1.0, `The_Tower_Game_Rulebook_v1.0.md` (not included in this repo)) — deterministic, no dice, year-by-year simultaneous orders, physical towers with levels and garrisons, economy with upkeep,
 siege-only tower destruction. The **Lotus** manifesto survives as the lore/world layer (`lore/`, `src/balance.js` LORE) and as an archived build.
 
+## License — please read
+**Source-available, personal use only. Not open source.** Full terms in [`LICENSE`](LICENSE); third-party material in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+- ✅ Read and study everything · clone/download it · play the game **locally, in a web browser, from the pages provided here**.
+- ✅ Use the **written rules** to build a **physical** copy for yourself and give it away free.
+- ❌ Anything else: no reuse in other projects or products, no modifying or republishing, no AI-training use.
+- ❌ **No native builds**: the game may not be run outside a browser or outside the provided pages — in particular no Windows or macOS builds, wrappers, installers, launchers or store listings.
+- ❌ A physical recreation **may not be sold** or used commercially.
+- The author reserves all other rights, including the official tabletop edition and official digital versions on any platform.
+
+**Direction:** the game is **tabletop-first**; a digital version is planned. This repository is the working prototype and the design record, published so it can be inspected.
+
 ## Source documents (what this project is built from)
 | What | Where |
 |---|---|
