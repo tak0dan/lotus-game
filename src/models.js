@@ -7,9 +7,9 @@ import { HD_TYPES, buildHD } from './models_hd.js';
 // Conventions: 1 unit = 1 board square · origin at the base centre · faces +Z · material named 'owner' is re-tinted per player ·
 // nodes 'wing_L' 'wing_R' (flap), 'flag' (ripples), 'orb' (pulses) are animated by the game.
 
-export const OWNER_COL = [0x46587a, 0xb0552f];          // slate blue / rust (the two paint jobs on the movie's table)
-export const OWNER_DARK = [0x2c3a55, 0x7d3a20];
-export const NAME = ['Slate', 'Rust'];
+export const OWNER_COL = [0x46587a, 0xb0552f, 0x4f8a46, 0xc2a233, 0x7a4f9a, 0x2f9a9a, 0x9a2f45, 0xb4b4bc];     // slate, rust, green, ochre, violet, teal, crimson, silver          // slate blue / rust (the two paint jobs on the movie's table)
+export const OWNER_DARK = [0x2c3a55, 0x7d3a20, 0x2f5a2c, 0x8a7120, 0x523368, 0x1f6868, 0x6a1f30, 0x7d7d85];
+export const NAME = ['Slate', 'Rust', 'Moss', 'Ochre', 'Violet', 'Teal', 'Crimson', 'Silver'];
 
 // ── shared helpers (also used by the scene code) ──
 export const G = {
