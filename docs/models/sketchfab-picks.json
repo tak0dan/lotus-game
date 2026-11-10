@@ -1,0 +1,90 @@
+{
+ "heavy_infantry": {
+  "uid": "0e78722607974792a58c729a471d284f",
+  "name": "VORTHAGAN // The Blackthorn Inquisitor",
+  "user": "Atahan3D",
+  "lic": "CC Attribution",
+  "faces": 1982344,
+  "likes": 6,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/0e78722607974792a58c729a471d284f/thumbnails/4804a5a8c1cc42d983d6d1b11c2f9176/4c7d97857ddf41faa951c5827d5ff8d3.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-0e78722607974792a58c729a471d284f"
+ },
+ "archer": {
+  "uid": "aa6875dcd8f644c3be8a4596064b31f2",
+  "name": "Arbalest Marksman - Ghillie Cloak Sniper",
+  "user": "s8819296",
+  "lic": "CC Attribution",
+  "faces": 1891230,
+  "likes": 35,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/aa6875dcd8f644c3be8a4596064b31f2/thumbnails/acace58454364eb1b80962b1c8c67580/48cea0d8c6af4e8eb646db33a9451967.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-aa6875dcd8f644c3be8a4596064b31f2"
+ },
+ "cavalry": {
+  "uid": "392342e94ee94c1b823a367a8ddcf9ee",
+  "name": "The Dark Wraith",
+  "user": "davidkong",
+  "lic": "CC Attribution",
+  "faces": 150293,
+  "likes": 998,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/392342e94ee94c1b823a367a8ddcf9ee/thumbnails/f7fbf65994ce43d9916b4292b5b04750/256x144.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-392342e94ee94c1b823a367a8ddcf9ee"
+ },
+ "heavy_cavalry": {
+  "uid": "5211aa7a71c343f0aa11c8cc8c5daf1b",
+  "name": "THE HOLY RIDER // Mounted Crusader",
+  "user": "Atahan3D",
+  "lic": "CC Attribution",
+  "faces": 1935411,
+  "likes": 24,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/5211aa7a71c343f0aa11c8cc8c5daf1b/thumbnails/802aea2fcf1e482582da220b14fde7a0/a89c0a6b93454e879c08cefc2923c2db.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-5211aa7a71c343f0aa11c8cc8c5daf1b"
+ },
+ "siege": {
+  "uid": "8ca1e906cb10447e81aca3b78472f5f8",
+  "name": "Siege Ballista",
+  "user": "Hjorskrim",
+  "lic": "CC Attribution",
+  "faces": 17540,
+  "likes": 256,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/8ca1e906cb10447e81aca3b78472f5f8/thumbnails/3b6ea1ce0fa543d48287acd400a9bc38/81c5a4c5e09142d5b5ca5b8c9335b102.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-8ca1e906cb10447e81aca3b78472f5f8"
+ },
+ "mage": {
+  "uid": "10c3bef4113b4e128ad41c9fdcab74e3",
+  "name": "Dark Necromancer - Corrupted Staff & Skulls",
+  "user": "s8819296",
+  "lic": "CC Attribution",
+  "faces": 1893733,
+  "likes": 142,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/10c3bef4113b4e128ad41c9fdcab74e3/thumbnails/b292d687f796457ca7c9e89784d07c55/d2f2bc6c4ed645f1af9788a7c23aec78.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-10c3bef4113b4e128ad41c9fdcab74e3"
+ },
+ "dragon": {
+  "uid": "9d4b6159f0ed424f9f34034dae241457",
+  "name": "Caraxes \u2013 The Blood Wyrm",
+  "user": "pixforge.id",
+  "lic": "CC Attribution",
+  "faces": 1965352,
+  "likes": 35,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/9d4b6159f0ed424f9f34034dae241457/thumbnails/b816fcca6d4a47d2b203a6dd5cea3e05/ae1e8775d8af429faca3c2a25ba9d081.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-9d4b6159f0ed424f9f34034dae241457"
+ },
+ "priest": {
+  "uid": "880d6e24680e4dafbb00b7c55bedf01c",
+  "name": "Plague Inquisitor - Armored Beak Mask & Blade",
+  "user": "s8819296",
+  "lic": "CC Attribution",
+  "faces": 1902823,
+  "likes": 97,
+  "anim": 0,
+  "thumb": "https://media.sketchfab.com/models/880d6e24680e4dafbb00b7c55bedf01c/thumbnails/0616c5149474405c922225c6ea31efa9/d98af1e527474127b28bf5510cd959fd.jpeg",
+  "url": "https://sketchfab.com/3d-models/none-880d6e24680e4dafbb00b7c55bedf01c"
+ }
+}
