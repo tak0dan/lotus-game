@@ -361,3 +361,5 @@ export function buildHD(type, o) {
   const root = k.done(); const wrap = new THREE.Group(); root.rotation.y = -Math.PI / 2; wrap.add(root); wrap.name = type; wrap.userData.top = HD_TOP[type];
   return wrap;
 }
+
+export function buildBase(o, s = 1) { const k = new Kit(o); base(k, s); const g = k.done(); g.name = 'base'; return g; }   // the plinth + owner rim, for models that are baked scans

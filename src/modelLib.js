@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from '../vendor/loaders/GLTFLoader.js';
+import { buildBase } from './models_hd.js';
 import { buildModel, TOPH, GLOW, TYPE_LIST, OWNER_COL, sprite } from './models.js';
 
 // Loads assets/models/<type>.glb (listed in assets/models/models.json). Anything missing or broken falls back to the
@@ -34,7 +35,7 @@ export function prepare(root, owner) {
       if (!cache.has(m)) {
         const c = m.clone();
         if (c.name === 'owner') c.color.setHex(OWNER_COL[owner]);   // matte paint: no emissive
-        if (flat && c.isMeshStandardMaterial && !c.userData.smooth) c.flatShading = true;
+        if (flat && c.isMeshStandardMaterial && !c.userData.smooth && !c.map) c.flatShading = true;
         c.needsUpdate = true; cache.set(m, c);
       }
       return cache.get(m);
@@ -45,7 +46,11 @@ export function prepare(root, owner) {
 }
 export function makeModel(type, owner) {
   const g = lib.gltf[type] ? new THREE.Group() : buildModel(type, owner);
-  if (lib.gltf[type]) { g.add(prepare(lib.gltf[type].scene.clone(true), owner)); g.name = type; }
+  if (lib.gltf[type]) {
+    const root = prepare(lib.gltf[type].scene.clone(true), owner); g.add(root); g.name = type;
+    let textured = false; root.traverse((m) => { if (m.isMesh && m.material && m.material.map) textured = true; });
+    if (textured) g.add(buildBase(owner, lib.meta.models?.[type]?.baseScale || 1));        // baked scans carry no owner colour: stand them on the plinth with the owner rim
+  }
   else prepare(g, owner);
   g.userData.top = topOf(type);
   const gl = glowOf(type); if (gl) g.add(sprite(gl.color, gl.size, gl.y));
